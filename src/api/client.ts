@@ -1,4 +1,17 @@
-// API client configuration for CeybytePOS
+/*
+ * ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
+ * ║                                        CEYBYTE POS                                               ║
+ * ║                                                                                                  ║
+ * ║                                      API Client Module                                          ║
+ * ║                                                                                                  ║
+ * ║  Description: HTTP client for communicating with the Python FastAPI backend.                    ║
+ * ║               Provides methods for GET, POST, PUT, DELETE requests with error handling.         ║
+ * ║                                                                                                  ║
+ * ║  Author: Ceybyte Development Team                                                                ║
+ * ║  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                  ║
+ * ║  License: MIT License with Sri Lankan Business Terms                                             ║
+ * ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
+ */
 
 import { ApiResponse } from '@/types/api';
 

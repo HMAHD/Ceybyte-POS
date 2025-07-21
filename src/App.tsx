@@ -1,3 +1,18 @@
+/*
+ * ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
+ * ║                                        CEYBYTE POS                                               ║
+ * ║                                                                                                  ║
+ * ║                                    Main Application Component                                    ║
+ * ║                                                                                                  ║
+ * ║  Description: Main React component that serves as the entry point for CeybytePOS application.   ║
+ * ║               Handles API health checks and displays system status.                             ║
+ * ║                                                                                                  ║
+ * ║  Author: Ceybyte Development Team                                                                ║
+ * ║  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                  ║
+ * ║  License: MIT License with Sri Lankan Business Terms                                             ║
+ * ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
+ */
+
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import "./App.css";

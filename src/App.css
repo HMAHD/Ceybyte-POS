@@ -1,9 +1,22 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/*
+ * ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
+ * ║                                        CEYBYTE POS                                               ║
+ * ║                                                                                                  ║
+ * ║                                    Main Application Styles                                      ║
+ * ║                                                                                                  ║
+ * ║  Description: Main CSS file with Tailwind CSS imports and CeybytePOS specific styles.          ║
+ * ║               Includes multi-language font support and custom utility classes.                  ║
+ * ║                                                                                                  ║
+ * ║  Author: Ceybyte Development Team                                                                ║
+ * ║  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                  ║
+ * ║  License: MIT License with Sri Lankan Business Terms                                             ║
+ * ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
+ */
 
 /* Import Google Fonts for Sinhala and Tamil */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@300;400;500;600;700&family=Noto+Sans+Tamil:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
 
 @layer base {
   :root {
@@ -53,11 +66,7 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
-    @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }

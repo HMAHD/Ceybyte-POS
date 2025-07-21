@@ -1,6 +1,16 @@
 """
-CeybytePOS Python FastAPI Backend
-Main application entry point
+╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
+║                                        CEYBYTE POS                                               ║
+║                                                                                                  ║
+║                                   Python FastAPI Backend                                        ║
+║                                                                                                  ║
+║  Description: Main FastAPI application entry point for CeybytePOS backend API.                  ║
+║               Provides REST endpoints for the Tauri frontend application.                       ║
+║                                                                                                  ║
+║  Author: Ceybyte Development Team                                                                ║
+║  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                  ║
+║  License: MIT License with Sri Lankan Business Terms                                             ║
+╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
 """
 
 from fastapi import FastAPI, HTTPException

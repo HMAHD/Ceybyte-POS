@@ -156,6 +156,9 @@ src-tauri/Cargo.lock
 /logs/
 /temp/
 
+# Kiro IDE files
+.kiro/
+
 # OS generated files
 Thumbs.db
 .DS_Store
