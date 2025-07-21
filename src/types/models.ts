@@ -1,6 +1,11 @@
 // Data model interfaces for CeybytePOS
 
-import { Language, UserRole, PaymentMethod, SaleType } from '../utils/constants';
+import {
+  Language,
+  UserRole,
+  PaymentMethod,
+  SaleType,
+} from '../utils/constants';
 
 export interface Product {
   id: number;

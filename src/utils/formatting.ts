@@ -6,7 +6,7 @@
 export function formatCurrency(amount: number): string {
   return `Rs. ${amount.toLocaleString('en-LK', {
     minimumFractionDigits: 2,
-    maximumFractionDigits: 2
+    maximumFractionDigits: 2,
   })}`;
 }
 
@@ -17,7 +17,7 @@ export function formatDate(date: Date): string {
   return date.toLocaleDateString('en-GB', {
     day: '2-digit',
     month: '2-digit',
-    year: 'numeric'
+    year: 'numeric',
   });
 }
 
@@ -31,7 +31,7 @@ export function formatDateTime(date: Date): string {
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-    hour12: true
+    hour12: true,
   });
 }
 
@@ -41,28 +41,31 @@ export function formatDateTime(date: Date): string {
 export function formatPhoneNumber(phone: string): string {
   // Remove all non-digits
   const cleaned = phone.replace(/\D/g, '');
-  
+
   // Format as +94 XX XXX XXXX
   if (cleaned.startsWith('94') && cleaned.length === 11) {
     return `+94 ${cleaned.slice(2, 4)} ${cleaned.slice(4, 7)} ${cleaned.slice(7)}`;
   }
-  
+
   // Format as 0XX XXX XXXX
   if (cleaned.startsWith('0') && cleaned.length === 10) {
     return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 6)} ${cleaned.slice(6)}`;
   }
-  
+
   return phone; // Return original if doesn't match patterns
 }
 
 /**
  * Format quantity with appropriate decimal places
  */
-export function formatQuantity(quantity: number, allowDecimals: boolean = true): string {
+export function formatQuantity(
+  quantity: number,
+  allowDecimals: boolean = true
+): string {
   if (allowDecimals) {
     return quantity.toLocaleString('en-LK', {
       minimumFractionDigits: 0,
-      maximumFractionDigits: 3
+      maximumFractionDigits: 3,
     });
   }
   return Math.floor(quantity).toString();
@@ -89,5 +92,5 @@ export function formatFileSize(bytes: number): string {
   const sizes = ['Bytes', 'KB', 'MB', 'GB'];
   if (bytes === 0) return '0 Bytes';
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  return `${Math.round(bytes / Math.pow(1024, i) * 100) / 100} ${sizes[i]}`;
+  return `${Math.round((bytes / Math.pow(1024, i)) * 100) / 100} ${sizes[i]}`;
 }

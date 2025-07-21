@@ -26,10 +26,10 @@ class ApiClient {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: Record<string, unknown> = {}
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseURL}${endpoint}`;
-    
+
     const defaultHeaders = {
       'Content-Type': 'application/json',
     };
@@ -48,7 +48,7 @@ class ApiClient {
       }
 
       const data = await response.json();
-      
+
       return {
         success: true,
         data,
@@ -89,7 +89,9 @@ class ApiClient {
   }
 
   // Health check
-  async healthCheck(): Promise<ApiResponse<{ status: string; service: string }>> {
+  async healthCheck(): Promise<
+    ApiResponse<{ status: string; service: string }>
+  > {
     return this.get('/health');
   }
 }

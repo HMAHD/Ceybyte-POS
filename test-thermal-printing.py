@@ -3,13 +3,13 @@
 ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
 ║                                        CEYBYTE POS                                               ║
 ║                                                                                                  ║
-║                                Thermal Printing Test Script                                     ║
+║                                Thermal Printing Test Script                                      ║
 ║                                                                                                  ║
-║  Description: Test script to verify thermal printing with multi-language support.              ║
-║               Demonstrates character transliteration and receipt formatting.                    ║
+║  Description: Test script to verify thermal printing with multi-language support.                ║
+║               Demonstrates character transliteration and receipt formatting.                     ║
 ║                                                                                                  ║
-║  Author: Ceybyte Development Team                                                                ║
-║  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                  ║
+║  Author: Akash Hasendra                                                                          ║
+║  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   ║
 ║  License: MIT License with Sri Lankan Business Terms                                             ║
 ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
 """

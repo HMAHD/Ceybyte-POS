@@ -7,7 +7,7 @@ export const COMPANY_NAME = 'Ceybyte.com';
 export const LANGUAGES = {
   en: 'English',
   si: 'සිංහල',
-  ta: 'தமிழ்'
+  ta: 'தமிழ்',
 } as const;
 
 export type Language = keyof typeof LANGUAGES;
@@ -16,28 +16,29 @@ export type Language = keyof typeof LANGUAGES;
 export const USER_ROLES = {
   OWNER: 'owner',
   CASHIER: 'cashier',
-  HELPER: 'helper'
+  HELPER: 'helper',
 } as const;
 
-export type UserRole = typeof USER_ROLES[keyof typeof USER_ROLES];
+export type UserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];
 
 // Payment methods
 export const PAYMENT_METHODS = {
   CASH: 'cash',
   CARD: 'card',
   MOBILE: 'mobile',
-  CREDIT: 'credit'
+  CREDIT: 'credit',
 } as const;
 
-export type PaymentMethod = typeof PAYMENT_METHODS[keyof typeof PAYMENT_METHODS];
+export type PaymentMethod =
+  (typeof PAYMENT_METHODS)[keyof typeof PAYMENT_METHODS];
 
 // Sale types
 export const SALE_TYPES = {
   WALK_IN: 'walk-in',
-  CREDIT: 'credit'
+  CREDIT: 'credit',
 } as const;
 
-export type SaleType = typeof SALE_TYPES[keyof typeof SALE_TYPES];
+export type SaleType = (typeof SALE_TYPES)[keyof typeof SALE_TYPES];
 
 // Keyboard shortcuts
 export const SHORTCUTS = {
@@ -48,7 +49,7 @@ export const SHORTCUTS = {
   RETRIEVE_SALE: 'Ctrl+R',
   OPEN_DRAWER: 'F9',
   PRICE_CHECK: 'F11',
-  SALES_TOTAL: 'F10'
+  SALES_TOTAL: 'F10',
 } as const;
 
 // Sri Lankan specific
@@ -59,5 +60,5 @@ export const DATE_FORMAT = 'DD/MM/YYYY';
 export const MOBILE_PROVIDERS = {
   EZ_CASH: 'eZ Cash',
   M_CASH: 'mCash',
-  OTHER: 'Other'
+  OTHER: 'Other',
 } as const;

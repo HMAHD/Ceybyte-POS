@@ -1,0 +1,53 @@
+# ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+# │                                        CEYBYTE POS                                               │
+# │                                                                                                  │
+# │                                Python Project Configuration                                      │
+# │                                                                                                  │
+# │  Description: Configuration for Python code formatting and linting tools.                        │
+# │               Includes Black, isort, and flake8 settings.                                        │
+# │                                                                                                  │
+# │  Author: Akash Hasendra                                                                          │
+# │  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   │
+# │  License: MIT License with Sri Lankan Business Terms                                             │
+# └──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+exclude = [
+    ".git",
+    "__pycache__",
+    ".venv",
+    "build",
+    "dist",
+    "*.egg-info"
+]
