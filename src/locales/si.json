@@ -1,0 +1,59 @@
+{
+  "app": {
+    "name": "CeybytePOS",
+    "tagline": "Ceybyte විසින් බලගන්වන ලදී"
+  },
+  "navigation": {
+    "sales": "විකුණුම්",
+    "products": "නිෂ්පාදන",
+    "customers": "ගනුදෙනුකරුවන්",
+    "suppliers": "සැපයුම්කරුවන්",
+    "reports": "වාර්තා",
+    "settings": "සැකසුම්"
+  },
+  "common": {
+    "save": "සුරකින්න",
+    "cancel": "අවලංගු කරන්න",
+    "delete": "මකන්න",
+    "edit": "සංස්කරණය",
+    "add": "එකතු කරන්න",
+    "search": "සොයන්න",
+    "loading": "පූරණය වෙමින්...",
+    "error": "දෝෂය",
+    "success": "සාර්ථකයි",
+    "confirm": "තහවුරු කරන්න",
+    "yes": "ඔව්",
+    "no": "නැහැ"
+  },
+  "sales": {
+    "walkIn": "සාමාන්‍ය ගනුදෙනුකරු",
+    "creditCustomer": "ණය ගනුදෙනුකරු",
+    "barcode": "බාර්කෝඩ්",
+    "quantity": "ප්‍රමාණය",
+    "price": "මිල",
+    "total": "එකතුව",
+    "subtotal": "උප එකතුව",
+    "tax": "බදු",
+    "discount": "වට්ටම",
+    "grandTotal": "මුළු එකතුව",
+    "cash": "මුදල්",
+    "card": "කාඩ්පත",
+    "mobile": "ජංගම මුදල්",
+    "credit": "ණය",
+    "change": "ඉතිරිය",
+    "completeSale": "විකුණුම සම්පූර්ණ කරන්න",
+    "holdSale": "විකුණුම රඳවන්න",
+    "retrieveSale": "විකුණුම ගන්න"
+  },
+  "shortcuts": {
+    "f12": "F12 - ක්ෂණික මුදල් විකුණුම",
+    "f3": "F3 - ගනුදෙනුකරු ප්‍රකාරය",
+    "f2": "F2 - නිෂ්පාදන සෙවීම",
+    "ctrlH": "Ctrl+H - විකුණුම රඳවන්න",
+    "ctrlR": "Ctrl+R - විකුණුම ගන්න"
+  },
+  "currency": {
+    "symbol": "රු.",
+    "format": "රු. {amount}"
+  }
+}

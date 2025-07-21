@@ -1,0 +1,59 @@
+{
+  "app": {
+    "name": "CeybytePOS",
+    "tagline": "Powered by Ceybyte"
+  },
+  "navigation": {
+    "sales": "Sales",
+    "products": "Products",
+    "customers": "Customers",
+    "suppliers": "Suppliers",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "sales": {
+    "walkIn": "Walk-in Customer",
+    "creditCustomer": "Credit Customer",
+    "barcode": "Barcode",
+    "quantity": "Quantity",
+    "price": "Price",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "tax": "Tax",
+    "discount": "Discount",
+    "grandTotal": "Grand Total",
+    "cash": "Cash",
+    "card": "Card",
+    "mobile": "Mobile Money",
+    "credit": "Credit",
+    "change": "Change",
+    "completeSale": "Complete Sale",
+    "holdSale": "Hold Sale",
+    "retrieveSale": "Retrieve Sale"
+  },
+  "shortcuts": {
+    "f12": "F12 - Instant Cash Sale",
+    "f3": "F3 - Customer Mode",
+    "f2": "F2 - Product Search",
+    "ctrlH": "Ctrl+H - Hold Sale",
+    "ctrlR": "Ctrl+R - Retrieve Sale"
+  },
+  "currency": {
+    "symbol": "Rs.",
+    "format": "Rs. {amount}"
+  }
+}
