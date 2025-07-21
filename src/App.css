@@ -13,8 +13,8 @@
  * ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
  */
 
-/* Import Google Fonts for Sinhala and Tamil */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@300;400;500;600;700&family=Noto+Sans+Tamil:wght@300;400;500;600;700&display=swap');
+/* Import local fonts for offline support */
+@import "./assets/fonts/fonts.css";
 
 @import "tailwindcss";
 
@@ -74,7 +74,7 @@
 /* CeybytePOS specific styles */
 .pos-screen {
   min-height: 100vh;
-  font-family: 'Inter', 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif;
+  font-family: 'Nirmala UI', 'Segoe UI', 'Iskoola Pota', 'Latha', sans-serif;
 }
 
 .currency-lkr::before {

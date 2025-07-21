@@ -21,8 +21,10 @@ export default {
         },
       },
       fontFamily: {
-        'sinhala': ['Noto Sans Sinhala', 'sans-serif'],
-        'tamil': ['Noto Sans Tamil', 'sans-serif'],
+        'sinhala': ['Nirmala UI', 'Iskoola Pota', 'Segoe UI', 'sans-serif'],
+        'tamil': ['Nirmala UI', 'Latha', 'Segoe UI', 'sans-serif'],
+        'multilang': ['Nirmala UI', 'Segoe UI', 'Iskoola Pota', 'Latha', 'sans-serif'],
+        'pos': ['Consolas', 'Courier New', 'monospace'],
       },
     },
   },

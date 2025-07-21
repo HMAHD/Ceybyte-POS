@@ -1,0 +1,51 @@
+/*
+ * ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
+ * ║                                        CEYBYTE POS                                               ║
+ * ║                                                                                                  ║
+ * ║                                    Local Font Definitions                                       ║
+ * ║                                                                                                  ║
+ * ║  Description: Local font face declarations for offline support.                                  ║
+ * ║               Includes fallbacks to system fonts for Sinhala and Tamil support.                 ║
+ * ║                                                                                                  ║
+ * ║  Author: Ceybyte Development Team                                                                ║
+ * ║  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                  ║
+ * ║  License: MIT License with Sri Lankan Business Terms                                             ║
+ * ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
+ */
+
+/* 
+ * Font fallback strategy for offline support
+ * Uses system fonts available on most Windows systems in Sri Lanka
+ */
+
+/* English and general text */
+.font-english {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sinhala text support */
+.font-sinhala {
+  font-family: 'Nirmala UI', 'Iskoola Pota', 'Segoe UI', sans-serif;
+}
+
+/* Tamil text support */
+.font-tamil {
+  font-family: 'Nirmala UI', 'Latha', 'Segoe UI', sans-serif;
+}
+
+/* Multi-language support - covers all three languages */
+.font-multilang {
+  font-family: 'Nirmala UI', 'Segoe UI', 'Iskoola Pota', 'Latha', sans-serif;
+}
+
+/* POS specific font classes */
+.pos-display {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.pos-receipt {
+  font-family: 'Courier New', 'Consolas', monospace;
+  font-size: 12px;
+  line-height: 1.2;
+}

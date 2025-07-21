@@ -4,8 +4,8 @@ A modern, free Point of Sale system designed specifically for Sri Lankan retail 
 
 ## Features
 
-- **Multi-language Support**: English, Sinhala, and Tamil
-- **Offline-first**: Works without internet connection
+- **Multi-language Support**: English, Sinhala, and Tamil with offline font support
+- **Offline-first**: Works without internet connection (including fonts)
 - **Multi-terminal**: Connect multiple computers
 - **Direct Printing**: Thermal receipt printing without dialogs
 - **WhatsApp Integration**: Send receipts and reports
@@ -102,6 +102,16 @@ pnpm run tauri build
 
 - Health Check: `GET http://127.0.0.1:8000/health`
 - API Documentation: `GET http://127.0.0.1:8000/docs` (FastAPI auto-generated docs)
+
+### Font Support
+
+The application uses system fonts for offline support:
+- **English**: Segoe UI, Tahoma, Geneva, Verdana
+- **Sinhala**: Nirmala UI, Iskoola Pota (Windows system fonts)
+- **Tamil**: Nirmala UI, Latha (Windows system fonts)
+- **POS Display**: Consolas, Courier New (monospace for receipts)
+
+No internet connection required for font loading.
 
 ## Project Structure
 

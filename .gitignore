@@ -23,8 +23,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-*.kiro
-
 # Python
 __pycache__/
 *.py[cod]
