@@ -113,6 +113,64 @@ The application uses system fonts for offline support:
 
 No internet connection required for font loading.
 
+### Thermal Printing Multi-Language Support
+
+**Important Note**: Thermal printers have limited character set support. Here's how CeybytePOS handles multi-language printing:
+
+#### Character Set Limitations
+- Most thermal printers support only ASCII characters (CP437, ISO-8859-1)
+- Sinhala and Tamil characters are **not directly supported** by thermal printers
+- Unicode characters will be **transliterated to ASCII equivalents**
+
+#### How Multi-Language Printing Works
+
+1. **English Text**: Prints directly without modification
+2. **Sinhala Text**: Automatically converted to ASCII equivalents
+   - Example: `අ` → `a`, `ක` → `ka`, `සාම්පල්` → `sample`
+3. **Tamil Text**: Automatically converted to ASCII equivalents
+   - Example: `அ` → `a`, `க` → `ka`, `மாதிரி` → `mathiri`
+
+#### Supported Thermal Printers
+- **Epson TM Series**: TM-T20, TM-T82 (most common in Sri Lanka)
+- **Star TSP Series**: TSP100, TSP650
+- **Generic 80mm/58mm**: Most ESC/POS compatible printers
+
+#### Receipt Example
+```
+        SAMPLE SHOP
+    කොළඹ, ශ්‍රී ලංකාව
+   Colombo, Sri Lanka
+   Tel: +94 11 234 5678
+================================
+Receipt No: R001
+Date: 2025-01-22 10:30 AM
+--------------------------------
+බත් / Rice        2 x Rs. 150.00
+                        Rs. 300.00
+කිරි / Milk        1 x Rs. 200.00
+                        Rs. 200.00
+--------------------------------
+Subtotal:               Rs. 500.00
+Tax:                     Rs. 75.00
+TOTAL:                  Rs. 575.00
+
+Payment: මුදල් / Cash
+Change: Rs. 25.00
+================================
+        ස්තූතියි!
+        Thank You!
+    Powered by Ceybyte.com
+```
+
+#### Thermal Printing Features
+- Direct ESC/POS command printing (no Windows dialogs)
+- Automatic paper cutting
+- Cash drawer control
+- Receipt formatting with proper alignment
+- Multi-language transliteration
+- Printer auto-detection
+- Error handling and retry logic
+
 ## Project Structure
 
 ```
