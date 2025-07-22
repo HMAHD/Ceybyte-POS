@@ -1,4 +1,84 @@
 
+# ✅ Network Selection Dialog - Feature Complete (v5.5)
+---
+
+## 🎯 Key Features Implemented
+
+### First-Run Configuration Screen
+- Automatically shows on first application launch  
+- 4-step wizard interface with progress indicator  
+- Professional UI using Ant Design components  
+
+### Terminal Type Selection
+- Visual cards for **"Main Computer"** vs **"Client Computer"**  
+- Clear descriptions and feature lists  
+- Hover effects and intuitive selection  
+
+### Main Computer Setup
+- Database initialization configuration  
+- File sharing setup guidance  
+- Automatic terminal ID generation  
+- Step-by-step Windows configuration instructions  
+
+### Client Computer Setup
+- Network path entry with validation (`\\MAIN-PC\POS` format)  
+- Real-time format validation  
+- Connection testing with detailed feedback  
+- Automatic sync configuration  
+
+### Connection Testing
+- Real-time connection status display  
+- Detailed success/error messages with troubleshooting tips  
+- Retry functionality for failed connections  
+- Latency measurement and diagnostics  
+
+### Configuration Persistence
+- Saves settings to `localStorage`  
+- Prevents re-showing dialog after setup  
+- Maintains connection status across sessions  
+
+### Network Setup Guide
+- Comprehensive Windows file sharing instructions  
+- Step-by-step troubleshooting tips  
+- Common problem solutions  
+- Firewall configuration guidance  
+
+### Offline Mode Fallback
+- "Skip to offline mode" option  
+- Standalone operation capability  
+- Graceful degradation when network is unavailable  
+
+---
+
+## 🏗️ Technical Implementation
+
+- **TypeScript Types**: Comprehensive type definitions for network configuration  
+- **Network Context**: React context for global network state management  
+- **Validation Utilities**: Path validation, terminal name validation  
+- **Connection Testing**: Mock implementation ready for Tauri integration  
+- **Multi-language Support**: Full translation support for all text  
+- **Error Handling**: Comprehensive error states and user feedback  
+
+---
+
+## 🌐 Multi-Language Support
+
+- Added **25+ translation keys** covering all network setup scenarios in English  
+- Structure ready for **Sinhala** and **Tamil** translations  
+
+---
+
+## 🔧 Integration
+
+- Seamlessly integrated into the main application flow  
+- Shows before login on first run  
+- Maintains theme consistency with the rest of the app  
+- Works with existing authentication and theme systems  
+
+---
+
+The **Network Selection Dialog** delivers a smooth and professional first-run experience designed for **Sri Lankan retail businesses**. It’s intuitive for non-technical users, with detailed guidance to help set up multi-terminal POS systems effectively.
+
 ---
 
 ## ✅ Task 3 Complete: Multi-Language System Foundation

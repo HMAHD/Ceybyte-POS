@@ -68,7 +68,7 @@
     "currentRole": "Your current role:",
     "helperInstructions": "Helper Mode Instructions",
     "helperInstruction1": "Scan product barcodes to add items",
-    "helperInstruction2": "Process cash payments only", 
+    "helperInstruction2": "Process cash payments only",
     "helperInstruction3": "Call supervisor for discounts or returns",
     "helperInstruction4": "Use F12 for quick cash sale"
   },

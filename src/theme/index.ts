@@ -15,8 +15,19 @@
 
 import type { ThemeConfig } from 'antd';
 import { theme } from 'antd';
+import {
+  CEYBYTE_COLORS,
+  TYPOGRAPHY,
+  COMPONENT_SIZES,
+  BORDER_RADIUS,
+} from './designSystem';
 
-export type ThemePreset = 'classic-blue' | 'dark-mode' | 'high-contrast' | 'colorful' | 'custom';
+export type ThemePreset =
+  | 'classic-blue'
+  | 'dark-mode'
+  | 'high-contrast'
+  | 'colorful'
+  | 'custom';
 
 export interface CustomThemeConfig extends ThemeConfig {
   name: string;
@@ -28,37 +39,45 @@ export interface CustomThemeConfig extends ThemeConfig {
 export const themePresets: Record<ThemePreset, CustomThemeConfig> = {
   'classic-blue': {
     name: 'Classic Blue',
-    description: 'Professional blue theme for business environments',
+    description: 'Professional Ceybyte blue theme for business environments',
     preset: 'classic-blue',
     token: {
-      colorPrimary: '#1890ff',
-      colorSuccess: '#52c41a',
-      colorWarning: '#faad14',
-      colorError: '#f5222d',
-      colorInfo: '#1890ff',
-      colorTextBase: '#000000',
+      colorPrimary: CEYBYTE_COLORS.primary[500],
+      colorSuccess: CEYBYTE_COLORS.success[500],
+      colorWarning: CEYBYTE_COLORS.warning[500],
+      colorError: CEYBYTE_COLORS.error[500],
+      colorInfo: CEYBYTE_COLORS.secondary[500],
+      colorTextBase: CEYBYTE_COLORS.neutral[900],
       colorBgBase: '#ffffff',
-      fontSize: 14,
-      fontFamily: 'Segoe UI, Roboto, "Noto Sans", sans-serif',
-      borderRadius: 6,
-      controlHeight: 40,
+      fontSize: parseInt(TYPOGRAPHY.fontSize.sm),
+      fontFamily: TYPOGRAPHY.fontFamily.primary,
+      borderRadius: parseInt(BORDER_RADIUS.base),
+      controlHeight: parseInt(COMPONENT_SIZES.input.medium),
     },
     components: {
       Button: {
-        controlHeight: 48,
-        fontSize: 16,
-        fontWeight: 500,
+        controlHeight: parseInt(COMPONENT_SIZES.button.large),
+        fontSize: parseInt(TYPOGRAPHY.fontSize.base),
+        fontWeight: TYPOGRAPHY.fontWeight.medium,
+        borderRadius: parseInt(BORDER_RADIUS.base),
       },
       Input: {
-        controlHeight: 44,
-        fontSize: 16,
+        controlHeight: parseInt(COMPONENT_SIZES.input.large),
+        fontSize: parseInt(TYPOGRAPHY.fontSize.base),
+        borderRadius: parseInt(BORDER_RADIUS.base),
       },
       Table: {
-        headerBg: '#fafafa',
-        rowHoverBg: '#f5f5f5',
+        headerBg: CEYBYTE_COLORS.neutral[50],
+        rowHoverBg: CEYBYTE_COLORS.primary[50],
       },
       Card: {
-        headerBg: '#fafafa',
+        headerBg: CEYBYTE_COLORS.neutral[50],
+        borderRadius: parseInt(BORDER_RADIUS.md),
+      },
+      Layout: {
+        headerBg: '#ffffff',
+        siderBg: '#ffffff',
+        bodyBg: CEYBYTE_COLORS.neutral[50],
       },
     },
   },
@@ -124,7 +143,7 @@ export const themePresets: Record<ThemePreset, CustomThemeConfig> = {
     },
   },
 
-  'colorful': {
+  colorful: {
     name: 'Colorful',
     description: 'Modern colorful theme with vibrant accents',
     preset: 'colorful',
@@ -159,7 +178,7 @@ export const themePresets: Record<ThemePreset, CustomThemeConfig> = {
     },
   },
 
-  'custom': {
+  custom: {
     name: 'Custom',
     description: 'Customizable theme for personal preferences',
     preset: 'custom',

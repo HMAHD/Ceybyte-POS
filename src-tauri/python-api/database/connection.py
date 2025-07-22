@@ -98,17 +98,47 @@ def _insert_default_data():
         from models.festival_calendar import FestivalCalendar
         from datetime import datetime, date
         
-        # Create default admin user if not exists
+        # Create default users if not exist
+        from utils.auth import hash_password
+        
+        # Default admin user
         admin_user = db.query(User).filter(User.username == "admin").first()
         if not admin_user:
             admin_user = User(
                 username="admin",
                 name="Administrator",
                 role="owner",
-                password_hash="$2b$12$LQv3c1yqBWVHxkd0LQ4lqO.8kJbO8L8p8H8K8L8p8H8K8L8p8H8K8L",  # "admin123"
+                password_hash=hash_password("admin123"),
+                pin="1234",
                 is_active=True
             )
             db.add(admin_user)
+        
+        # Default cashier user
+        cashier_user = db.query(User).filter(User.username == "cashier").first()
+        if not cashier_user:
+            cashier_user = User(
+                username="cashier",
+                name="Cashier User",
+                role="cashier",
+                password_hash=hash_password("cashier123"),
+                pin="2345",
+                is_active=True
+            )
+            db.add(cashier_user)
+        
+        # Default helper user
+        helper_user = db.query(User).filter(User.username == "helper").first()
+        if not helper_user:
+            helper_user = User(
+                username="helper",
+                name="Helper User",
+                role="helper",
+                password_hash=hash_password("helper123"),
+                pin="3456",
+                is_active=True
+            )
+            db.add(helper_user)
         
         # Create default units of measure
         default_units = [

@@ -13,7 +13,13 @@
  * └──────────────────────────────────────────────────────────────────────────────────────────────────┘
  */
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
 import type { ThemeConfig } from 'antd';
 import {
   CustomThemeConfig,
@@ -40,7 +46,8 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [currentTheme, setCurrentTheme] = useState<CustomThemeConfig>(defaultTheme);
+  const [currentTheme, setCurrentTheme] =
+    useState<CustomThemeConfig>(defaultTheme);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -71,9 +78,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 };
 

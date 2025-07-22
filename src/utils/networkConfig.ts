@@ -2,10 +2,10 @@
  * ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
  * │                                        CEYBYTE POS                                               │
  * │                                                                                                  │
- * │                                    Network Configuration Utilities                              │
+ * │                                    Network Configuration Utilities                               │
  * │                                                                                                  │
- * │  Description: Utilities for managing network configuration, connection testing,                 │
- * │               and multi-terminal setup for POS systems.                                         │
+ * │  Description: Utilities for managing network configuration, connection testing,                  │
+ * │               and multi-terminal setup for POS systems.                                          │
  * │                                                                                                  │
  * │  Author: Akash Hasendra                                                                          │
  * │  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   │
@@ -61,13 +61,15 @@ export const generateTerminalId = (type: TerminalType): string => {
 };
 
 // Connection testing (mock implementation - would use Tauri APIs in real app)
-export const testConnection = async (config: NetworkConfiguration): Promise<ConnectionTestResult> => {
+export const testConnection = async (
+  config: NetworkConfiguration
+): Promise<ConnectionTestResult> => {
   const startTime = Date.now();
-  
+
   try {
     // Simulate connection test delay
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
     if (config.terminalType === 'main') {
       // Test main computer setup
       return {
@@ -116,7 +118,8 @@ export const testConnection = async (config: NetworkConfiguration): Promise<Conn
       success: false,
       status: 'error',
       message: 'Connection test failed',
-      details: error instanceof Error ? error.message : 'Unknown error occurred',
+      details:
+        error instanceof Error ? error.message : 'Unknown error occurred',
       timestamp: new Date(),
     };
   }
@@ -170,7 +173,7 @@ export const getMainComputerSetupSteps = (): NetworkSetupStep[] => [
     troubleshooting: [
       'If permissions fail, try adding specific user accounts',
       'Check that the folder is not in a restricted location',
-      'Restart the computer if sharing doesn\'t work immediately',
+      "Restart the computer if sharing doesn't work immediately",
     ],
   },
   {
@@ -239,13 +242,16 @@ export const getClientComputerSetupSteps = (): NetworkSetupStep[] => [
 ];
 
 // Network diagnostics
-export const runNetworkDiagnostics = async (config: NetworkConfiguration): Promise<NetworkDiagnostics> => {
+export const runNetworkDiagnostics = async (
+  config: NetworkConfiguration
+): Promise<NetworkDiagnostics> => {
   // Mock implementation - would use actual network checks in real app
   await new Promise(resolve => setTimeout(resolve, 1000));
-  
+
   return {
     networkConnectivity: true,
-    mainComputerReachable: config.terminalType === 'main' || !!config.mainComputerPath,
+    mainComputerReachable:
+      config.terminalType === 'main' || !!config.mainComputerPath,
     sharedFolderAccessible: true,
     databaseConnectable: true,
     firewallBlocking: false,
@@ -255,7 +261,9 @@ export const runNetworkDiagnostics = async (config: NetworkConfiguration): Promi
 };
 
 // Validation utilities
-export const validateNetworkPath = (path: string): { valid: boolean; message?: string } => {
+export const validateNetworkPath = (
+  path: string
+): { valid: boolean; message?: string } => {
   if (!path) {
     return { valid: false, message: 'Network path is required' };
   }
@@ -266,28 +274,43 @@ export const validateNetworkPath = (path: string): { valid: boolean; message?: s
 
   const pathRegex = /^\\\\[\w.-]+\\[\w.-]+$/;
   if (!pathRegex.test(path)) {
-    return { valid: false, message: 'Invalid path format. Use \\\\COMPUTER-NAME\\FOLDER-NAME' };
+    return {
+      valid: false,
+      message: 'Invalid path format. Use \\\\COMPUTER-NAME\\FOLDER-NAME',
+    };
   }
 
   return { valid: true };
 };
 
-export const validateTerminalName = (name: string): { valid: boolean; message?: string } => {
+export const validateTerminalName = (
+  name: string
+): { valid: boolean; message?: string } => {
   if (!name) {
     return { valid: false, message: 'Terminal name is required' };
   }
 
   if (name.length < 3) {
-    return { valid: false, message: 'Terminal name must be at least 3 characters' };
+    return {
+      valid: false,
+      message: 'Terminal name must be at least 3 characters',
+    };
   }
 
   if (name.length > 50) {
-    return { valid: false, message: 'Terminal name must be less than 50 characters' };
+    return {
+      valid: false,
+      message: 'Terminal name must be less than 50 characters',
+    };
   }
 
   const nameRegex = /^[a-zA-Z0-9\s-_]+$/;
   if (!nameRegex.test(name)) {
-    return { valid: false, message: 'Terminal name can only contain letters, numbers, spaces, hyphens, and underscores' };
+    return {
+      valid: false,
+      message:
+        'Terminal name can only contain letters, numbers, spaces, hyphens, and underscores',
+    };
   }
 
   return { valid: true };

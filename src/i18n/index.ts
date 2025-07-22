@@ -76,10 +76,10 @@ i18n
 
     // Fallback language
     fallbackLng: 'en',
-    
+
     // Default namespace
     defaultNS: 'translation',
-    
+
     // Interpolation settings
     interpolation: {
       escapeValue: false, // React already escapes values

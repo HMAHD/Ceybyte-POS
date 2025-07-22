@@ -29,7 +29,11 @@ import {
   Radio,
   InputNumber,
 } from 'antd';
-import { BgColorsOutlined, FontSizeOutlined, BorderOutlined } from '@ant-design/icons';
+import {
+  BgColorsOutlined,
+  FontSizeOutlined,
+  BorderOutlined,
+} from '@ant-design/icons';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useTranslation } from '@/hooks/useTranslation';
 import LocalizedText from '@/components/LocalizedText';
@@ -39,11 +43,18 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 
 export const ThemeSettings: React.FC = () => {
-  const { currentTheme, setTheme, setCustomTheme, availableThemes } = useTheme();
+  const { currentTheme, setTheme, setCustomTheme, availableThemes } =
+    useTheme();
   const { t } = useTranslation();
-  const [customPrimaryColor, setCustomPrimaryColor] = useState(currentTheme.token?.colorPrimary || '#1890ff');
-  const [customFontSize, setCustomFontSize] = useState(currentTheme.token?.fontSize || 14);
-  const [customBorderRadius, setCustomBorderRadius] = useState(currentTheme.token?.borderRadius || 6);
+  const [customPrimaryColor, setCustomPrimaryColor] = useState(
+    currentTheme.token?.colorPrimary || '#1890ff'
+  );
+  const [customFontSize, setCustomFontSize] = useState(
+    currentTheme.token?.fontSize || 14
+  );
+  const [customBorderRadius, setCustomBorderRadius] = useState(
+    currentTheme.token?.borderRadius || 6
+  );
   const [compactMode, setCompactMode] = useState(false);
 
   const handlePresetChange = (preset: ThemePreset) => {
@@ -107,24 +118,25 @@ export const ThemeSettings: React.FC = () => {
 
     return (
       <Card
-        size="small"
-        className={`cursor-pointer transition-all ${isSelected ? 'border-blue-500 shadow-md' : 'hover:shadow-sm'
-          }`}
+        size='small'
+        className={`cursor-pointer transition-all ${
+          isSelected ? 'border-blue-500 shadow-md' : 'hover:shadow-sm'
+        }`}
         onClick={() => handlePresetChange(preset)}
         style={{
           borderColor: isSelected ? theme.token?.colorPrimary : undefined,
         }}
       >
-        <div className="text-center">
+        <div className='text-center'>
           <div
-            className="w-full h-12 rounded mb-2"
+            className='w-full h-12 rounded mb-2'
             style={{
               background: `linear-gradient(135deg, ${theme.token?.colorPrimary} 0%, ${theme.token?.colorPrimary}80 100%)`,
             }}
           />
           <Text strong>{theme.name}</Text>
           <br />
-          <Text type="secondary" className="text-xs">
+          <Text type='secondary' className='text-xs'>
             {theme.description}
           </Text>
         </div>
@@ -133,18 +145,26 @@ export const ThemeSettings: React.FC = () => {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className='p-6 max-w-6xl mx-auto'>
       <Title level={2}>
-        <BgColorsOutlined className="mr-2" />
-        <LocalizedText>{t('settings.themeSettings', 'Theme Settings')}</LocalizedText>
+        <BgColorsOutlined className='mr-2' />
+        <LocalizedText>
+          {t('settings.themeSettings', 'Theme Settings')}
+        </LocalizedText>
       </Title>
 
       <Row gutter={[24, 24]}>
         {/* Theme Presets */}
         <Col span={24}>
-          <Card title={<LocalizedText>{t('theme.presets', 'Theme Presets')}</LocalizedText>}>
+          <Card
+            title={
+              <LocalizedText>
+                {t('theme.presets', 'Theme Presets')}
+              </LocalizedText>
+            }
+          >
             <Row gutter={[16, 16]}>
-              {Object.keys(availableThemes).map((preset) => (
+              {Object.keys(availableThemes).map(preset => (
                 <Col xs={12} sm={8} md={6} key={preset}>
                   <ThemePreview preset={preset as ThemePreset} />
                 </Col>
@@ -155,19 +175,27 @@ export const ThemeSettings: React.FC = () => {
 
         {/* Customization Options */}
         <Col xs={24} lg={12}>
-          <Card title={<LocalizedText>{t('theme.customization', 'Customization')}</LocalizedText>}>
-            <Space direction="vertical" className="w-full" size="large">
+          <Card
+            title={
+              <LocalizedText>
+                {t('theme.customization', 'Customization')}
+              </LocalizedText>
+            }
+          >
+            <Space direction='vertical' className='w-full' size='large'>
               {/* Primary Color */}
               <div>
                 <Text strong>
-                  <LocalizedText>{t('theme.primaryColor', 'Primary Color')}</LocalizedText>
+                  <LocalizedText>
+                    {t('theme.primaryColor', 'Primary Color')}
+                  </LocalizedText>
                 </Text>
-                <div className="mt-2">
+                <div className='mt-2'>
                   <ColorPicker
                     value={customPrimaryColor}
                     onChange={handleCustomColorChange}
                     showText
-                    size="large"
+                    size='large'
                   />
                 </div>
               </div>
@@ -177,11 +205,13 @@ export const ThemeSettings: React.FC = () => {
               {/* Font Size */}
               <div>
                 <Text strong>
-                  <FontSizeOutlined className="mr-1" />
-                  <LocalizedText>{t('theme.fontSize', 'Font Size')}</LocalizedText>
+                  <FontSizeOutlined className='mr-1' />
+                  <LocalizedText>
+                    {t('theme.fontSize', 'Font Size')}
+                  </LocalizedText>
                 </Text>
-                <div className="mt-2">
-                  <Row gutter={16} align="middle">
+                <div className='mt-2'>
+                  <Row gutter={16} align='middle'>
                     <Col span={16}>
                       <Slider
                         min={12}
@@ -202,7 +232,7 @@ export const ThemeSettings: React.FC = () => {
                         max={20}
                         value={customFontSize}
                         onChange={handleFontSizeChange}
-                        addonAfter="px"
+                        addonAfter='px'
                       />
                     </Col>
                   </Row>
@@ -214,13 +244,15 @@ export const ThemeSettings: React.FC = () => {
               {/* Border Radius */}
               <div>
                 <Text strong>
-                  <BorderOutlined className="mr-1" />
-                  <LocalizedText>{t('theme.borderRadius', 'Border Radius')}</LocalizedText>
+                  <BorderOutlined className='mr-1' />
+                  <LocalizedText>
+                    {t('theme.borderRadius', 'Border Radius')}
+                  </LocalizedText>
                 </Text>
-                <div className="mt-2">
+                <div className='mt-2'>
                   <Radio.Group
                     value={customBorderRadius}
-                    onChange={(e) => handleBorderRadiusChange(e.target.value)}
+                    onChange={e => handleBorderRadiusChange(e.target.value)}
                   >
                     <Radio.Button value={0}>Sharp</Radio.Button>
                     <Radio.Button value={4}>Small</Radio.Button>
@@ -234,17 +266,27 @@ export const ThemeSettings: React.FC = () => {
               <Divider />
 
               {/* Compact Mode */}
-              <div className="flex justify-between items-center">
+              <div className='flex justify-between items-center'>
                 <div>
                   <Text strong>
-                    <LocalizedText>{t('theme.compactMode', 'Compact Mode')}</LocalizedText>
+                    <LocalizedText>
+                      {t('theme.compactMode', 'Compact Mode')}
+                    </LocalizedText>
                   </Text>
                   <br />
-                  <Text type="secondary">
-                    <LocalizedText>{t('theme.compactModeDesc', 'Smaller components for small screens')}</LocalizedText>
+                  <Text type='secondary'>
+                    <LocalizedText>
+                      {t(
+                        'theme.compactModeDesc',
+                        'Smaller components for small screens'
+                      )}
+                    </LocalizedText>
                   </Text>
                 </div>
-                <Switch checked={compactMode} onChange={handleCompactModeChange} />
+                <Switch
+                  checked={compactMode}
+                  onChange={handleCompactModeChange}
+                />
               </div>
             </Space>
           </Card>
@@ -252,20 +294,35 @@ export const ThemeSettings: React.FC = () => {
 
         {/* Preview */}
         <Col xs={24} lg={12}>
-          <Card title={<LocalizedText>{t('theme.preview', 'Preview')}</LocalizedText>}>
-            <Space direction="vertical" className="w-full">
-              <Button type="primary" size="large">
-                <LocalizedText>{t('common.primary', 'Primary Button')}</LocalizedText>
+          <Card
+            title={
+              <LocalizedText>{t('theme.preview', 'Preview')}</LocalizedText>
+            }
+          >
+            <Space direction='vertical' className='w-full'>
+              <Button type='primary' size='large'>
+                <LocalizedText>
+                  {t('common.primary', 'Primary Button')}
+                </LocalizedText>
               </Button>
-              <Button size="large">
-                <LocalizedText>{t('common.default', 'Default Button')}</LocalizedText>
+              <Button size='large'>
+                <LocalizedText>
+                  {t('common.default', 'Default Button')}
+                </LocalizedText>
               </Button>
-              <Button type="dashed" size="large">
-                <LocalizedText>{t('common.dashed', 'Dashed Button')}</LocalizedText>
+              <Button type='dashed' size='large'>
+                <LocalizedText>
+                  {t('common.dashed', 'Dashed Button')}
+                </LocalizedText>
               </Button>
-              <div className="mt-4">
+              <div className='mt-4'>
                 <Text>
-                  <LocalizedText>{t('theme.sampleText', 'Sample text with current font size')}</LocalizedText>
+                  <LocalizedText>
+                    {t(
+                      'theme.sampleText',
+                      'Sample text with current font size'
+                    )}
+                  </LocalizedText>
                 </Text>
               </div>
             </Space>

@@ -15,7 +15,12 @@
 
 import { useTranslation as useI18nTranslation } from 'react-i18next';
 import { type SupportedLanguage } from '../i18n';
-import { formatCurrency, formatDate, formatTime, formatDateTime } from '../utils/formatting';
+import {
+  formatCurrency,
+  formatDate,
+  formatTime,
+  formatDateTime,
+} from '../utils/formatting';
 
 // Type for translation keys (you can extend this based on your translation structure)
 type TranslationKey = string;
@@ -23,25 +28,34 @@ type TranslationKey = string;
 export interface UseTranslationReturn {
   // Core translation function
   t: (key: TranslationKey, options?: any) => string;
-  
+
   // Language management
   language: SupportedLanguage;
   changeLanguage: (language: SupportedLanguage) => void;
-  
+
   // Formatting utilities with current language
-  formatCurrency: (amount: number, options?: Parameters<typeof formatCurrency>[2]) => string;
-  formatDate: (date: Date | string, format?: Parameters<typeof formatDate>[1]) => string;
-  formatTime: (date: Date | string, format?: Parameters<typeof formatTime>[1]) => string;
+  formatCurrency: (
+    amount: number,
+    options?: Parameters<typeof formatCurrency>[2]
+  ) => string;
+  formatDate: (
+    date: Date | string,
+    format?: Parameters<typeof formatDate>[1]
+  ) => string;
+  formatTime: (
+    date: Date | string,
+    format?: Parameters<typeof formatTime>[1]
+  ) => string;
   formatDateTime: (
-    date: Date | string, 
+    date: Date | string,
     dateFormat?: Parameters<typeof formatDateTime>[1],
     timeFormat?: Parameters<typeof formatDateTime>[2]
   ) => string;
-  
+
   // Language-specific utilities
   isRTL: boolean;
   direction: 'ltr' | 'rtl';
-  
+
   // Common translations with type safety
   common: {
     save: string;
@@ -86,35 +100,35 @@ export interface UseTranslationReturn {
 
 export function useTranslation(): UseTranslationReturn {
   const { t, i18n } = useI18nTranslation();
-  
+
   const currentLanguage = i18n.language as SupportedLanguage;
-  
+
   // Language-specific formatting functions
   const formatCurrencyWithLang = (
-    amount: number, 
+    amount: number,
     options?: Parameters<typeof formatCurrency>[2]
   ) => formatCurrency(amount, currentLanguage, options);
-  
+
   const formatDateWithLang = (
-    date: Date | string, 
+    date: Date | string,
     format?: Parameters<typeof formatDate>[1]
   ) => formatDate(date, format, currentLanguage);
-  
+
   const formatTimeWithLang = (
-    date: Date | string, 
+    date: Date | string,
     format?: Parameters<typeof formatTime>[1]
   ) => formatTime(date, format, currentLanguage);
-  
+
   const formatDateTimeWithLang = (
     date: Date | string,
     dateFormat?: Parameters<typeof formatDateTime>[1],
     timeFormat?: Parameters<typeof formatDateTime>[2]
   ) => formatDateTime(date, dateFormat, timeFormat, currentLanguage);
-  
+
   // Language direction (for future RTL support if needed)
   const isRTL = false; // None of our supported languages are RTL currently
   const direction: 'ltr' | 'rtl' = isRTL ? 'rtl' : 'ltr';
-  
+
   // Common translations for easy access
   const common = {
     save: t('common.save'),
@@ -155,11 +169,12 @@ export function useTranslation(): UseTranslationReturn {
     active: t('common.active'),
     inactive: t('common.inactive'),
   };
-  
+
   return {
     t,
     language: currentLanguage,
-    changeLanguage: (language: SupportedLanguage) => i18n.changeLanguage(language),
+    changeLanguage: (language: SupportedLanguage) =>
+      i18n.changeLanguage(language),
     formatCurrency: formatCurrencyWithLang,
     formatDate: formatDateWithLang,
     formatTime: formatTimeWithLang,

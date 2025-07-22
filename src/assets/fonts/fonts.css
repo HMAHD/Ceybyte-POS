@@ -16,8 +16,9 @@
 /* Noto Sans Sinhala - For Sinhala text */
 @font-face {
   font-family: 'Noto Sans Sinhala';
-  src: url('./NotoSansSinhala-Regular.woff2') format('woff2'),
-       url('./NotoSansSinhala-Regular.woff') format('woff');
+  src:
+    url('./NotoSansSinhala-Regular.woff2') format('woff2'),
+    url('./NotoSansSinhala-Regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -25,8 +26,9 @@
 
 @font-face {
   font-family: 'Noto Sans Sinhala';
-  src: url('./NotoSansSinhala-Medium.woff2') format('woff2'),
-       url('./NotoSansSinhala-Medium.woff') format('woff');
+  src:
+    url('./NotoSansSinhala-Medium.woff2') format('woff2'),
+    url('./NotoSansSinhala-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -34,8 +36,9 @@
 
 @font-face {
   font-family: 'Noto Sans Sinhala';
-  src: url('./NotoSansSinhala-SemiBold.woff2') format('woff2'),
-       url('./NotoSansSinhala-SemiBold.woff') format('woff');
+  src:
+    url('./NotoSansSinhala-SemiBold.woff2') format('woff2'),
+    url('./NotoSansSinhala-SemiBold.woff') format('woff');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -43,8 +46,9 @@
 
 @font-face {
   font-family: 'Noto Sans Sinhala';
-  src: url('./NotoSansSinhala-Bold.woff2') format('woff2'),
-       url('./NotoSansSinhala-Bold.woff') format('woff');
+  src:
+    url('./NotoSansSinhala-Bold.woff2') format('woff2'),
+    url('./NotoSansSinhala-Bold.woff') format('woff');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -53,8 +57,9 @@
 /* Noto Sans Tamil - For Tamil text */
 @font-face {
   font-family: 'Noto Sans Tamil';
-  src: url('./NotoSansTamil-Regular.woff2') format('woff2'),
-       url('./NotoSansTamil-Regular.woff') format('woff');
+  src:
+    url('./NotoSansTamil-Regular.woff2') format('woff2'),
+    url('./NotoSansTamil-Regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -62,8 +67,9 @@
 
 @font-face {
   font-family: 'Noto Sans Tamil';
-  src: url('./NotoSansTamil-Medium.woff2') format('woff2'),
-       url('./NotoSansTamil-Medium.woff') format('woff');
+  src:
+    url('./NotoSansTamil-Medium.woff2') format('woff2'),
+    url('./NotoSansTamil-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -71,8 +77,9 @@
 
 @font-face {
   font-family: 'Noto Sans Tamil';
-  src: url('./NotoSansTamil-SemiBold.woff2') format('woff2'),
-       url('./NotoSansTamil-SemiBold.woff') format('woff');
+  src:
+    url('./NotoSansTamil-SemiBold.woff2') format('woff2'),
+    url('./NotoSansTamil-SemiBold.woff') format('woff');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -80,8 +87,9 @@
 
 @font-face {
   font-family: 'Noto Sans Tamil';
-  src: url('./NotoSansTamil-Bold.woff2') format('woff2'),
-       url('./NotoSansTamil-Bold.woff') format('woff');
+  src:
+    url('./NotoSansTamil-Bold.woff2') format('woff2'),
+    url('./NotoSansTamil-Bold.woff') format('woff');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -89,10 +97,12 @@
 
 /* Font family definitions for different languages */
 :root {
-  --font-family-en: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-en:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-family-si: 'Noto Sans Sinhala', 'Iskoola Pota', sans-serif;
   --font-family-ta: 'Noto Sans Tamil', 'Latha', sans-serif;
-  --font-family-fallback: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-fallback:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Language-specific font classes */
@@ -111,23 +121,28 @@
 }
 
 /* Auto font selection based on language attribute */
-[lang="en"], [lang="en"] * {
+[lang='en'],
+[lang='en'] * {
   font-family: var(--font-family-en);
 }
 
-[lang="si"], [lang="si"] * {
+[lang='si'],
+[lang='si'] * {
   font-family: var(--font-family-si);
   line-height: 1.6;
 }
 
-[lang="ta"], [lang="ta"] * {
+[lang='ta'],
+[lang='ta'] * {
   font-family: var(--font-family-ta);
   line-height: 1.6;
 }
 
 /* Fallback for mixed content */
 .multilang {
-  font-family: var(--font-family-en), var(--font-family-si), var(--font-family-ta), var(--font-family-fallback);
+  font-family:
+    var(--font-family-en), var(--font-family-si), var(--font-family-ta),
+    var(--font-family-fallback);
 }
 
 /* Thermal printer font optimization */
@@ -169,20 +184,36 @@
 }
 
 /* Utility classes for font weights */
-.font-normal { font-weight: 400; }
-.font-medium { font-weight: 500; }
-.font-semibold { font-weight: 600; }
-.font-bold { font-weight: 700; }
+.font-normal {
+  font-weight: 400;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.font-bold {
+  font-weight: 700;
+}
 
 /* Text rendering optimization for different scripts */
 .optimize-sinhala {
   text-rendering: optimizeLegibility;
-  -webkit-font-feature-settings: "liga" 1, "calt" 1;
-  font-feature-settings: "liga" 1, "calt" 1;
+  -webkit-font-feature-settings:
+    'liga' 1,
+    'calt' 1;
+  font-feature-settings:
+    'liga' 1,
+    'calt' 1;
 }
 
 .optimize-tamil {
   text-rendering: optimizeLegibility;
-  -webkit-font-feature-settings: "liga" 1, "calt" 1;
-  font-feature-settings: "liga" 1, "calt" 1;
+  -webkit-font-feature-settings:
+    'liga' 1,
+    'calt' 1;
+  font-feature-settings:
+    'liga' 1,
+    'calt' 1;
 }

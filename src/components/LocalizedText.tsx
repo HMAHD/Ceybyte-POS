@@ -63,10 +63,7 @@ export const LocalizedText: React.FC<LocalizedTextProps> = ({
   const combinedClassName = `${getFontClasses()} ${className}`.trim();
 
   return (
-    <Component 
-      className={combinedClassName}
-      lang={currentLang}
-    >
+    <Component className={combinedClassName} lang={currentLang}>
       {children}
     </Component>
   );

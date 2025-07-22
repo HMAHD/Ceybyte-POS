@@ -14,11 +14,11 @@
  */
 
 /* Import local fonts for offline support */
-@import "./assets/fonts/fonts.css";
+@import './assets/fonts/fonts.css';
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 /*
  ---break---
@@ -75,7 +75,9 @@
 
 @layer base {
   body {
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
   }
 }
 

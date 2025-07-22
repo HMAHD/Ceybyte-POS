@@ -60,11 +60,7 @@ export function formatCurrency(
     compact?: boolean;
   } = {}
 ): string {
-  const {
-    showSymbol = true,
-    showDecimals = true,
-    compact = false,
-  } = options;
+  const { showSymbol = true, showDecimals = true, compact = false } = options;
 
   // Handle compact formatting for large numbers
   if (compact && Math.abs(amount) >= 1000) {
@@ -79,8 +75,8 @@ export function formatCurrency(
 
     const formattedAmount = compactAmount.toFixed(unitIndex > 0 ? 1 : 0);
     const symbol = getSymbolForLanguage(language);
-    
-    return showSymbol 
+
+    return showSymbol
       ? `${symbol} ${formattedAmount}${units[unitIndex]}`
       : `${formattedAmount}${units[unitIndex]}`;
   }
@@ -121,7 +117,7 @@ export function formatNumber(
 ): string {
   // Use browser's Intl.NumberFormat for proper localization
   const locale = getLocaleForLanguage(language);
-  
+
   return new Intl.NumberFormat(locale, {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
@@ -151,35 +147,35 @@ export function formatDate(
   language: SupportedLanguage = 'en'
 ): string {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
-  
+
   if (isNaN(dateObj.getTime())) {
     return 'Invalid Date';
   }
 
   const locale = getLocaleForLanguage(language);
-  
+
   // Map format types to Intl.DateTimeFormat options
   const formatOptions: Record<string, Intl.DateTimeFormatOptions> = {
-    short: { 
-      year: 'numeric', 
-      month: '2-digit', 
-      day: '2-digit' 
+    short: {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
     },
-    medium: { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
+    medium: {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
     },
-    long: { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    long: {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     },
-    full: { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric', 
-      weekday: 'long' 
+    full: {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'long',
     },
   };
 
@@ -195,13 +191,13 @@ export function formatTime(
   language: SupportedLanguage = 'en'
 ): string {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
-  
+
   if (isNaN(dateObj.getTime())) {
     return 'Invalid Time';
   }
 
   const locale = getLocaleForLanguage(language);
-  
+
   const options: Intl.DateTimeFormatOptions = {
     hour: 'numeric',
     minute: '2-digit',
@@ -222,7 +218,7 @@ export function formatDateTime(
 ): string {
   const formattedDate = formatDate(date, dateFormat, language);
   const formattedTime = formatTime(date, timeFormat, language);
-  
+
   return `${formattedDate} ${formattedTime}`;
 }
 
@@ -234,7 +230,7 @@ export function parseCurrency(currencyString: string): number {
   const cleanString = currencyString
     .replace(/[Rs\.රු\.ரூ\.,\s]/g, '')
     .replace(/[^\d.-]/g, '');
-  
+
   const number = parseFloat(cleanString);
   return isNaN(number) ? 0 : number;
 }
@@ -248,7 +244,7 @@ export function formatPercentage(
   language: SupportedLanguage = 'en'
 ): string {
   const locale = getLocaleForLanguage(language);
-  
+
   return new Intl.NumberFormat(locale, {
     style: 'percent',
     minimumFractionDigits: decimals,
@@ -267,7 +263,7 @@ export function formatQuantity(
   if (!allowDecimals) {
     return Math.floor(quantity).toString();
   }
-  
+
   return quantity.toFixed(decimalPlaces);
 }
 
@@ -287,10 +283,10 @@ export function formatRelativeTime(
   const diffDays = Math.floor(diffHours / 24);
 
   const locale = getLocaleForLanguage(language);
-  
+
   // Use Intl.RelativeTimeFormat for proper localization
   const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
-  
+
   if (Math.abs(diffDays) >= 1) {
     return rtf.format(diffDays, 'day');
   } else if (Math.abs(diffHours) >= 1) {
@@ -305,16 +301,19 @@ export function formatRelativeTime(
 /**
  * Format file size
  */
-export function formatFileSize(bytes: number, language: SupportedLanguage = 'en'): string {
+export function formatFileSize(
+  bytes: number,
+  language: SupportedLanguage = 'en'
+): string {
   const units = ['B', 'KB', 'MB', 'GB'];
   let size = bytes;
   let unitIndex = 0;
-  
+
   while (size >= 1024 && unitIndex < units.length - 1) {
     size /= 1024;
     unitIndex++;
   }
-  
+
   const formattedSize = formatNumber(size, unitIndex === 0 ? 0 : 1, language);
   return `${formattedSize} ${units[unitIndex]}`;
 }

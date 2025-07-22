@@ -4,7 +4,7 @@
  * │                                                                                                  │
  * │                                    Network Context Provider                                      │
  * │                                                                                                  │
- * │  Description: React context for managing network configuration state and connection status.     │
+ * │  Description: React context for managing network configuration state and connection status.      │
  * │               Provides network management functionality across the application.                  │
  * │                                                                                                  │
  * │  Author: Akash Hasendra                                                                          │
@@ -13,9 +13,24 @@
  * └──────────────────────────────────────────────────────────────────────────────────────────────────┘
  */
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import type { NetworkConfiguration, ConnectionStatus, ConnectionTestResult } from '@/types/network';
-import { getNetworkConfig, saveNetworkConfig, isFirstRun, testConnection } from '@/utils/networkConfig';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
+import type {
+  NetworkConfiguration,
+  ConnectionStatus,
+  ConnectionTestResult,
+} from '@/types/network';
+import {
+  getNetworkConfig,
+  saveNetworkConfig,
+  isFirstRun,
+  testConnection,
+} from '@/utils/networkConfig';
 
 interface NetworkContextType {
   config: NetworkConfiguration;
@@ -35,11 +50,17 @@ interface NetworkProviderProps {
   children: ReactNode;
 }
 
-export const NetworkProvider: React.FC<NetworkProviderProps> = ({ children }) => {
-  const [config, setConfig] = useState<NetworkConfiguration>(getNetworkConfig());
-  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>(config.connectionStatus);
+export const NetworkProvider: React.FC<NetworkProviderProps> = ({
+  children,
+}) => {
+  const [config, setConfig] =
+    useState<NetworkConfiguration>(getNetworkConfig());
+  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>(
+    config.connectionStatus
+  );
   const [isConnecting, setIsConnecting] = useState(false);
-  const [lastConnectionTest, setLastConnectionTest] = useState<ConnectionTestResult | null>(null);
+  const [lastConnectionTest, setLastConnectionTest] =
+    useState<ConnectionTestResult | null>(null);
   const [firstRun, setFirstRun] = useState(isFirstRun());
 
   useEffect(() => {
@@ -50,7 +71,11 @@ export const NetworkProvider: React.FC<NetworkProviderProps> = ({ children }) =>
     setFirstRun(isFirstRun());
 
     // Set up periodic connection monitoring for client terminals
-    if (initialConfig.terminalType === 'client' && initialConfig.isConfigured && !initialConfig.offlineMode) {
+    if (
+      initialConfig.terminalType === 'client' &&
+      initialConfig.isConfigured &&
+      !initialConfig.offlineMode
+    ) {
       const interval = setInterval(() => {
         refreshConnectionStatus();
       }, 30000); // Check every 30 seconds
@@ -63,7 +88,7 @@ export const NetworkProvider: React.FC<NetworkProviderProps> = ({ children }) =>
     setConfig(newConfig);
     setConnectionStatus(newConfig.connectionStatus);
     saveNetworkConfig(newConfig);
-    
+
     if (newConfig.isConfigured) {
       setFirstRun(false);
     }
@@ -71,12 +96,12 @@ export const NetworkProvider: React.FC<NetworkProviderProps> = ({ children }) =>
 
   const testNetworkConnection = async (): Promise<ConnectionTestResult> => {
     setIsConnecting(true);
-    
+
     try {
       const result = await testConnection(config);
       setLastConnectionTest(result);
       setConnectionStatus(result.status);
-      
+
       // Update config with new connection status
       const updatedConfig = {
         ...config,
@@ -84,7 +109,7 @@ export const NetworkProvider: React.FC<NetworkProviderProps> = ({ children }) =>
         lastConnectionTest: result.timestamp,
       };
       updateConfig(updatedConfig);
-      
+
       return result;
     } catch (error) {
       const errorResult: ConnectionTestResult = {
@@ -94,10 +119,10 @@ export const NetworkProvider: React.FC<NetworkProviderProps> = ({ children }) =>
         details: error instanceof Error ? error.message : 'Unknown error',
         timestamp: new Date(),
       };
-      
+
       setLastConnectionTest(errorResult);
       setConnectionStatus('error');
-      
+
       return errorResult;
     } finally {
       setIsConnecting(false);
@@ -108,13 +133,19 @@ export const NetworkProvider: React.FC<NetworkProviderProps> = ({ children }) =>
     const updatedConfig = {
       ...config,
       offlineMode: offline,
-      connectionStatus: offline ? 'disconnected' as ConnectionStatus : config.connectionStatus,
+      connectionStatus: offline
+        ? ('disconnected' as ConnectionStatus)
+        : config.connectionStatus,
     };
     updateConfig(updatedConfig);
   };
 
   const refreshConnectionStatus = async () => {
-    if (config.terminalType === 'client' && config.isConfigured && !config.offlineMode) {
+    if (
+      config.terminalType === 'client' &&
+      config.isConfigured &&
+      !config.offlineMode
+    ) {
       await testNetworkConnection();
     }
   };
@@ -132,9 +163,7 @@ export const NetworkProvider: React.FC<NetworkProviderProps> = ({ children }) =>
   };
 
   return (
-    <NetworkContext.Provider value={value}>
-      {children}
-    </NetworkContext.Provider>
+    <NetworkContext.Provider value={value}>{children}</NetworkContext.Provider>
   );
 };
 

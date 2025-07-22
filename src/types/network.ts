@@ -4,7 +4,7 @@
  * │                                                                                                  │
  * │                                    Network Configuration Types                                   │
  * │                                                                                                  │
- * │  Description: TypeScript types for network configuration, terminal setup,                       │
+ * │  Description: TypeScript types for network configuration, terminal setup,                        │
  * │               and multi-terminal POS system management.                                          │
  * │                                                                                                  │
  * │  Author: Akash Hasendra                                                                          │
@@ -15,7 +15,12 @@
 
 export type TerminalType = 'main' | 'client';
 
-export type ConnectionStatus = 'disconnected' | 'connecting' | 'connected' | 'error' | 'testing';
+export type ConnectionStatus =
+  | 'disconnected'
+  | 'connecting'
+  | 'connected'
+  | 'error'
+  | 'testing';
 
 export interface NetworkConfiguration {
   terminalType: TerminalType;

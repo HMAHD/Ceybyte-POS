@@ -35,12 +35,12 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
 
   // Safety check: ensure i18n is initialized
   if (!i18n.isInitialized) {
-    return <div className="w-8 h-8 animate-pulse bg-gray-200 rounded"></div>;
+    return <div className='w-8 h-8 animate-pulse bg-gray-200 rounded'></div>;
   }
 
   // Ensure we have a valid language
   const currentLanguage = (i18n.language || 'en') as SupportedLanguage;
-  
+
   // Create a fallback config in case SUPPORTED_LANGUAGES is not loaded
   const fallbackConfig = {
     code: 'en',
@@ -49,12 +49,15 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
     flag: '🇺🇸',
     rtl: false,
   };
-  
-  const currentLangConfig = SUPPORTED_LANGUAGES?.[currentLanguage] || SUPPORTED_LANGUAGES?.en || fallbackConfig;
+
+  const currentLangConfig =
+    SUPPORTED_LANGUAGES?.[currentLanguage] ||
+    SUPPORTED_LANGUAGES?.en ||
+    fallbackConfig;
 
   // Safety check: ensure we have a valid config
   if (!currentLangConfig || !currentLangConfig.flag) {
-    return <div className="w-8 h-8 animate-pulse bg-gray-200 rounded"></div>;
+    return <div className='w-8 h-8 animate-pulse bg-gray-200 rounded'></div>;
   }
 
   const handleLanguageChange = (langCode: SupportedLanguage) => {
@@ -78,8 +81,12 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
               }
             `}
           >
-            {showFlags && config?.flag && <span className="mr-1">{config.flag}</span>}
-            {showNativeNames ? (config?.nativeName || config?.name || code) : (config?.name || code)}
+            {showFlags && config?.flag && (
+              <span className='mr-1'>{config.flag}</span>
+            )}
+            {showNativeNames
+              ? config?.nativeName || config?.name || code
+              : config?.name || code}
           </button>
         ))}
       </div>
@@ -91,47 +98,72 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
       <div className={`relative ${className}`}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 px-2 py-1 text-sm rounded hover:bg-gray-100 transition-colors"
+          className='flex items-center gap-2 px-2 py-1 text-sm rounded hover:bg-gray-100 transition-colors'
         >
-          {showFlags && currentLangConfig?.flag && <span>{currentLangConfig.flag}</span>}
-          <span className="font-medium">{(currentLangConfig?.code || 'EN').toUpperCase()}</span>
+          {showFlags && currentLangConfig?.flag && (
+            <span>{currentLangConfig.flag}</span>
+          )}
+          <span className='font-medium'>
+            {(currentLangConfig?.code || 'EN').toUpperCase()}
+          </span>
           <svg
             className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+            fill='none'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={2}
+              d='M19 9l-7 7-7-7'
+            />
           </svg>
         </button>
 
         {isOpen && (
           <>
             <div
-              className="fixed inset-0 z-10"
+              className='fixed inset-0 z-10'
               onClick={() => setIsOpen(false)}
             />
-            <div className="absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg border z-20">
+            <div className='absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg border z-20'>
               {Object.entries(SUPPORTED_LANGUAGES).map(([code, config]) => (
                 <button
                   key={code}
-                  onClick={() => handleLanguageChange(code as SupportedLanguage)}
+                  onClick={() =>
+                    handleLanguageChange(code as SupportedLanguage)
+                  }
                   className={`
                     w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors
                     flex items-center gap-3
                     ${currentLanguage === code ? 'bg-ceybyte-primary/10 text-ceybyte-primary' : 'text-gray-700'}
                   `}
                 >
-                  {showFlags && config?.flag && <span className="text-lg">{config.flag}</span>}
+                  {showFlags && config?.flag && (
+                    <span className='text-lg'>{config.flag}</span>
+                  )}
                   <div>
-                    <div className="font-medium">{config?.name || code}</div>
-                    {showNativeNames && config?.nativeName && config.nativeName !== config.name && (
-                      <div className="text-xs text-gray-500">{config.nativeName}</div>
-                    )}
+                    <div className='font-medium'>{config?.name || code}</div>
+                    {showNativeNames &&
+                      config?.nativeName &&
+                      config.nativeName !== config.name && (
+                        <div className='text-xs text-gray-500'>
+                          {config.nativeName}
+                        </div>
+                      )}
                   </div>
                   {currentLanguage === code && (
-                    <svg className="w-4 h-4 ml-auto text-ceybyte-primary" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    <svg
+                      className='w-4 h-4 ml-auto text-ceybyte-primary'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                        clipRule='evenodd'
+                      />
                     </svg>
                   )}
                 </button>
@@ -148,55 +180,86 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
     <div className={`relative ${className}`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-3 px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-ceybyte-primary focus:border-ceybyte-primary transition-colors"
+        className='flex items-center gap-3 px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-ceybyte-primary focus:border-ceybyte-primary transition-colors'
       >
-        {showFlags && currentLangConfig?.flag && <span className="text-lg">{currentLangConfig.flag}</span>}
-        <div className="text-left">
-          <div className="text-sm font-medium text-gray-900">{currentLangConfig?.name || 'English'}</div>
-          {showNativeNames && currentLangConfig?.nativeName && currentLangConfig.nativeName !== currentLangConfig.name && (
-            <div className="text-xs text-gray-500">{currentLangConfig.nativeName}</div>
-          )}
+        {showFlags && currentLangConfig?.flag && (
+          <span className='text-lg'>{currentLangConfig.flag}</span>
+        )}
+        <div className='text-left'>
+          <div className='text-sm font-medium text-gray-900'>
+            {currentLangConfig?.name || 'English'}
+          </div>
+          {showNativeNames &&
+            currentLangConfig?.nativeName &&
+            currentLangConfig.nativeName !== currentLangConfig.name && (
+              <div className='text-xs text-gray-500'>
+                {currentLangConfig.nativeName}
+              </div>
+            )}
         </div>
         <svg
           className={`w-5 h-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+          fill='none'
+          stroke='currentColor'
+          viewBox='0 0 24 24'
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M19 9l-7 7-7-7'
+          />
         </svg>
       </button>
 
       {isOpen && (
         <>
           <div
-            className="fixed inset-0 z-10"
+            className='fixed inset-0 z-10'
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg border z-20">
-            <div className="py-1">
+          <div className='absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg border z-20'>
+            <div className='py-1'>
               {Object.entries(SUPPORTED_LANGUAGES).map(([code, config]) => (
                 <button
                   key={code}
-                  onClick={() => handleLanguageChange(code as SupportedLanguage)}
+                  onClick={() =>
+                    handleLanguageChange(code as SupportedLanguage)
+                  }
                   className={`
                     w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors
                     flex items-center gap-3
                     ${currentLanguage === code ? 'bg-ceybyte-primary/10' : ''}
                   `}
                 >
-                  {showFlags && config?.flag && <span className="text-xl">{config.flag}</span>}
-                  <div className="flex-1">
-                    <div className={`text-sm font-medium ${currentLanguage === code ? 'text-ceybyte-primary' : 'text-gray-900'}`}>
+                  {showFlags && config?.flag && (
+                    <span className='text-xl'>{config.flag}</span>
+                  )}
+                  <div className='flex-1'>
+                    <div
+                      className={`text-sm font-medium ${currentLanguage === code ? 'text-ceybyte-primary' : 'text-gray-900'}`}
+                    >
                       {config?.name || code}
                     </div>
-                    {showNativeNames && config?.nativeName && config.nativeName !== config.name && (
-                      <div className="text-xs text-gray-500">{config.nativeName}</div>
-                    )}
+                    {showNativeNames &&
+                      config?.nativeName &&
+                      config.nativeName !== config.name && (
+                        <div className='text-xs text-gray-500'>
+                          {config.nativeName}
+                        </div>
+                      )}
                   </div>
                   {currentLanguage === code && (
-                    <svg className="w-5 h-5 text-ceybyte-primary" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    <svg
+                      className='w-5 h-5 text-ceybyte-primary'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                        clipRule='evenodd'
+                      />
                     </svg>
                   )}
                 </button>

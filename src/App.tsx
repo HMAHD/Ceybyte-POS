@@ -27,10 +27,7 @@ const AppContent: React.FC = () => {
   const { currentTheme } = useTheme();
 
   return (
-    <ConfigProvider
-      theme={currentTheme}
-      componentSize="middle"
-    >
+    <ConfigProvider theme={currentTheme} componentSize='middle'>
       <NetworkProvider>
         <AuthProvider>
           <MainApplication />
