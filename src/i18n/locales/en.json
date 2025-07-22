@@ -7,6 +7,7 @@
     "add": "Add",
     "search": "Search",
     "loading": "Loading...",
+    "checking": "Checking...",
     "error": "Error",
     "success": "Success",
     "warning": "Warning",
@@ -40,6 +41,7 @@
   },
   "navigation": {
     "dashboard": "Dashboard",
+    "pos": "Point of Sale",
     "sales": "Sales",
     "products": "Products",
     "customers": "Customers",
@@ -47,7 +49,10 @@
     "inventory": "Inventory",
     "reports": "Reports",
     "settings": "Settings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "manage": "Manage",
+    "view": "View",
+    "configure": "Configure"
   },
   "auth": {
     "login": "Login",
@@ -75,6 +80,8 @@
   "pos": {
     "pointOfSale": "Point of Sale",
     "newSale": "New Sale",
+    "startSale": "Start Sale",
+    "startNewSale": "Start a new sale transaction",
     "addProduct": "Add Product",
     "scanBarcode": "Scan Barcode",
     "productSearch": "Product Search",
@@ -117,7 +124,8 @@
     "productDeleted": "Product deleted successfully",
     "lowStock": "Low Stock",
     "outOfStock": "Out of Stock",
-    "inStock": "In Stock"
+    "inStock": "In Stock",
+    "manageProducts": "Manage product inventory"
   },
   "customers": {
     "customer": "Customer",
@@ -138,7 +146,8 @@
     "customerUpdated": "Customer updated successfully",
     "customerDeleted": "Customer deleted successfully",
     "creditSale": "Credit Sale",
-    "creditPayment": "Credit Payment"
+    "creditPayment": "Credit Payment",
+    "manageCustomers": "Manage customer accounts"
   },
   "suppliers": {
     "supplier": "Supplier",
@@ -153,9 +162,11 @@
     "deleteSupplier": "Delete Supplier",
     "supplierAdded": "Supplier added successfully",
     "supplierUpdated": "Supplier updated successfully",
-    "supplierDeleted": "Supplier deleted successfully"
+    "supplierDeleted": "Supplier deleted successfully",
+    "manageSuppliers": "Manage supplier accounts"
   },
   "dashboard": {
+    "welcome": "Welcome, {{name}}",
     "todaySales": "Today's Sales",
     "todayProfit": "Today's Profit",
     "lowStockItems": "Low Stock Items",
@@ -163,7 +174,12 @@
     "recentSales": "Recent Sales",
     "topProducts": "Top Products",
     "salesSummary": "Sales Summary",
-    "quickActions": "Quick Actions"
+    "quickActions": "Quick Actions",
+    "systemStatus": "System Status",
+    "apiStatus": "API Status",
+    "userRole": "User Role",
+    "refreshStats": "Refresh Stats",
+    "refresh": "Refresh"
   },
   "settings": {
     "settings": "Settings",
@@ -183,7 +199,8 @@
     "printerName": "Printer Name",
     "paperWidth": "Paper Width",
     "autoBackup": "Auto Backup",
-    "backupLocation": "Backup Location"
+    "backupLocation": "Backup Location",
+    "systemSettings": "Configure system settings"
   },
   "reports": {
     "reports": "Reports",
@@ -197,7 +214,8 @@
     "yearlyReport": "Yearly Report",
     "customReport": "Custom Report",
     "exportReport": "Export Report",
-    "printReport": "Print Report"
+    "printReport": "Print Report",
+    "viewReports": "View sales and business reports"
   },
   "festivals": {
     "newYear": "New Year's Day",
@@ -237,6 +255,52 @@
     "setupComplete": "Development setup complete!",
     "readyToBuild": "Ready to build CeybytePOS features",
     "formattingDemo": "Formatting Demo:"
+  },
+  "status": {
+    "network": "Network Connection",
+    "printer": "Printer Connection",
+    "ups": "UPS Status",
+    "online": "Online",
+    "offline": "Offline",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "warning": "Warning"
+  },
+  "header": {
+    "terminal": "Terminal"
+  },
+  "network": {
+    "main": "MAIN",
+    "client": "CLIENT"
+  },
+  "user": {
+    "profile": "Profile",
+    "theme": "Theme Settings",
+    "shortcuts": "Keyboard Shortcuts"
+  },
+  "shortcuts": {
+    "quickSale": "Quick Sale",
+    "customerMode": "Customer Mode",
+    "settings": "Settings",
+    "help": "Help"
+  },
+  "footer": {
+    "version": "Version"
+  },
+  "ups": {
+    "online": "UPS Online",
+    "onBattery": "On Battery",
+    "lowBattery": "Low Battery",
+    "critical": "Critical Battery",
+    "notDetected": "UPS Not Detected",
+    "unknown": "Unknown Status",
+    "batteryLevel": "Battery Level",
+    "estimatedRuntime": "Runtime",
+    "model": "Model",
+    "voltage": "Voltage",
+    "lastUpdate": "Last Update",
+    "minutesRemaining": "{{minutes}} min",
+    "hoursMinutesRemaining": "{{hours}}h {{minutes}}m"
   },
   "errors": {
     "networkError": "Network error. Please check your connection.",

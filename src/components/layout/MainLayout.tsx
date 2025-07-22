@@ -410,8 +410,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 
               <div className='w-px h-6 bg-gray-300'></div>
 
-              {/* Language Switcher */}
-              <div className='hidden md:block px-1'>
+              {/* Language Switcher - Always Visible */}
+              <div className='px-1'>
                 <LanguageSwitcher variant='compact' />
               </div>
 
