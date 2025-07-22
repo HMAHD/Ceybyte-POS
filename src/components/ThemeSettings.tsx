@@ -108,9 +108,8 @@ export const ThemeSettings: React.FC = () => {
     return (
       <Card
         size="small"
-        className={`cursor-pointer transition-all ${
-          isSelected ? 'border-blue-500 shadow-md' : 'hover:shadow-sm'
-        }`}
+        className={`cursor-pointer transition-all ${isSelected ? 'border-blue-500 shadow-md' : 'hover:shadow-sm'
+          }`}
         onClick={() => handlePresetChange(preset)}
         style={{
           borderColor: isSelected ? theme.token?.colorPrimary : undefined,
