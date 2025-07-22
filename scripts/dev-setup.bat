@@ -4,11 +4,11 @@ REM │                                        CEYBYTE POS                      
 REM │                                                                                                  │
 REM │                                Development Setup Script                                          │
 REM │                                                                                                  │
-REM │  Description: Windows batch script to set up development environment.                           │
-REM │               Installs dependencies and configures development tools.                           │
+REM │  Description: Windows batch script to set up development environment.                            │
+REM │               Installs dependencies and configures development tools.                            │
 REM │                                                                                                  │
 REM │  Author: Akash Hasendra                                                                          │
-REM │  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                  │
+REM │  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   │
 REM │  License: MIT License with Sri Lankan Business Terms                                             │
 REM └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 

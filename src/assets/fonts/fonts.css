@@ -1,118 +1,188 @@
-/*
- * ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
- * ║                                        CEYBYTE POS                                               ║
- * ║                                                                                                  ║
- * ║                                    Local Font Definitions                                        ║
- * ║                                                                                                  ║
- * ║  Description: Local font face declarations for offline support.                                  ║
- * ║               Includes fallbacks to system fonts for Sinhala and Tamil support.                  ║
- * ║                                                                                                  ║
- * ║  Author: Akash Hasendra                                                                          ║
- * ║  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   ║
- * ║  License: MIT License with Sri Lankan Business Terms                                             ║
- * ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
+/**
+ * ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+ * │                                        CEYBYTE POS                                               │
+ * │                                                                                                  │
+ * │                                   Custom Fonts Configuration                                    │
+ * │                                                                                                  │
+ * │  Description: Font definitions for multi-language support.                                      │
+ * │               Includes Sinhala and Tamil fonts for proper character rendering.                  │
+ * │                                                                                                  │
+ * │  Author: Akash Hasendra                                                                          │
+ * │  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                  │
+ * │  License: MIT License with Sri Lankan Business Terms                                             │
+ * └──────────────────────────────────────────────────────────────────────────────────────────────────┘
  */
 
-/* 
- * Font fallback strategy for offline support
- * Uses system fonts available on most Windows systems in Sri Lanka
- */
-
-/* English and general text */
-.font-english {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Noto Sans Sinhala - For Sinhala text */
+@font-face {
+  font-family: 'Noto Sans Sinhala';
+  src: url('./NotoSansSinhala-Regular.woff2') format('woff2'),
+       url('./NotoSansSinhala-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* Sinhala text support */
-.font-sinhala {
-    font-family: 'Nirmala UI', 'Iskoola Pota', 'Segoe UI', sans-serif;
+@font-face {
+  font-family: 'Noto Sans Sinhala';
+  src: url('./NotoSansSinhala-Medium.woff2') format('woff2'),
+       url('./NotoSansSinhala-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* Tamil text support */
-.font-tamil {
-    font-family: 'Nirmala UI', 'Latha', 'Segoe UI', sans-serif;
+@font-face {
+  font-family: 'Noto Sans Sinhala';
+  src: url('./NotoSansSinhala-SemiBold.woff2') format('woff2'),
+       url('./NotoSansSinhala-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* Multi-language support - covers all three languages */
-.font-multilang {
-    font-family: 'Nirmala UI', 'Segoe UI', 'Iskoola Pota', 'Latha', sans-serif;
+@font-face {
+  font-family: 'Noto Sans Sinhala';
+  src: url('./NotoSansSinhala-Bold.woff2') format('woff2'),
+       url('./NotoSansSinhala-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* POS specific font classes */
-.pos-display {
-    font-family: 'Consolas', 'Courier New', monospace;
-    font-variant-numeric: tabular-nums;
+/* Noto Sans Tamil - For Tamil text */
+@font-face {
+  font-family: 'Noto Sans Tamil';
+  src: url('./NotoSansTamil-Regular.woff2') format('woff2'),
+       url('./NotoSansTamil-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-.pos-receipt {
-    font-family: 'Courier New', 'Consolas', monospace;
-    font-size: 12px;
-    line-height: 1.2;
-}
-/* 
-Thermal printer preview styles */
-.thermal-preview {
-    font-family: 'Courier New', monospace;
-    font-size: 11px;
-    line-height: 1.1;
-    background: white;
-    color: black;
-    width: 80mm;
-    padding: 2mm;
-    border: 1px solid #ccc;
+@font-face {
+  font-family: 'Noto Sans Tamil';
+  src: url('./NotoSansTamil-Medium.woff2') format('woff2'),
+       url('./NotoSansTamil-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* Multi-language thermal printing considerations */
-.thermal-sinhala {
-    /* Fallback for Sinhala - will be transliterated to ASCII */
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    letter-spacing: 0.5px;
+@font-face {
+  font-family: 'Noto Sans Tamil';
+  src: url('./NotoSansTamil-SemiBold.woff2') format('woff2'),
+       url('./NotoSansTamil-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
 
-.thermal-tamil {
-    /* Fallback for Tamil - will be transliterated to ASCII */
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    letter-spacing: 0.5px;
+@font-face {
+  font-family: 'Noto Sans Tamil';
+  src: url('./NotoSansTamil-Bold.woff2') format('woff2'),
+       url('./NotoSansTamil-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* Receipt formatting helpers */
-.receipt-header {
-    text-align: center;
-    font-weight: bold;
-    font-size: 14px;
+/* Font family definitions for different languages */
+:root {
+  --font-family-en: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-si: 'Noto Sans Sinhala', 'Iskoola Pota', sans-serif;
+  --font-family-ta: 'Noto Sans Tamil', 'Latha', sans-serif;
+  --font-family-fallback: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-.receipt-item {
-    display: flex;
-    justify-content: space-between;
-    font-family: 'Courier New', monospace;
+/* Language-specific font classes */
+.font-en {
+  font-family: var(--font-family-en);
 }
 
-.receipt-total {
-    font-weight: bold;
-    border-top: 1px solid black;
-    padding-top: 2px;
+.font-si {
+  font-family: var(--font-family-si);
+  line-height: 1.6; /* Sinhala needs slightly more line height */
 }
 
-/* Thermal printing warning styles */
-.thermal-warning {
-    background-color: #fff3cd;
-    border: 1px solid #ffeaa7;
-    color: #856404;
-    padding: 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    margin: 8px 0;
+.font-ta {
+  font-family: var(--font-family-ta);
+  line-height: 1.6; /* Tamil needs slightly more line height */
 }
 
-.thermal-info {
-    background-color: #d1ecf1;
-    border: 1px solid #bee5eb;
-    color: #0c5460;
-    padding: 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    margin: 8px 0;
+/* Auto font selection based on language attribute */
+[lang="en"], [lang="en"] * {
+  font-family: var(--font-family-en);
+}
+
+[lang="si"], [lang="si"] * {
+  font-family: var(--font-family-si);
+  line-height: 1.6;
+}
+
+[lang="ta"], [lang="ta"] * {
+  font-family: var(--font-family-ta);
+  line-height: 1.6;
+}
+
+/* Fallback for mixed content */
+.multilang {
+  font-family: var(--font-family-en), var(--font-family-si), var(--font-family-ta), var(--font-family-fallback);
+}
+
+/* Thermal printer font optimization */
+.thermal-print {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.thermal-print-si {
+  font-family: 'Noto Sans Sinhala', monospace;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.thermal-print-ta {
+  font-family: 'Noto Sans Tamil', monospace;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Receipt formatting */
+.receipt-text {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.receipt-text-si {
+  font-family: 'Noto Sans Sinhala', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.receipt-text-ta {
+  font-family: 'Noto Sans Tamil', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Utility classes for font weights */
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+/* Text rendering optimization for different scripts */
+.optimize-sinhala {
+  text-rendering: optimizeLegibility;
+  -webkit-font-feature-settings: "liga" 1, "calt" 1;
+  font-feature-settings: "liga" 1, "calt" 1;
+}
+
+.optimize-tamil {
+  text-rendering: optimizeLegibility;
+  -webkit-font-feature-settings: "liga" 1, "calt" 1;
+  font-feature-settings: "liga" 1, "calt" 1;
 }

@@ -1,18 +1,3 @@
-/*
- * ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
- * ║                                        CEYBYTE POS                                               ║
- * ║                                                                                                  ║
- * ║                                    Main Application Component                                    ║
- * ║                                                                                                  ║
- * ║  Description: Main React component that serves as the entry point for CeybytePOS application.    ║
- * ║               Handles API health checks and displays system status.                              ║
- * ║                                                                                                  ║
- * ║  Author: Akash Hasendra                                                                          ║
- * ║  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   ║
- * ║  License: MIT License with Sri Lankan Business Terms                                             ║
- * ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
- */
-
 import { useState, useEffect } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
 import './App.css';
@@ -25,7 +10,6 @@ function App() {
   const [name, setName] = useState('');
 
   useEffect(() => {
-    // Check API health on component mount
     checkApiHealth();
   }, []);
 

@@ -26,7 +26,7 @@ class ApiClient {
 
   private async request<T>(
     endpoint: string,
-    options: Record<string, unknown> = {}
+    options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseURL}${endpoint}`;
 
@@ -39,7 +39,7 @@ class ApiClient {
         ...options,
         headers: {
           ...defaultHeaders,
-          ...options.headers,
+          ...(options.headers || {}),
         },
       });
 
