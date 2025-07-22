@@ -17,7 +17,7 @@ import React, { useState, useEffect } from 'react';
 import { Tooltip, Progress, Badge, Typography } from 'antd';
 import {
   ThunderboltOutlined,
-  BatteryTwoToneOutlined,
+  PoweroffOutlined,
   ExclamationCircleOutlined,
   CheckCircleOutlined,
 } from '@ant-design/icons';
@@ -119,7 +119,7 @@ export const UPSStatusIndicator: React.FC<UPSStatusIndicatorProps> = ({
           <ThunderboltOutlined style={{ color: getStatusColor(status) }} />
         );
       case 'on_battery':
-        return <BatteryTwoToneOutlined style={{ color: getStatusColor(status) }} />;
+        return <PoweroffOutlined style={{ color: getStatusColor(status) }} />;
       case 'low_battery':
       case 'critical':
         return (
@@ -128,9 +128,9 @@ export const UPSStatusIndicator: React.FC<UPSStatusIndicatorProps> = ({
           />
         );
       case 'not_detected':
-        return <BatteryTwoToneOutlined style={{ color: getStatusColor(status) }} />;
+        return <PoweroffOutlined style={{ color: getStatusColor(status) }} />;
       default:
-        return <BatteryTwoToneOutlined style={{ color: getStatusColor(status) }} />;
+        return <PoweroffOutlined style={{ color: getStatusColor(status) }} />;
     }
   };
 
