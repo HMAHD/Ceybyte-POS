@@ -161,24 +161,46 @@ export const SPACING = {
 
 // Border Radius
 export const BORDER_RADIUS = {
-  none: '0px',
+  none: '0',
+  xs: '2px',
   sm: '4px',
   base: '6px',
   md: '8px',
   lg: '12px',
   xl: '16px',
-  '2xl': '24px',
+  '2xl': '20px',
+  '3xl': '24px',
   full: '9999px',
+  
+  // Component specific
+  card: '12px',
+  button: '8px',
+  input: '6px',
+  modal: '16px',
 };
 
-// Shadows
+// Modern Shadows
 export const SHADOWS = {
-  sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-  base: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-  md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-  lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-  xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+  // Subtle shadows
+  xs: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+  sm: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+  base: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+  md: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+  lg: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+  xl: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+  
+  // Colored shadows
+  primary: '0 10px 15px -3px rgba(0, 102, 204, 0.1), 0 4px 6px -2px rgba(0, 102, 204, 0.05)',
+  success: '0 10px 15px -3px rgba(34, 197, 94, 0.1), 0 4px 6px -2px rgba(34, 197, 94, 0.05)',
+  warning: '0 10px 15px -3px rgba(245, 158, 11, 0.1), 0 4px 6px -2px rgba(245, 158, 11, 0.05)',
+  error: '0 10px 15px -3px rgba(239, 68, 68, 0.1), 0 4px 6px -2px rgba(239, 68, 68, 0.05)',
+  
+  // Inner shadows
   inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
+  innerLg: 'inset 0 4px 8px 0 rgba(0, 0, 0, 0.12)',
+  
+  // Glass morphism
+  glass: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
 };
 
 // Component Sizes (for consistent sizing across components)
@@ -265,50 +287,6 @@ export const GRADIENTS = {
   rainbow: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
   ocean: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
   sunset: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-};
-
-// Modern Shadows
-export const SHADOWS = {
-  // Subtle shadows
-  xs: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-  sm: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-  base: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-  md: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-  lg: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-  xl: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-  
-  // Colored shadows
-  primary: '0 10px 15px -3px rgba(0, 102, 204, 0.1), 0 4px 6px -2px rgba(0, 102, 204, 0.05)',
-  success: '0 10px 15px -3px rgba(34, 197, 94, 0.1), 0 4px 6px -2px rgba(34, 197, 94, 0.05)',
-  warning: '0 10px 15px -3px rgba(245, 158, 11, 0.1), 0 4px 6px -2px rgba(245, 158, 11, 0.05)',
-  error: '0 10px 15px -3px rgba(239, 68, 68, 0.1), 0 4px 6px -2px rgba(239, 68, 68, 0.05)',
-  
-  // Inner shadows
-  inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
-  innerLg: 'inset 0 4px 8px 0 rgba(0, 0, 0, 0.12)',
-  
-  // Glass morphism
-  glass: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-};
-
-// Modern Border Radius
-export const BORDER_RADIUS = {
-  none: '0',
-  xs: '2px',
-  sm: '4px',
-  base: '6px',
-  md: '8px',
-  lg: '12px',
-  xl: '16px',
-  '2xl': '20px',
-  '3xl': '24px',
-  full: '9999px',
-  
-  // Component specific
-  card: '12px',
-  button: '8px',
-  input: '6px',
-  modal: '16px',
 };
 
 // Animation Durations and Easings

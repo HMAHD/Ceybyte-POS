@@ -30,6 +30,9 @@ import {
   TeamOutlined,
   FileTextOutlined,
   SettingOutlined,
+  DollarOutlined,
+  ExclamationOutlined,
+  CreditCardOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -176,8 +179,8 @@ const DashboardPage: React.FC = () => {
                       fontWeight: '600'
                     }}
                   />
-                  <div className='w-12 h-12 rounded-full bg-green-50 flex items-center justify-center'>
-                    <div className='text-green-500 text-xl'>💰</div>
+                  <div className='w-12 h-12 rounded-full bg-green-50 flex items-center justify-center hover-glow'>
+                    <DollarOutlined className='text-green-500 text-xl float' />
                   </div>
                 </div>
               </Card>
@@ -201,8 +204,8 @@ const DashboardPage: React.FC = () => {
                       fontWeight: '600'
                     }}
                   />
-                  <div className='w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center'>
-                    <div className='text-orange-500 text-xl'>⚠️</div>
+                  <div className='w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center hover-glow'>
+                    <ExclamationOutlined className='text-orange-500 text-xl float' style={{ animationDelay: '0.2s' }} />
                   </div>
                 </div>
               </Card>
@@ -227,8 +230,8 @@ const DashboardPage: React.FC = () => {
                       fontWeight: '600'
                     }}
                   />
-                  <div className='w-12 h-12 rounded-full bg-red-50 flex items-center justify-center'>
-                    <div className='text-red-500 text-xl'>📋</div>
+                  <div className='w-12 h-12 rounded-full bg-red-50 flex items-center justify-center hover-glow'>
+                    <CreditCardOutlined className='text-red-500 text-xl float' style={{ animationDelay: '0.4s' }} />
                   </div>
                 </div>
               </Card>
@@ -280,13 +283,15 @@ const DashboardPage: React.FC = () => {
           {hasPermission('inventory') && (
             <Col xs={24} md={12} lg={8}>
               <Card
-                hoverable
-                className='h-full'
+                className='modern-card hover-lift h-full scale-in'
+                style={{ animationDelay: '0.6s' }}
                 actions={[
                   <Button
                     key='manage-products'
+                    className='modern-button gradient-button'
                     icon={<FileTextOutlined />}
                     block
+                    size='large'
                     onClick={() => navigate('/products')}
                   >
                     <LocalizedText>
@@ -295,34 +300,34 @@ const DashboardPage: React.FC = () => {
                   </Button>,
                 ]}
               >
-                <Card.Meta
-                  avatar={
-                    <FileTextOutlined
-                      style={{ fontSize: 24, color: '#52c41a' }}
-                    />
-                  }
-                  title={
+                <div className='text-center p-4'>
+                  <div className='w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mx-auto mb-4 shadow-lg float'>
+                    <FileTextOutlined className='text-white text-2xl' />
+                  </div>
+                  <Title level={4} className='mb-2 text-gray-800'>
                     <LocalizedText>{t('navigation.products')}</LocalizedText>
-                  }
-                  description={
+                  </Title>
+                  <Text type='secondary' className='text-center block'>
                     <LocalizedText>
                       {t('products.manageProducts', 'Manage product inventory')}
                     </LocalizedText>
-                  }
-                />
+                  </Text>
+                </div>
               </Card>
             </Col>
           )}
 
           <Col xs={24} md={12} lg={8}>
             <Card
-              hoverable
-              className='h-full'
+              className='modern-card hover-lift h-full scale-in'
+              style={{ animationDelay: '0.7s' }}
               actions={[
                 <Button
                   key='manage-customers'
+                  className='modern-button gradient-button'
                   icon={<UserOutlined />}
                   block
+                  size='large'
                   onClick={() => navigate('/customers')}
                 >
                   <LocalizedText>
@@ -331,32 +336,34 @@ const DashboardPage: React.FC = () => {
                 </Button>,
               ]}
             >
-              <Card.Meta
-                avatar={
-                  <UserOutlined style={{ fontSize: 24, color: '#722ed1' }} />
-                }
-                title={
+              <div className='text-center p-4'>
+                <div className='w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center mx-auto mb-4 shadow-lg float' style={{ animationDelay: '0.2s' }}>
+                  <UserOutlined className='text-white text-2xl' />
+                </div>
+                <Title level={4} className='mb-2 text-gray-800'>
                   <LocalizedText>{t('navigation.customers')}</LocalizedText>
-                }
-                description={
+                </Title>
+                <Text type='secondary' className='text-center block'>
                   <LocalizedText>
                     {t('customers.manageCustomers', 'Manage customer accounts')}
                   </LocalizedText>
-                }
-              />
+                </Text>
+              </div>
             </Card>
           </Col>
 
           {hasPermission('suppliers') && (
             <Col xs={24} md={12} lg={8}>
               <Card
-                hoverable
-                className='h-full'
+                className='modern-card hover-lift h-full scale-in'
+                style={{ animationDelay: '0.8s' }}
                 actions={[
                   <Button
                     key='manage-suppliers'
+                    className='modern-button gradient-button'
                     icon={<TeamOutlined />}
                     block
+                    size='large'
                     onClick={() => navigate('/suppliers')}
                   >
                     <LocalizedText>
@@ -365,22 +372,22 @@ const DashboardPage: React.FC = () => {
                   </Button>,
                 ]}
               >
-                <Card.Meta
-                  avatar={
-                    <TeamOutlined style={{ fontSize: 24, color: '#fa8c16' }} />
-                  }
-                  title={
+                <div className='text-center p-4'>
+                  <div className='w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mx-auto mb-4 shadow-lg float' style={{ animationDelay: '0.4s' }}>
+                    <TeamOutlined className='text-white text-2xl' />
+                  </div>
+                  <Title level={4} className='mb-2 text-gray-800'>
                     <LocalizedText>{t('navigation.suppliers')}</LocalizedText>
-                  }
-                  description={
+                  </Title>
+                  <Text type='secondary' className='text-center block'>
                     <LocalizedText>
                       {t(
                         'suppliers.manageSuppliers',
                         'Manage supplier accounts'
                       )}
                     </LocalizedText>
-                  }
-                />
+                  </Text>
+                </div>
               </Card>
             </Col>
           )}
@@ -388,13 +395,15 @@ const DashboardPage: React.FC = () => {
           {hasPermission('reports') && (
             <Col xs={24} md={12} lg={8}>
               <Card
-                hoverable
-                className='h-full'
+                className='modern-card hover-lift h-full scale-in'
+                style={{ animationDelay: '0.9s' }}
                 actions={[
                   <Button
                     key='view-reports'
+                    className='modern-button gradient-button'
                     icon={<FileTextOutlined />}
                     block
+                    size='large'
                     onClick={() => navigate('/reports')}
                   >
                     <LocalizedText>
@@ -403,24 +412,22 @@ const DashboardPage: React.FC = () => {
                   </Button>,
                 ]}
               >
-                <Card.Meta
-                  avatar={
-                    <FileTextOutlined
-                      style={{ fontSize: 24, color: '#13c2c2' }}
-                    />
-                  }
-                  title={
+                <div className='text-center p-4'>
+                  <div className='w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center mx-auto mb-4 shadow-lg float' style={{ animationDelay: '0.6s' }}>
+                    <FileTextOutlined className='text-white text-2xl' />
+                  </div>
+                  <Title level={4} className='mb-2 text-gray-800'>
                     <LocalizedText>{t('navigation.reports')}</LocalizedText>
-                  }
-                  description={
+                  </Title>
+                  <Text type='secondary' className='text-center block'>
                     <LocalizedText>
                       {t(
                         'reports.viewReports',
                         'View sales and business reports'
                       )}
                     </LocalizedText>
-                  }
-                />
+                  </Text>
+                </div>
               </Card>
             </Col>
           )}
@@ -428,13 +435,15 @@ const DashboardPage: React.FC = () => {
           {hasPermission('settings') && (
             <Col xs={24} md={12} lg={8}>
               <Card
-                hoverable
-                className='h-full'
+                className='modern-card hover-lift h-full scale-in'
+                style={{ animationDelay: '1.0s' }}
                 actions={[
                   <Button
                     key='configure-settings'
+                    className='modern-button gradient-button'
                     icon={<SettingOutlined />}
                     block
+                    size='large'
                     onClick={() => navigate('/settings')}
                   >
                     <LocalizedText>
@@ -443,24 +452,22 @@ const DashboardPage: React.FC = () => {
                   </Button>,
                 ]}
               >
-                <Card.Meta
-                  avatar={
-                    <SettingOutlined
-                      style={{ fontSize: 24, color: '#f5222d' }}
-                    />
-                  }
-                  title={
+                <div className='text-center p-4'>
+                  <div className='w-16 h-16 rounded-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center mx-auto mb-4 shadow-lg float' style={{ animationDelay: '0.8s' }}>
+                    <SettingOutlined className='text-white text-2xl' />
+                  </div>
+                  <Title level={4} className='mb-2 text-gray-800'>
                     <LocalizedText>{t('navigation.settings')}</LocalizedText>
-                  }
-                  description={
+                  </Title>
+                  <Text type='secondary' className='text-center block'>
                     <LocalizedText>
                       {t(
                         'settings.systemSettings',
                         'Configure system settings'
                       )}
                     </LocalizedText>
-                  }
-                />
+                  </Text>
+                </div>
               </Card>
             </Col>
           )}
