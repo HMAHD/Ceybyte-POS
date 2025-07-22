@@ -4,8 +4,8 @@
  * │                                                                                                  │
  * │                                  Keyboard Shortcuts Component                                    │
  * │                                                                                                  │
- * │  Description: Global keyboard shortcuts handler and visual indicator component.                 │
- * │               Provides consistent keyboard navigation across the POS system.                    │
+ * │  Description: Global keyboard shortcuts handler and visual indicator component.                  │
+ * │               Provides consistent keyboard navigation across the POS system.                     │
  * │                                                                                                  │
  * │  Author: Akash Hasendra                                                                          │
  * │  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   │

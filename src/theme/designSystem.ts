@@ -4,7 +4,7 @@
  * │                                                                                                  │
  * │                                    Design System Configuration                                   │
  * │                                                                                                  │
- * │  Description: Comprehensive design system with Ceybyte branding, color schemes,                 │
+ * │  Description: Comprehensive design system with Ceybyte branding, color schemes,                  │
  * │               typography, spacing, and component standards for consistent UI.                    │
  * │                                                                                                  │
  * │  Author: Akash Hasendra                                                                          │

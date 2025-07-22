@@ -1,0 +1,107 @@
+# ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+# │                                        CEYBYTE POS                                               │
+# │                                                                                                  │
+# │                                     Docker Ignore File                                           │
+# │                                                                                                  │
+# │  Description: Files and directories to exclude from Docker build context.                        │
+# │               Optimizes build performance and reduces image size.                                │
+# │                                                                                                  │
+# │  Author: Akash Hasendra                                                                          │
+# │  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   │
+# │  License: MIT License with Sri Lankan Business Terms                                             │
+# └──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Documentation
+README.md
+CHANGELOG.md
+*.md
+
+# Test files
+coverage/
+.nyc_output/
+*.test.js
+*.test.ts
+*.test.tsx
+*.spec.js
+*.spec.ts
+*.spec.tsx
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary folders
+tmp/
+temp/
+
+# Python specific (for root .dockerignore)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Backup files
+backups/
+*.backup
+*.bak
+
+# Development tools
+.eslintcache
+.stylelintcache

@@ -1,0 +1,93 @@
+# ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+# │                                        CEYBYTE POS                                               │
+# │                                                                                                  │
+# │                                Python API Docker Ignore                                          │
+# │                                                                                                  │
+# │  Description: Files and directories to exclude from Python API Docker build.                     │
+# │               Optimizes build performance and reduces image size.                                │
+# │                                                                                                  │
+# │  Author: Akash Hasendra                                                                          │
+# │  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   │
+# │  License: MIT License with Sri Lankan Business Terms                                             │
+# └──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Database files (will be created in container)
+*.db
+*.db-shm
+*.db-wal
+
+# Test files
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Environment files
+.env
+.env.*
+
+# Documentation
+README.md
+*.md
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile*
+.dockerignore
+
+# Backup files
+*.backup
+*.bak

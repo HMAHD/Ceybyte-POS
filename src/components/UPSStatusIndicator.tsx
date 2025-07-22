@@ -4,8 +4,8 @@
  * │                                                                                                  │
  * │                                    UPS Status Indicator                                          │
  * │                                                                                                  │
- * │  Description: Real-time UPS (Uninterruptible Power Supply) status monitoring component.         │
- * │               Shows battery level, power status, and estimated runtime.                         │
+ * │  Description: Real-time UPS (Uninterruptible Power Supply) status monitoring component.          │
+ * │               Shows battery level, power status, and estimated runtime.                          │
  * │                                                                                                  │
  * │  Author: Akash Hasendra                                                                          │
  * │  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   │
