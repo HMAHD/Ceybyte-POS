@@ -48,8 +48,11 @@ async def health_check():
     """Health check endpoint"""
     return {"status": "healthy", "service": "CeybytePOS API"}
 
-# API Routes will be added here as we build features
-# from api.routes import sales, products, customers, suppliers, auth
+# API Routes
+from api.auth import router as auth_router
+
+# Include routers
+app.include_router(auth_router)
 
 if __name__ == "__main__":
     # This will be called when running the API standalone for development

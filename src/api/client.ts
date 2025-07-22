@@ -30,9 +30,15 @@ class ApiClient {
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseURL}${endpoint}`;
 
-    const defaultHeaders = {
+    const defaultHeaders: Record<string, string> = {
       'Content-Type': 'application/json',
     };
+
+    // Add authentication header if token exists
+    const token = localStorage.getItem('ceybyte-pos-token');
+    if (token) {
+      defaultHeaders['Authorization'] = `Bearer ${token}`;
+    }
 
     try {
       const response = await fetch(url, {

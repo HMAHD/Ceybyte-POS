@@ -70,3 +70,20 @@ class User(BaseModel):
         }
         
         return permission in permissions.get(self.role, [])
+    
+    def get_permissions(self) -> list:
+        """Get all permissions for user role"""
+        permissions = {
+            "owner": [
+                "sales", "inventory", "customers", "suppliers", "reports", 
+                "settings", "users", "backup", "system"
+            ],
+            "cashier": [
+                "sales", "inventory", "customers", "basic_reports"
+            ],
+            "helper": [
+                "sales"
+            ]
+        }
+        
+        return permissions.get(self.role, [])

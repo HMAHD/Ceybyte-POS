@@ -60,7 +60,17 @@
     "logout": "Logout",
     "logoutConfirm": "Are you sure you want to logout?",
     "sessionExpired": "Your session has expired. Please login again.",
-    "accessDenied": "Access denied. You don't have permission to access this resource."
+    "accessDenied": "Access denied. You don't have permission to access this resource.",
+    "quickSwitch": "Quick Switch:",
+    "helperMode": "Helper Mode",
+    "roleRequired": "This feature requires specific role access.",
+    "permissionRequired": "This feature requires specific permissions.",
+    "currentRole": "Your current role:",
+    "helperInstructions": "Helper Mode Instructions",
+    "helperInstruction1": "Scan product barcodes to add items",
+    "helperInstruction2": "Process cash payments only", 
+    "helperInstruction3": "Call supervisor for discounts or returns",
+    "helperInstruction4": "Use F12 for quick cash sale"
   },
   "pos": {
     "pointOfSale": "Point of Sale",
