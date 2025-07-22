@@ -4,12 +4,86 @@
     "tagline": "Powered by Ceybyte"
   },
   "navigation": {
+    "dashboard": "Dashboard",
+    "pos": "Point of Sale",
     "sales": "Sales",
     "products": "Products",
     "customers": "Customers",
     "suppliers": "Suppliers",
     "reports": "Reports",
-    "settings": "Settings"
+    "settings": "Settings",
+    "manage": "Manage",
+    "view": "View",
+    "configure": "Configure"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password",
+    "pin": "PIN",
+    "loginButton": "Sign In",
+    "loginError": "Invalid credentials",
+    "quickSwitch": "Quick Switch"
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "todaySales": "Today's Sales",
+    "todayProfit": "Today's Profit",
+    "lowStockItems": "Low Stock Items",
+    "pendingPayments": "Pending Payments",
+    "systemStatus": "System Status",
+    "apiStatus": "API Status",
+    "userRole": "User Role",
+    "authenticationActive": "Authentication Active"
+  },
+  "pos": {
+    "newSale": "New Sale",
+    "startNewSale": "Start a new sale transaction",
+    "startSale": "Start Sale"
+  },
+  "products": {
+    "manageProducts": "Manage product inventory"
+  },
+  "customers": {
+    "manageCustomers": "Manage customer accounts"
+  },
+  "suppliers": {
+    "manageSuppliers": "Manage supplier accounts"
+  },
+  "reports": {
+    "viewReports": "View sales and business reports"
+  },
+  "settings": {
+    "systemSettings": "Configure system settings",
+    "themeSettings": "Theme Settings"
+  },
+  "theme": {
+    "presets": "Theme Presets",
+    "customization": "Customization",
+    "preview": "Preview",
+    "primaryColor": "Primary Color",
+    "fontSize": "Font Size",
+    "borderRadius": "Border Radius",
+    "compactMode": "Compact Mode",
+    "compactModeDesc": "Smaller components for small screens",
+    "sampleText": "Sample text with current font size"
+  },
+  "header": {
+    "terminal": "Terminal"
+  },
+  "status": {
+    "network": "Network Connection",
+    "printer": "Printer Connection",
+    "ups": "UPS Status"
+  },
+  "footer": {
+    "shortcuts": "Shortcuts",
+    "version": "Version"
+  },
+  "user": {
+    "profile": "Profile",
+    "theme": "Theme Settings"
   },
   "common": {
     "save": "Save",
@@ -23,7 +97,13 @@
     "success": "Success",
     "confirm": "Confirm",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "primary": "Primary Button",
+    "default": "Default Button",
+    "dashed": "Dashed Button"
+  },
+  "errors": {
+    "networkError": "Network connection error"
   },
   "sales": {
     "walkIn": "Walk-in Customer",
