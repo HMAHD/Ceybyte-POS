@@ -71,7 +71,7 @@ export const DashboardInterface: React.FC = () => {
               <LocalizedText>{user?.role}</LocalizedText>
             </Tag>
           </div>
-          
+
           <Space size="middle">
             <LanguageSwitcher variant="compact" />
             <Text type="secondary">
@@ -113,7 +113,7 @@ export const DashboardInterface: React.FC = () => {
                 />
               </Card>
             </Col>
-            
+
             <Col xs={24} sm={12} lg={6}>
               <Card>
                 <Statistic
@@ -124,7 +124,7 @@ export const DashboardInterface: React.FC = () => {
                 />
               </Card>
             </Col>
-            
+
             <Col xs={24} sm={12} lg={6}>
               <Card>
                 <Statistic
@@ -134,7 +134,7 @@ export const DashboardInterface: React.FC = () => {
                 />
               </Card>
             </Col>
-            
+
             <Col xs={24} sm={12} lg={6}>
               <Card>
                 <Statistic
@@ -277,7 +277,7 @@ export const DashboardInterface: React.FC = () => {
                   <Tag color="success">{apiStatus}</Tag>
                 </div>
               </Col>
-              
+
               <Col xs={24} md={12}>
                 <div className="flex justify-between items-center p-4 bg-gray-50 rounded">
                   <Text>
@@ -289,7 +289,7 @@ export const DashboardInterface: React.FC = () => {
                 </div>
               </Col>
             </Row>
-          
+
             <Divider />
             <Text type="secondary" className="text-xs">
               Powered by {COMPANY_NAME} - <LocalizedText>{t('dashboard.authenticationActive', 'Authentication Active')}</LocalizedText>

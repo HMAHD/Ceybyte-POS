@@ -24,7 +24,13 @@
     "pin": "PIN",
     "loginButton": "Sign In",
     "loginError": "Invalid credentials",
-    "quickSwitch": "Quick Switch"
+    "quickSwitch": "Quick Switch",
+    "helperMode": "Helper Mode",
+    "helperInstructions": "Helper Mode Instructions",
+    "helperInstruction1": "Scan product barcodes to add items",
+    "helperInstruction2": "Process cash payments only",
+    "helperInstruction3": "Call supervisor for discounts or returns",
+    "helperInstruction4": "Use F12 for quick cash sale"
   },
   "dashboard": {
     "welcome": "Welcome",
@@ -40,7 +46,17 @@
   "pos": {
     "newSale": "New Sale",
     "startNewSale": "Start a new sale transaction",
-    "startSale": "Start Sale"
+    "startSale": "Start Sale",
+    "pointOfSale": "Point of Sale",
+    "productSearch": "Product Search",
+    "cart": "Shopping Cart",
+    "payment": "Payment",
+    "cash": "Cash",
+    "card": "Card",
+    "scanBarcode": "Scan barcode",
+    "scanBarcodeHint": "Scan barcode or search product",
+    "emptyCart": "Cart is empty",
+    "addItemsFirst": "Add items to cart first"
   },
   "products": {
     "manageProducts": "Manage product inventory"
@@ -100,7 +116,8 @@
     "no": "No",
     "primary": "Primary Button",
     "default": "Default Button",
-    "dashed": "Dashed Button"
+    "dashed": "Dashed Button",
+    "total": "Total"
   },
   "errors": {
     "networkError": "Network connection error"
