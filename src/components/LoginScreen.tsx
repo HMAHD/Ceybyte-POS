@@ -13,7 +13,7 @@
  * └──────────────────────────────────────────────────────────────────────────────────────────────────┘
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Button, Input, Form, Alert, Space, Segmented, Row, Col, Typography } from 'antd';
 import { UserOutlined, LockOutlined, SafetyOutlined } from '@ant-design/icons';
 import { useAuth } from '@/contexts/AuthContext';
@@ -34,18 +34,17 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
 
     const [loginMode, setLoginMode] = useState<'password' | 'pin'>('password');
     const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [pin, setPin] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [passwordForm] = Form.useForm();
+    const [pinForm] = Form.useForm();
 
-    const handlePasswordLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handlePasswordLogin = async (values: any) => {
         setError('');
         setIsLoading(true);
 
         try {
-            const success = await login(username, password);
+            const success = await login(values.username || username, values.password || password);
             if (success) {
                 onLoginSuccess?.();
             } else {
@@ -59,13 +58,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
         }
     };
 
-    const handlePinLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handlePinLogin = async (values: any) => {
         setError('');
         setIsLoading(true);
 
         try {
-            const success = await pinLogin(username, pin);
+            const success = await pinLogin(values.username || username, values.pin || pin);
             if (success) {
                 onLoginSuccess?.();
             } else {
@@ -82,9 +80,16 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
     const handleQuickUserSwitch = (user: string) => {
         setUsername(user);
         setLoginMode('pin');
-        setPin('');
         setError('');
+        // Update form values
+        pinForm.setFieldsValue({ username: user });
     };
+
+    // Update form values when username changes
+    useEffect(() => {
+        passwordForm.setFieldsValue({ username });
+        pinForm.setFieldsValue({ username });
+    }, [username, passwordForm, pinForm]);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -141,7 +146,13 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
 
                         {/* Password Login Form */}
                         {loginMode === 'password' && (
-                            <Form onFinish={handlePasswordLogin} layout="vertical" size="large">
+                            <Form 
+                                form={passwordForm}
+                                onFinish={handlePasswordLogin} 
+                                layout="vertical" 
+                                size="large"
+                                initialValues={{ username }}
+                            >
                                 <Form.Item
                                     label={<LocalizedText>{t('auth.username')}</LocalizedText>}
                                     name="username"
@@ -149,8 +160,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
                                 >
                                     <Input
                                         prefix={<UserOutlined />}
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
                                         disabled={isLoading}
                                         placeholder="Username"
                                     />
@@ -163,8 +172,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
                                 >
                                     <Input.Password
                                         prefix={<LockOutlined />}
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
                                         disabled={isLoading}
                                         placeholder="Password"
                                     />
@@ -188,7 +195,13 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
 
                         {/* PIN Login Form */}
                         {loginMode === 'pin' && (
-                            <Form onFinish={handlePinLogin} layout="vertical" size="large">
+                            <Form 
+                                form={pinForm}
+                                onFinish={handlePinLogin} 
+                                layout="vertical" 
+                                size="large"
+                                initialValues={{ username }}
+                            >
                                 <Form.Item
                                     label={<LocalizedText>{t('auth.username')}</LocalizedText>}
                                     name="username"
@@ -196,8 +209,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
                                 >
                                     <Input
                                         prefix={<UserOutlined />}
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
                                         disabled={isLoading}
                                         placeholder="Username"
                                     />
@@ -210,8 +221,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
                                 >
                                     <Input.Password
                                         prefix={<SafetyOutlined />}
-                                        value={pin}
-                                        onChange={(e) => setPin(e.target.value)}
                                         maxLength={6}
                                         style={{ textAlign: 'center', letterSpacing: '0.2em' }}
                                         disabled={isLoading}
