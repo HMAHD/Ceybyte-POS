@@ -20,6 +20,7 @@ import './assets/fonts/fonts.css';
 import './i18n';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ThemeProvider, useTheme } from '@/contexts/ThemeContext';
+import { NetworkProvider } from '@/contexts/NetworkContext';
 import { MainApplication } from '@/components/MainApplication';
 
 const AppContent: React.FC = () => {
@@ -30,9 +31,11 @@ const AppContent: React.FC = () => {
       theme={currentTheme}
       componentSize="middle"
     >
-      <AuthProvider>
-        <MainApplication />
-      </AuthProvider>
+      <NetworkProvider>
+        <AuthProvider>
+          <MainApplication />
+        </AuthProvider>
+      </NetworkProvider>
     </ConfigProvider>
   );
 };

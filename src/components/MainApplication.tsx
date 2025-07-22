@@ -13,15 +13,35 @@
  * └──────────────────────────────────────────────────────────────────────────────────────────────────┘
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useNetwork } from '@/contexts/NetworkContext';
 import LoginScreen from '@/components/LoginScreen';
 import HelperModeInterface from '@/components/HelperModeInterface';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { DashboardInterface } from '@/components/DashboardInterface';
+import NetworkSelectionDialog from '@/components/NetworkSelectionDialog';
+import type { NetworkConfiguration } from '@/types/network';
 
 export const MainApplication: React.FC = () => {
   const { isAuthenticated, user, isLoading } = useAuth();
+  const { isFirstRun, updateConfig } = useNetwork();
+  const [showNetworkDialog, setShowNetworkDialog] = useState(isFirstRun);
+
+  const handleNetworkSetupComplete = (config: NetworkConfiguration) => {
+    updateConfig(config);
+    setShowNetworkDialog(false);
+  };
+
+  // Show network setup dialog on first run
+  if (showNetworkDialog) {
+    return (
+      <NetworkSelectionDialog
+        visible={true}
+        onComplete={handleNetworkSetupComplete}
+      />
+    );
+  }
 
   // Show loading screen while checking authentication
   if (isLoading) {
