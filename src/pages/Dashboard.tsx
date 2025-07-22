@@ -33,6 +33,16 @@ import {
   DollarOutlined,
   ExclamationOutlined,
   CreditCardOutlined,
+  ShopTwoTone,
+  ContactsTwoTone,
+  UsergroupAddOutlined,
+  BarChartOutlined,
+  ControlTwoTone,
+  ShoppingTwoTone,
+  CustomerServiceTwoTone,
+  AppstoreTwoTone,
+  PieChartTwoTone,
+  SettingTwoTone,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -102,7 +112,7 @@ const DashboardPage: React.FC = () => {
   };
 
   return (
-    <div className='p-4 h-screen bg-gray-50 overflow-hidden'>
+    <div className='p-4 h-full'>
       <div className='max-w-full mx-auto h-full flex flex-col'>
         {/* Welcome Section */}
         <div className='mb-4 flex-shrink-0'>
@@ -113,7 +123,7 @@ const DashboardPage: React.FC = () => {
                   {t('dashboard.welcome', `Welcome, ${user?.name}`)}
                 </LocalizedText>
               </Title>
-              <Text type='secondary' className='text-lg'>
+              <Text type='secondary' className='text-sm'>
                 <LocalizedText>{new Date().toLocaleDateString()}</LocalizedText>
               </Text>
             </div>
@@ -131,14 +141,14 @@ const DashboardPage: React.FC = () => {
           skeleton={
             <Row gutter={[16, 16]} className='mb-4'>
               {[1, 2, 3, 4].map(i => (
-                <Col xs={24} sm={12} lg={6} key={i}>
+                <Col xs={12} sm={6} lg={6} key={i}>
                   <Card loading className='modern-card' />
                 </Col>
               ))}
             </Row>
           }
         >
-          <Row gutter={[16, 16]} className='mb-4'>
+          <Row gutter={[8, 6]} className='mb-1'>
             <Col xs={24} sm={12} lg={6}>
               <Card className='modern-card hover-lift'>
                 <div className='flex items-center justify-between'>
@@ -156,8 +166,8 @@ const DashboardPage: React.FC = () => {
                       fontWeight: '600'
                     }}
                   />
-                  <div className='w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center'>
-                    <ShoppingCartOutlined className='text-blue-500 text-xl' />
+                  <div className='w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center'>
+                    <ShoppingCartOutlined className='text-blue-500 text-sm' />
                   </div>
                 </div>
               </Card>
@@ -180,8 +190,8 @@ const DashboardPage: React.FC = () => {
                       fontWeight: '600'
                     }}
                   />
-                  <div className='w-12 h-12 rounded-full bg-green-50 flex items-center justify-center hover-scale'>
-                    <DollarOutlined className='text-green-500 text-xl' />
+                  <div className='w-8 h-8 rounded-full bg-green-50 flex items-center justify-center hover-scale'>
+                    <DollarOutlined className='text-green-500 text-sm' />
                   </div>
                 </div>
               </Card>
@@ -205,8 +215,8 @@ const DashboardPage: React.FC = () => {
                       fontWeight: '600'
                     }}
                   />
-                  <div className='w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center hover-scale'>
-                    <ExclamationOutlined className='text-orange-500 text-xl' />
+                  <div className='w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center hover-scale'>
+                    <ExclamationOutlined className='text-orange-500 text-sm' />
                   </div>
                 </div>
               </Card>
@@ -231,8 +241,8 @@ const DashboardPage: React.FC = () => {
                       fontWeight: '600'
                     }}
                   />
-                  <div className='w-12 h-12 rounded-full bg-red-50 flex items-center justify-center hover-scale'>
-                    <CreditCardOutlined className='text-red-500 text-xl' />
+                  <div className='w-8 h-8 rounded-full bg-red-50 flex items-center justify-center hover-scale'>
+                    <CreditCardOutlined className='text-red-500 text-sm' />
                   </div>
                 </div>
               </Card>
@@ -242,14 +252,15 @@ const DashboardPage: React.FC = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className='mb-4 flex-1 overflow-auto'>
-          <Title level={3} className='mb-4 text-gray-700'>
+        <div className='flex-shrink-0 mb-4'>
+          <div className='mb-4 text-lg font-semibold text-gray-700'>
             <LocalizedText>Quick Actions</LocalizedText>
-          </Title>
-          <Row gutter={[16, 16]}>
-          <Col xs={24} md={12} lg={8}>
+          </div>
+          <Row gutter={[8, 8]}>
+          <Col xs={12} sm={8} md={6} lg={4} xl={4}>
             <Card
-              className='modern-card hover-lift h-full'
+              className='modern-card hover-lift'
+              size='small'
               actions={[
                 <Button
                   key='start-sale'
@@ -265,26 +276,27 @@ const DashboardPage: React.FC = () => {
                 </Button>,
               ]}
             >
-              <div className='text-center p-4'>
-                <div className='w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center mx-auto mb-3 shadow-lg hover-scale'>
-                  <ShoppingCartOutlined className='text-white text-lg' />
+              <div className='text-center py-2 px-1'>
+                <div className='w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mx-auto mb-2 shadow-sm hover-scale'>
+                  <ShoppingTwoTone className='text-white text-base' twoToneColor={['#ffffff', '#e3f2fd']} />
                 </div>
-                <Title level={4} className='mb-2 text-gray-800'>
+                <div className='text-xs font-medium text-gray-800 mb-1'>
                   <LocalizedText>{t('pos.newSale')}</LocalizedText>
-                </Title>
-                <Text type='secondary' className='text-center block'>
+                </div>
+                <div className='text-xs text-gray-500 text-center hidden md:block'>
                   <LocalizedText>
                     {t('pos.startNewSale', 'Start a new sale transaction')}
                   </LocalizedText>
-                </Text>
+                </div>
               </div>
             </Card>
           </Col>
 
           {hasPermission('inventory') && (
-            <Col xs={24} md={12} lg={8}>
+            <Col xs={12} sm={8} md={6} lg={4} xl={4}>
               <Card
-                className='modern-card hover-lift h-full'
+                className='modern-card hover-lift'
+                size='small'
                 actions={[
                   <Button
                     key='manage-products'
@@ -300,26 +312,27 @@ const DashboardPage: React.FC = () => {
                   </Button>,
                 ]}
               >
-                <div className='text-center p-3'>
-                  <div className='w-12 h-12 rounded-full bg-green-500 flex items-center justify-center mx-auto mb-3 shadow-lg hover-scale'>
-                    <FileTextOutlined className='text-white text-lg' />
+                <div className='text-center py-2 px-1'>
+                  <div className='w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center mx-auto mb-2 shadow-sm hover-scale'>
+                    <ShopTwoTone className='text-white text-base' twoToneColor={['#ffffff', '#d1fae5']} />
                   </div>
-                  <Title level={4} className='mb-2 text-gray-800'>
+                  <div className='text-xs font-medium text-gray-800 mb-1'>
                     <LocalizedText>{t('navigation.products')}</LocalizedText>
-                  </Title>
-                  <Text type='secondary' className='text-center block'>
+                  </div>
+                  <div className='text-xs text-gray-500 text-center hidden md:block'>
                     <LocalizedText>
                       {t('products.manageProducts', 'Manage product inventory')}
                     </LocalizedText>
-                  </Text>
+                  </div>
                 </div>
               </Card>
             </Col>
           )}
 
-          <Col xs={24} md={12} lg={8}>
+          <Col xs={12} sm={8} md={6} lg={4} xl={4}>
             <Card
-              className='modern-card hover-lift h-full'
+              className='modern-card hover-lift'
+              size='small'
               actions={[
                 <Button
                   key='manage-customers'
@@ -335,26 +348,27 @@ const DashboardPage: React.FC = () => {
                 </Button>,
               ]}
             >
-              <div className='text-center p-4'>
-                <div className='w-16 h-16 rounded-full bg-purple-500 flex items-center justify-center mx-auto mb-3 shadow-lg hover-scale'>
-                  <UserOutlined className='text-white text-lg' />
+              <div className='text-center py-2 px-1'>
+                <div className='w-10 h-10 rounded-xl bg-gradient-to-br from-violet-400 to-violet-600 flex items-center justify-center mx-auto mb-2 shadow-sm hover-scale'>
+                  <CustomerServiceTwoTone className='text-white text-base' twoToneColor={['#ffffff', '#ede9fe']} />
                 </div>
-                <Title level={4} className='mb-2 text-gray-800'>
+                <div className='text-xs font-medium text-gray-800 mb-1'>
                   <LocalizedText>{t('navigation.customers')}</LocalizedText>
-                </Title>
-                <Text type='secondary' className='text-center block'>
+                </div>
+                <div className='text-xs text-gray-500 text-center hidden md:block'>
                   <LocalizedText>
                     {t('customers.manageCustomers', 'Manage customer accounts')}
                   </LocalizedText>
-                </Text>
+                </div>
               </div>
             </Card>
           </Col>
 
           {hasPermission('suppliers') && (
-            <Col xs={24} md={12} lg={8}>
+            <Col xs={12} sm={8} md={6} lg={4} xl={4}>
               <Card
-                className='modern-card hover-lift h-full'
+                className='modern-card hover-lift'
+                size='small'
                 actions={[
                   <Button
                     key='manage-suppliers'
@@ -370,30 +384,31 @@ const DashboardPage: React.FC = () => {
                   </Button>,
                 ]}
               >
-                <div className='text-center p-3'>
-                  <div className='w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center mx-auto mb-3 shadow-lg hover-scale'>
-                    <TeamOutlined className='text-white text-lg' />
+                <div className='text-center py-2 px-1'>
+                  <div className='w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mx-auto mb-2 shadow-sm hover-scale'>
+                    <ContactsTwoTone className='text-white text-base' twoToneColor={['#ffffff', '#fef3c7']} />
                   </div>
-                  <Title level={4} className='mb-2 text-gray-800'>
+                  <div className='text-xs font-medium text-gray-800 mb-1'>
                     <LocalizedText>{t('navigation.suppliers')}</LocalizedText>
-                  </Title>
-                  <Text type='secondary' className='text-center block'>
+                  </div>
+                  <div className='text-xs text-gray-500 text-center hidden md:block'>
                     <LocalizedText>
                       {t(
                         'suppliers.manageSuppliers',
                         'Manage supplier accounts'
                       )}
                     </LocalizedText>
-                  </Text>
+                  </div>
                 </div>
               </Card>
             </Col>
           )}
 
           {hasPermission('reports') && (
-            <Col xs={24} md={12} lg={8}>
+            <Col xs={12} sm={8} md={6} lg={4} xl={4}>
               <Card
-                className='modern-card hover-lift h-full'
+                className='modern-card hover-lift'
+                size='small'
                 actions={[
                   <Button
                     key='view-reports'
@@ -409,30 +424,31 @@ const DashboardPage: React.FC = () => {
                   </Button>,
                 ]}
               >
-                <div className='text-center p-3'>
-                  <div className='w-12 h-12 rounded-full bg-cyan-500 flex items-center justify-center mx-auto mb-3 shadow-lg hover-scale'>
-                    <FileTextOutlined className='text-white text-lg' />
+                <div className='text-center py-2 px-1'>
+                  <div className='w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-teal-500 flex items-center justify-center mx-auto mb-2 shadow-sm hover-scale'>
+                    <PieChartTwoTone className='text-white text-base' twoToneColor={['#ffffff', '#e0f2fe']} />
                   </div>
-                  <Title level={4} className='mb-2 text-gray-800'>
+                  <div className='text-xs font-medium text-gray-800 mb-1'>
                     <LocalizedText>{t('navigation.reports')}</LocalizedText>
-                  </Title>
-                  <Text type='secondary' className='text-center block'>
+                  </div>
+                  <div className='text-xs text-gray-500 text-center hidden md:block'>
                     <LocalizedText>
                       {t(
                         'reports.viewReports',
                         'View sales and business reports'
                       )}
                     </LocalizedText>
-                  </Text>
+                  </div>
                 </div>
               </Card>
             </Col>
           )}
 
           {hasPermission('settings') && (
-            <Col xs={24} md={12} lg={8}>
+            <Col xs={12} sm={8} md={6} lg={4} xl={4}>
               <Card
-                className='modern-card hover-lift h-full'
+                className='modern-card hover-lift'
+                size='small'
                 actions={[
                   <Button
                     key='configure-settings'
@@ -448,21 +464,21 @@ const DashboardPage: React.FC = () => {
                   </Button>,
                 ]}
               >
-                <div className='text-center p-3'>
-                  <div className='w-12 h-12 rounded-full bg-red-500 flex items-center justify-center mx-auto mb-3 shadow-lg hover-scale'>
-                    <SettingOutlined className='text-white text-lg' />
+                <div className='text-center py-2 px-1'>
+                  <div className='w-10 h-10 rounded-xl bg-gradient-to-br from-rose-400 to-pink-500 flex items-center justify-center mx-auto mb-2 shadow-sm hover-scale'>
+                    <SettingTwoTone className='text-white text-base' twoToneColor={['#ffffff', '#fce7f3']} />
                   </div>
-                  <Title level={4} className='mb-2 text-gray-800'>
+                  <div className='text-xs font-medium text-gray-800 mb-1'>
                     <LocalizedText>{t('navigation.settings')}</LocalizedText>
-                  </Title>
-                  <Text type='secondary' className='text-center block'>
+                  </div>
+                  <div className='text-xs text-gray-500 text-center hidden md:block'>
                     <LocalizedText>
                       {t(
                         'settings.systemSettings',
                         'Configure system settings'
                       )}
                     </LocalizedText>
-                  </Text>
+                  </div>
                 </div>
               </Card>
             </Col>
@@ -470,66 +486,47 @@ const DashboardPage: React.FC = () => {
           </Row>
         </div>
 
-        {/* System Status - Compact */}
+        {/* System Status - Ultra Compact */}
         <div className='flex-shrink-0'>
-        <Card
-          className='modern-card'
-          size='small'
-          title={
-            <span className='text-gray-700 font-semibold text-sm'>
-              <LocalizedText>
-                {t('dashboard.systemStatus', 'System Status')}
-              </LocalizedText>
-            </span>
-          }
-        >
-          <Space direction='vertical' className='w-full'>
-            <div className='flex justify-between items-center'>
-              <Text>
-                <LocalizedText>
-                  {t('dashboard.apiStatus', 'API Status')}
-                </LocalizedText>
+          <div className='flex flex-wrap items-center justify-between gap-2 px-3 py-2 bg-white rounded-lg border border-gray-100 shadow-sm'>
+            {/* API Status */}
+            <div className='flex items-center space-x-2'>
+              <div className='w-2 h-2 rounded-full bg-green-500'></div>
+              <Text className='text-xs font-medium text-gray-700'>
+                {apiStatus === 'Checking...' ? (
+                  <InlineLoading message='API' />
+                ) : (
+                  <span className={apiStatus.includes('failed') ? 'text-red-500' : 'text-green-600'}>
+                    API Online
+                  </span>
+                )}
               </Text>
-              {apiStatus === 'Checking...' ? (
-                <InlineLoading message={t('common.checking', 'Checking...')} />
-              ) : (
-                <Text
-                  type={apiStatus.includes('failed') ? 'danger' : 'success'}
-                >
-                  {apiStatus}
-                </Text>
-              )}
             </div>
-
-            <div className='flex justify-between items-center'>
-              <Text>
-                <LocalizedText>
-                  {t('dashboard.userRole', 'User Role')}
-                </LocalizedText>
-              </Text>
-              <Text strong>
+            
+            {/* User Role */}
+            <div className='flex items-center space-x-1'>
+              <Text className='text-xs text-gray-500'>Role:</Text>
+              <Text className='text-xs font-medium text-gray-700'>
                 <LocalizedText>{user?.role}</LocalizedText>
               </Text>
             </div>
-
-            <Divider />
-            <div className='flex justify-between items-center'>
-              <Text type='secondary' className='text-xs'>
-                Powered by Ceybyte.com
-              </Text>
-              <Button
-                size='small'
-                type='link'
-                onClick={loadDashboardStats}
-                loading={statsLoading}
-              >
-                <LocalizedText>
-                  {t('dashboard.refreshStats', 'Refresh Stats')}
-                </LocalizedText>
-              </Button>
-            </div>
-          </Space>
-        </Card>
+            
+            {/* Refresh Button */}
+            <Button
+              size='small'
+              type='text'
+              onClick={loadDashboardStats}
+              loading={statsLoading}
+              className='text-xs px-2 py-1 h-6'
+            >
+              <LocalizedText>{t('dashboard.refresh', 'Refresh')}</LocalizedText>
+            </Button>
+            
+            {/* Brand */}
+            <Text type='secondary' className='text-xs hidden sm:block'>
+              Ceybyte.com
+            </Text>
+          </div>
         </div>
       </div>
     </div>

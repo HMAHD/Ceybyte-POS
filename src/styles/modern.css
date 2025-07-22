@@ -229,25 +229,27 @@
 
 /* Custom Ant Design Menu Styling */
 .ant-menu-inline .ant-menu-item {
-  margin: 4px 12px !important;
-  border-radius: 10px !important;
+  margin: 2px 8px !important;
+  border-radius: 8px !important;
   transition: all var(--transition-normal) !important;
   position: relative !important;
   overflow: hidden !important;
   font-weight: 500 !important;
+  font-size: 14px !important;
 }
 
 .ant-menu-inline .ant-menu-item:hover {
-  background: rgba(0, 102, 204, 0.08) !important;
-  transform: translateX(3px) !important;
-  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1) !important;
+  background: #f3f4f6 !important;
+  transform: translateX(2px) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
 }
 
 .ant-menu-inline .ant-menu-item-selected {
-  background: #0066cc !important;
-  color: white !important;
-  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25) !important;
+  background: #f3f4f6 !important;
+  color: #0066cc !important;
+  box-shadow: 0 2px 4px rgba(0, 102, 204, 0.1) !important;
   font-weight: 600 !important;
+  border-left: 3px solid #0066cc !important;
 }
 
 .ant-menu-inline .ant-menu-item-selected::before {
@@ -471,13 +473,13 @@
   }
   
   .modern-card {
-    background: #1f2937;
-    border-color: rgba(255, 255, 255, 0.1);
+    background: #ffffff;
+    border-color: #e5e7eb;
   }
   
   .modern-sidebar {
-    background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
-    border-right-color: rgba(255, 255, 255, 0.1);
+    background: #ffffff;
+    border-right-color: #e5e7eb;
   }
   
   .modern-input {

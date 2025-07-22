@@ -296,24 +296,24 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         width={240}
         className='modern-sidebar shadow-lg'
         style={{
-          background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)',
-          borderRight: '1px solid rgba(0, 102, 204, 0.08)',
-          boxShadow: '2px 0 8px rgba(0, 0, 0, 0.05)'
+          background: '#ffffff',
+          borderRight: '1px solid #e5e7eb',
+          boxShadow: '2px 0 4px rgba(0, 0, 0, 0.03)'
         }}
       >
         {/* Logo */}
-        <div className='p-4 text-center border-b border-blue-50 mb-4'>
+        <div className='p-3 text-center border-b border-gray-100 mb-2'>
           {!collapsed ? (
             <div className='flex items-center justify-center space-x-2'>
-              <div className='w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-200'>
-                <span className='text-white font-bold text-sm'>CP</span>
+              <div className='w-8 h-8 rounded-lg bg-white border-2 border-blue-600 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow duration-200'>
+                <span className='text-blue-600 font-bold text-sm'>CP</span>
               </div>
-              <Title level={4} className='mb-0 text-blue-700 font-bold'>
+              <div className='mb-0 text-gray-800 font-bold text-lg'>
                 <LocalizedText>{APP_NAME}</LocalizedText>
-              </Title>
+              </div>
             </div>
           ) : (
-            <div className='w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-lg mx-auto hover:shadow-xl transition-shadow duration-200'>
+            <div className='w-8 h-8 rounded-lg bg-white border-2 border-blue-600 flex items-center justify-center shadow-sm mx-auto hover:shadow-md transition-shadow duration-200'>
               <span className='text-white font-bold text-sm'>CP</span>
             </div>
           )}
@@ -339,33 +339,35 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       <Layout>
         {/* Header */}
         <Header
-          className='bg-white shadow-md border-b px-6 backdrop-blur-lg'
+          className='bg-white shadow-sm border-b px-2 sm:px-4 backdrop-blur-lg'
           style={{ 
-            height: 60, 
-            lineHeight: '60px',
-            background: 'rgba(255, 255, 255, 0.98)',
-            borderBottom: '1px solid rgba(0, 102, 204, 0.1)'
+            height: 56, 
+            lineHeight: 'normal',
+            background: '#ffffff',
+            borderBottom: '1px solid #e5e7eb',
+            display: 'flex',
+            alignItems: 'center'
           }}
         >
-          <div className='flex justify-between items-center h-full'>
+          <div className='flex justify-between items-center w-full'>
             {/* Left side - Collapse button and breadcrumb */}
             <div className='flex items-center'>
               <Button
                 type='text'
                 icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                 onClick={() => setCollapsed(!collapsed)}
-                className='mr-4 hover:bg-gray-100 rounded-lg transition-colors'
-                size='large'
+                className='mr-3 hover:bg-gray-100 rounded-md transition-colors'
+                size='middle'
+                style={{ height: '32px', width: '32px' }}
               />
 
-              {/* Terminal Status */}
-              <Space size='middle'>
-                <Text type='secondary'>
-                  <LocalizedText>
-                    {t('header.terminal', 'Terminal')}
-                  </LocalizedText>
-                  :
-                  <Text className='ml-1 font-medium'>
+              {/* Terminal Status - Always Visible */}
+              <div className='flex items-center space-x-1 sm:space-x-2 px-1 sm:px-2 py-1 bg-white rounded-lg border border-gray-200'>
+                <Text type='secondary' className='text-xs sm:text-sm'>
+                  <span className='hidden sm:inline'>
+                    <LocalizedText>{t('header.terminal', 'Terminal')}:</LocalizedText>
+                  </span>
+                  <Text className='ml-1 font-medium text-blue-600'>
                     {networkConfig.terminalName ||
                       networkConfig.terminalId ||
                       'MAIN-001'}
@@ -377,21 +379,22 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                       networkConfig.terminalType === 'main' ? 'blue' : 'green'
                     }
                     size='small'
+                    className='text-xs'
                   >
                     <LocalizedText>
                       {networkConfig.terminalType === 'main'
-                        ? t('network.main', 'Main')
-                        : t('network.client', 'Client')}
+                        ? t('network.main', 'MAIN')
+                        : t('network.client', 'CLIENT')}
                     </LocalizedText>
                   </Tag>
                 )}
-              </Space>
+              </div>
             </div>
 
             {/* Right side - Status indicators, language switcher, user menu */}
-            <Space size='middle'>
-              {/* Connection Status Indicators */}
-              <Space size='small'>
+            <div className='flex items-center space-x-1 sm:space-x-2'>
+              {/* Connection Status Indicators - Always Visible */}
+              <div className='flex items-center space-x-1 sm:space-x-2 px-1 sm:px-2 py-1 bg-gray-50 rounded-lg border border-gray-200'>
                 <StatusIndicator
                   type='network'
                   status={connectionStatus}
@@ -403,14 +406,17 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   label={t('status.printer', 'Printer Connection')}
                 />
                 <UPSStatusIndicator size='small' />
-              </Space>
+              </div>
 
-              <Divider type='vertical' />
+              <div className='w-px h-6 bg-gray-300'></div>
 
               {/* Language Switcher */}
-              <LanguageSwitcher variant='compact' />
+              <div className='hidden md:block px-1'>
+                <LanguageSwitcher variant='compact' />
+              </div>
 
               {/* User Menu */}
+              <div className='ml-2'>
               <Dropdown
                 menu={{
                   items: userMenuItems,
@@ -424,18 +430,25 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                 }}
                 placement='bottomRight'
               >
-                <Button type='text' className='flex items-center'>
+                <Button type='text' className='flex items-center px-3 py-1 hover:bg-gray-100 rounded-lg border border-gray-200'>
                   <Avatar
-                    size='small'
+                    size={24}
                     icon={<UserOutlined />}
                     className='mr-2'
+                    style={{ backgroundColor: '#0066cc' }}
                   />
-                  <Text className='hidden sm:inline'>
-                    <LocalizedText>{user?.name}</LocalizedText>
-                  </Text>
+                  <div className='hidden lg:block text-left'>
+                    <div className='text-sm font-medium text-gray-900'>
+                      <LocalizedText>{user?.name}</LocalizedText>
+                    </div>
+                    <div className='text-xs text-gray-500'>
+                      <LocalizedText>{user?.role}</LocalizedText>
+                    </div>
+                  </div>
                 </Button>
               </Dropdown>
-            </Space>
+              </div>
+            </div>
           </div>
         </Header>
 
@@ -447,17 +460,16 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         </Content>
 
         {/* Footer */}
-        <Footer className='bg-white border-t text-center py-2 shadow-sm' style={{ 
+        <Footer className='bg-white border-t text-center py-1 px-2 shadow-sm' style={{ 
           background: 'rgba(255, 255, 255, 0.98)', 
           borderTop: '1px solid rgba(0, 102, 204, 0.1)',
-          height: '48px'
+          minHeight: '40px'
         }}>
-          <Space split={<Divider type='vertical' />} size='middle'>
+          <div className='flex flex-wrap items-center justify-between gap-2 text-xs'>
             <Text type='secondary' className='text-xs'>
-              Powered by <Text strong>{COMPANY_NAME}</Text>
+              <span className='hidden sm:inline'>Powered by </span><Text strong>{COMPANY_NAME}</Text>
             </Text>
-            <div className='text-xs'>
-              <Space size='middle' wrap>
+            <div className='hidden lg:flex text-xs gap-4'>
                 <ShortcutHint
                   shortcut={KEYBOARD_SHORTCUTS.quickSale}
                   description={t('shortcuts.quickSale', 'Quick Sale')}
@@ -474,16 +486,15 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   shortcut={KEYBOARD_SHORTCUTS.help}
                   description={t('shortcuts.help', 'Help')}
                 />
-              </Space>
             </div>
             <Text type='secondary' className='text-xs'>
               <GlobalOutlined className='mr-1' />
-              <LocalizedText>
-                {t('footer.version', 'Version')}
-              </LocalizedText>{' '}
+              <span className='hidden sm:inline'>
+                <LocalizedText>{t('footer.version', 'Version')}</LocalizedText>{' '}
+              </span>
               1.0.0
             </Text>
-          </Space>
+          </div>
         </Footer>
       </Layout>
 

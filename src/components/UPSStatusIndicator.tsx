@@ -171,47 +171,35 @@ export const UPSStatusIndicator: React.FC<UPSStatusIndicatorProps> = ({
   }
 
   const tooltipContent = (
-    <div className='space-y-2'>
-      <div>
-        <Text strong>
-          <LocalizedText>{getStatusText(upsInfo.status)}</LocalizedText>
-        </Text>
+    <div className='space-y-1 p-2 bg-white text-gray-800 rounded-md shadow-lg border'>
+      <div className='font-semibold text-sm text-gray-900'>
+        <LocalizedText>{getStatusText(upsInfo.status)}</LocalizedText>
       </div>
-      <div>
-        <Text>
-          <LocalizedText>
-            {t('ups.batteryLevel', 'Battery Level')}
-          </LocalizedText>
-          : {upsInfo.batteryLevel}%
-        </Text>
+      <div className='text-sm text-gray-700'>
+        <LocalizedText>
+          {t('ups.batteryLevel', 'Battery Level')}
+        </LocalizedText>
+        : <span className='font-medium'>{upsInfo.batteryLevel}%</span>
       </div>
-      <div>
-        <Text>
-          <LocalizedText>{t('ups.estimatedRuntime', 'Runtime')}</LocalizedText>:{' '}
-          {formatRuntime(upsInfo.estimatedRuntime)}
-        </Text>
+      <div className='text-sm text-gray-700'>
+        <LocalizedText>{t('ups.estimatedRuntime', 'Runtime')}</LocalizedText>:{' '}
+        <span className='font-medium'>{formatRuntime(upsInfo.estimatedRuntime)}</span>
       </div>
       {upsInfo.model && (
-        <div>
-          <Text>
-            <LocalizedText>{t('ups.model', 'Model')}</LocalizedText>:{' '}
-            {upsInfo.model}
-          </Text>
+        <div className='text-sm text-gray-700'>
+          <LocalizedText>{t('ups.model', 'Model')}</LocalizedText>:{' '}
+          <span className='font-medium'>{upsInfo.model}</span>
         </div>
       )}
       {upsInfo.voltage && (
-        <div>
-          <Text>
-            <LocalizedText>{t('ups.voltage', 'Voltage')}</LocalizedText>:{' '}
-            {upsInfo.voltage}V
-          </Text>
+        <div className='text-sm text-gray-700'>
+          <LocalizedText>{t('ups.voltage', 'Voltage')}</LocalizedText>:{' '}
+          <span className='font-medium'>{upsInfo.voltage}V</span>
         </div>
       )}
-      <div>
-        <Text type='secondary'>
-          <LocalizedText>{t('ups.lastUpdate', 'Last Update')}</LocalizedText>:{' '}
-          {upsInfo.lastUpdate.toLocaleTimeString()}
-        </Text>
+      <div className='text-xs text-gray-500 border-t border-gray-200 pt-1 mt-1'>
+        <LocalizedText>{t('ups.lastUpdate', 'Last Update')}</LocalizedText>:{' '}
+        {upsInfo.lastUpdate.toLocaleTimeString()}
       </div>
     </div>
   );
@@ -249,7 +237,19 @@ export const UPSStatusIndicator: React.FC<UPSStatusIndicatorProps> = ({
   }
 
   return (
-    <Tooltip title={tooltipContent} placement='bottomRight'>
+    <Tooltip 
+      title={tooltipContent} 
+      placement='bottomRight' 
+      overlayClassName='ups-tooltip'
+      color='white'
+      overlayInnerStyle={{
+        backgroundColor: 'white',
+        color: '#374151',
+        border: '1px solid #e5e7eb',
+        borderRadius: '8px',
+        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+      }}
+    >
       <Badge
         dot={upsInfo.status === 'low_battery' || upsInfo.status === 'critical'}
         status={
