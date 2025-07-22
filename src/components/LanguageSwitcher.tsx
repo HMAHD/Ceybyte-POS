@@ -15,7 +15,7 @@
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '../i18n';
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/i18n';
 
 interface LanguageSwitcherProps {
   variant?: 'dropdown' | 'buttons' | 'compact';
@@ -33,8 +33,29 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
-  const currentLanguage = i18n.language as SupportedLanguage;
-  const currentLangConfig = SUPPORTED_LANGUAGES[currentLanguage];
+  // Safety check: ensure i18n is initialized
+  if (!i18n.isInitialized) {
+    return <div className="w-8 h-8 animate-pulse bg-gray-200 rounded"></div>;
+  }
+
+  // Ensure we have a valid language
+  const currentLanguage = (i18n.language || 'en') as SupportedLanguage;
+  
+  // Create a fallback config in case SUPPORTED_LANGUAGES is not loaded
+  const fallbackConfig = {
+    code: 'en',
+    name: 'English',
+    nativeName: 'English',
+    flag: '🇺🇸',
+    rtl: false,
+  };
+  
+  const currentLangConfig = SUPPORTED_LANGUAGES?.[currentLanguage] || SUPPORTED_LANGUAGES?.en || fallbackConfig;
+
+  // Safety check: ensure we have a valid config
+  if (!currentLangConfig || !currentLangConfig.flag) {
+    return <div className="w-8 h-8 animate-pulse bg-gray-200 rounded"></div>;
+  }
 
   const handleLanguageChange = (langCode: SupportedLanguage) => {
     i18n.changeLanguage(langCode);
@@ -57,8 +78,8 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
               }
             `}
           >
-            {showFlags && <span className="mr-1">{config.flag}</span>}
-            {showNativeNames ? config.nativeName : config.name}
+            {showFlags && config?.flag && <span className="mr-1">{config.flag}</span>}
+            {showNativeNames ? (config?.nativeName || config?.name || code) : (config?.name || code)}
           </button>
         ))}
       </div>
@@ -72,8 +93,8 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-2 px-2 py-1 text-sm rounded hover:bg-gray-100 transition-colors"
         >
-          {showFlags && <span>{currentLangConfig.flag}</span>}
-          <span className="font-medium">{currentLangConfig.code.toUpperCase()}</span>
+          {showFlags && currentLangConfig?.flag && <span>{currentLangConfig.flag}</span>}
+          <span className="font-medium">{(currentLangConfig?.code || 'EN').toUpperCase()}</span>
           <svg
             className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
             fill="none"
@@ -101,10 +122,10 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
                     ${currentLanguage === code ? 'bg-ceybyte-primary/10 text-ceybyte-primary' : 'text-gray-700'}
                   `}
                 >
-                  {showFlags && <span className="text-lg">{config.flag}</span>}
+                  {showFlags && config?.flag && <span className="text-lg">{config.flag}</span>}
                   <div>
-                    <div className="font-medium">{config.name}</div>
-                    {showNativeNames && config.nativeName !== config.name && (
+                    <div className="font-medium">{config?.name || code}</div>
+                    {showNativeNames && config?.nativeName && config.nativeName !== config.name && (
                       <div className="text-xs text-gray-500">{config.nativeName}</div>
                     )}
                   </div>
@@ -129,10 +150,10 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-3 px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-ceybyte-primary focus:border-ceybyte-primary transition-colors"
       >
-        {showFlags && <span className="text-lg">{currentLangConfig.flag}</span>}
+        {showFlags && currentLangConfig?.flag && <span className="text-lg">{currentLangConfig.flag}</span>}
         <div className="text-left">
-          <div className="text-sm font-medium text-gray-900">{currentLangConfig.name}</div>
-          {showNativeNames && currentLangConfig.nativeName !== currentLangConfig.name && (
+          <div className="text-sm font-medium text-gray-900">{currentLangConfig?.name || 'English'}</div>
+          {showNativeNames && currentLangConfig?.nativeName && currentLangConfig.nativeName !== currentLangConfig.name && (
             <div className="text-xs text-gray-500">{currentLangConfig.nativeName}</div>
           )}
         </div>
@@ -164,12 +185,12 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
                     ${currentLanguage === code ? 'bg-ceybyte-primary/10' : ''}
                   `}
                 >
-                  {showFlags && <span className="text-xl">{config.flag}</span>}
+                  {showFlags && config?.flag && <span className="text-xl">{config.flag}</span>}
                   <div className="flex-1">
                     <div className={`text-sm font-medium ${currentLanguage === code ? 'text-ceybyte-primary' : 'text-gray-900'}`}>
-                      {config.name}
+                      {config?.name || code}
                     </div>
-                    {showNativeNames && config.nativeName !== config.name && (
+                    {showNativeNames && config?.nativeName && config.nativeName !== config.name && (
                       <div className="text-xs text-gray-500">{config.nativeName}</div>
                     )}
                   </div>
