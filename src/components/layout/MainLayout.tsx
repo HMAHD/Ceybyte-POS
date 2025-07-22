@@ -279,38 +279,50 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   ]);
 
   return (
-    <Layout className='min-h-screen'>
+    <Layout className='min-h-screen bg-gray-50'>
       {/* Sidebar */}
       <Sider
         trigger={null}
         collapsible
         collapsed={collapsed}
         width={240}
-        className='shadow-md'
+        className='modern-sidebar shadow-lg'
         style={{
-          background: '#fff',
-          borderRight: '1px solid #f0f0f0',
+          background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)',
+          borderRight: '1px solid rgba(0, 0, 0, 0.06)',
         }}
       >
         {/* Logo */}
-        <div className='p-4 text-center border-b border-gray-200'>
+        <div className='p-4 text-center border-b border-gray-100 mb-4'>
           {!collapsed ? (
-            <Title level={4} className='mb-0 text-blue-600'>
-              <LocalizedText>{APP_NAME}</LocalizedText>
-            </Title>
+            <div className='flex items-center justify-center space-x-2'>
+              <div className='w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-md'>
+                <span className='text-white font-bold text-sm'>CP</span>
+              </div>
+              <Title level={4} className='mb-0 bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent'>
+                <LocalizedText>{APP_NAME}</LocalizedText>
+              </Title>
+            </div>
           ) : (
-            <div className='text-blue-600 text-xl font-bold'>CP</div>
+            <div className='w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-md mx-auto'>
+              <span className='text-white font-bold text-sm'>CP</span>
+            </div>
           )}
         </div>
 
         {/* Navigation Menu */}
-        <Menu
-          mode='inline'
-          selectedKeys={[selectedKey]}
-          items={filteredMenuItems}
-          onClick={({ key }) => handleMenuClick(key)}
-          className='border-none'
-        />
+        <div className='px-2'>
+          <Menu
+            mode='inline'
+            selectedKeys={[selectedKey]}
+            items={filteredMenuItems}
+            onClick={({ key }) => handleMenuClick(key)}
+            className='border-none bg-transparent'
+            style={{
+              fontSize: '14px',
+            }}
+          />
+        </div>
 
         {/* User Info in Sidebar (when expanded) */}
         {!collapsed && (
@@ -336,8 +348,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       <Layout>
         {/* Header */}
         <Header
-          className='bg-white shadow-sm border-b px-4'
-          style={{ height: 64, lineHeight: '64px' }}
+          className='bg-white shadow-sm border-b px-6 backdrop-blur-sm'
+          style={{ 
+            height: 64, 
+            lineHeight: '64px',
+            background: 'rgba(255, 255, 255, 0.95)',
+          }}
         >
           <div className='flex justify-between items-center h-full'>
             {/* Left side - Collapse button and breadcrumb */}
@@ -346,7 +362,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                 type='text'
                 icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                 onClick={() => setCollapsed(!collapsed)}
-                className='mr-4'
+                className='mr-4 hover:bg-gray-100 rounded-lg transition-colors'
+                size='large'
               />
 
               {/* Terminal Status */}
@@ -431,10 +448,14 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         </Header>
 
         {/* Main Content */}
-        <Content className='p-6 bg-gray-50'>{children}</Content>
+        <Content className='bg-transparent overflow-auto'>
+          <div className='min-h-full'>
+            {children}
+          </div>
+        </Content>
 
         {/* Footer */}
-        <Footer className='bg-white border-t text-center py-4'>
+        <Footer className='bg-white border-t text-center py-3 shadow-sm' style={{ background: 'rgba(255, 255, 255, 0.95)' }}>
           <Space split={<Divider type='vertical' />} size='middle'>
             <Text type='secondary' className='text-xs'>
               Powered by <Text strong>{COMPANY_NAME}</Text>

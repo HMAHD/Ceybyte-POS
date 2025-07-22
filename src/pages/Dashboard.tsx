@@ -99,18 +99,26 @@ const DashboardPage: React.FC = () => {
   };
 
   return (
-    <div className='p-6'>
+    <div className='p-6 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100'>
       <div className='max-w-7xl mx-auto'>
         {/* Welcome Section */}
-        <div className='mb-8'>
-          <Title level={2} className='mb-2'>
-            <LocalizedText>
-              {t('dashboard.welcome', `Welcome, ${user?.name}`)}
-            </LocalizedText>
-          </Title>
-          <Text type='secondary'>
-            <LocalizedText>{new Date().toLocaleDateString()}</LocalizedText>
-          </Text>
+        <div className='mb-8 fade-in'>
+          <div className='flex items-center justify-between mb-4'>
+            <div>
+              <Title level={2} className='mb-2 bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent'>
+                <LocalizedText>
+                  {t('dashboard.welcome', `Welcome, ${user?.name}`)}
+                </LocalizedText>
+              </Title>
+              <Text type='secondary' className='text-lg'>
+                <LocalizedText>{new Date().toLocaleDateString()}</LocalizedText>
+              </Text>
+            </div>
+            <div className='flex items-center space-x-3'>
+              <div className='status-dot online'></div>
+              <Text type='secondary'>System Online</Text>
+            </div>
+          </div>
         </div>
 
         {/* Quick Stats */}
@@ -120,7 +128,7 @@ const DashboardPage: React.FC = () => {
             <Row gutter={[24, 24]} className='mb-8'>
               {[1, 2, 3, 4].map(i => (
                 <Col xs={24} sm={12} lg={6} key={i}>
-                  <Card loading />
+                  <Card loading className='modern-card' />
                 </Col>
               ))}
             </Row>
@@ -128,74 +136,123 @@ const DashboardPage: React.FC = () => {
         >
           <Row gutter={[24, 24]} className='mb-8'>
             <Col xs={24} sm={12} lg={6}>
-              <Card>
-                <Statistic
-                  title={
-                    <LocalizedText>{t('dashboard.todaySales')}</LocalizedText>
-                  }
-                  value={dashboardStats.todaySales}
-                  formatter={value => formatCurrency(Number(value))}
-                  valueStyle={{ color: '#1890ff' }}
-                />
+              <Card className='modern-card hover-lift slide-in-left' style={{ animationDelay: '0.1s' }}>
+                <div className='flex items-center justify-between'>
+                  <Statistic
+                    title={
+                      <span className='text-gray-600 font-medium'>
+                        <LocalizedText>{t('dashboard.todaySales')}</LocalizedText>
+                      </span>
+                    }
+                    value={dashboardStats.todaySales}
+                    formatter={value => formatCurrency(Number(value))}
+                    valueStyle={{ 
+                      color: '#0066cc', 
+                      fontSize: '1.5rem',
+                      fontWeight: '600'
+                    }}
+                  />
+                  <div className='w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center'>
+                    <ShoppingCartOutlined className='text-blue-500 text-xl' />
+                  </div>
+                </div>
               </Card>
             </Col>
 
             <Col xs={24} sm={12} lg={6}>
-              <Card>
-                <Statistic
-                  title={
-                    <LocalizedText>{t('dashboard.todayProfit')}</LocalizedText>
-                  }
-                  value={dashboardStats.todayProfit}
-                  formatter={value => formatCurrency(Number(value))}
-                  valueStyle={{ color: '#52c41a' }}
-                />
+              <Card className='modern-card hover-lift slide-in-left' style={{ animationDelay: '0.2s' }}>
+                <div className='flex items-center justify-between'>
+                  <Statistic
+                    title={
+                      <span className='text-gray-600 font-medium'>
+                        <LocalizedText>{t('dashboard.todayProfit')}</LocalizedText>
+                      </span>
+                    }
+                    value={dashboardStats.todayProfit}
+                    formatter={value => formatCurrency(Number(value))}
+                    valueStyle={{ 
+                      color: '#22c55e', 
+                      fontSize: '1.5rem',
+                      fontWeight: '600'
+                    }}
+                  />
+                  <div className='w-12 h-12 rounded-full bg-green-50 flex items-center justify-center'>
+                    <div className='text-green-500 text-xl'>💰</div>
+                  </div>
+                </div>
               </Card>
             </Col>
 
             <Col xs={24} sm={12} lg={6}>
-              <Card>
-                <Statistic
-                  title={
-                    <LocalizedText>
-                      {t('dashboard.lowStockItems')}
-                    </LocalizedText>
-                  }
-                  value={dashboardStats.lowStockItems}
-                  valueStyle={{ color: '#fa8c16' }}
-                />
+              <Card className='modern-card hover-lift slide-in-left' style={{ animationDelay: '0.3s' }}>
+                <div className='flex items-center justify-between'>
+                  <Statistic
+                    title={
+                      <span className='text-gray-600 font-medium'>
+                        <LocalizedText>
+                          {t('dashboard.lowStockItems')}
+                        </LocalizedText>
+                      </span>
+                    }
+                    value={dashboardStats.lowStockItems}
+                    valueStyle={{ 
+                      color: '#f59e0b', 
+                      fontSize: '1.5rem',
+                      fontWeight: '600'
+                    }}
+                  />
+                  <div className='w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center'>
+                    <div className='text-orange-500 text-xl'>⚠️</div>
+                  </div>
+                </div>
               </Card>
             </Col>
 
             <Col xs={24} sm={12} lg={6}>
-              <Card>
-                <Statistic
-                  title={
-                    <LocalizedText>
-                      {t('dashboard.pendingPayments')}
-                    </LocalizedText>
-                  }
-                  value={dashboardStats.pendingPayments}
-                  formatter={value => formatCurrency(Number(value))}
-                  valueStyle={{ color: '#f5222d' }}
-                />
+              <Card className='modern-card hover-lift slide-in-left' style={{ animationDelay: '0.4s' }}>
+                <div className='flex items-center justify-between'>
+                  <Statistic
+                    title={
+                      <span className='text-gray-600 font-medium'>
+                        <LocalizedText>
+                          {t('dashboard.pendingPayments')}
+                        </LocalizedText>
+                      </span>
+                    }
+                    value={dashboardStats.pendingPayments}
+                    formatter={value => formatCurrency(Number(value))}
+                    valueStyle={{ 
+                      color: '#ef4444', 
+                      fontSize: '1.5rem',
+                      fontWeight: '600'
+                    }}
+                  />
+                  <div className='w-12 h-12 rounded-full bg-red-50 flex items-center justify-center'>
+                    <div className='text-red-500 text-xl'>📋</div>
+                  </div>
+                </div>
               </Card>
             </Col>
           </Row>
         </ContentLoading>
 
         {/* Quick Actions */}
-        <Row gutter={[24, 24]} className='mb-8'>
+        <div className='mb-8'>
+          <Title level={3} className='mb-6 text-gray-700'>
+            <LocalizedText>Quick Actions</LocalizedText>
+          </Title>
+          <Row gutter={[24, 24]}>
           <Col xs={24} md={12} lg={8}>
             <Card
-              hoverable
-              className='h-full'
+              className='modern-card hover-lift h-full scale-in'
+              style={{ animationDelay: '0.5s' }}
               actions={[
                 <Button
                   key='start-sale'
-                  type='primary'
+                  className='modern-button gradient-button'
                   icon={<ShoppingCartOutlined />}
                   block
+                  size='large'
                   onClick={() => navigate('/pos')}
                 >
                   <LocalizedText>
@@ -204,19 +261,19 @@ const DashboardPage: React.FC = () => {
                 </Button>,
               ]}
             >
-              <Card.Meta
-                avatar={
-                  <ShoppingCartOutlined
-                    style={{ fontSize: 24, color: '#1890ff' }}
-                  />
-                }
-                title={<LocalizedText>{t('pos.newSale')}</LocalizedText>}
-                description={
+              <div className='text-center p-4'>
+                <div className='w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mx-auto mb-4 shadow-lg'>
+                  <ShoppingCartOutlined className='text-white text-2xl' />
+                </div>
+                <Title level={4} className='mb-2 text-gray-800'>
+                  <LocalizedText>{t('pos.newSale')}</LocalizedText>
+                </Title>
+                <Text type='secondary' className='text-center block'>
                   <LocalizedText>
                     {t('pos.startNewSale', 'Start a new sale transaction')}
                   </LocalizedText>
-                }
-              />
+                </Text>
+              </div>
             </Card>
           </Col>
 
@@ -407,14 +464,18 @@ const DashboardPage: React.FC = () => {
               </Card>
             </Col>
           )}
-        </Row>
+          </Row>
+        </div>
 
         {/* System Status */}
         <Card
+          className='modern-card fade-in'
           title={
-            <LocalizedText>
-              {t('dashboard.systemStatus', 'System Status')}
-            </LocalizedText>
+            <span className='text-gray-700 font-semibold'>
+              <LocalizedText>
+                {t('dashboard.systemStatus', 'System Status')}
+              </LocalizedText>
+            </span>
           }
         >
           <Space direction='vertical' className='w-full'>

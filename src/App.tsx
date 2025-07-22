@@ -17,6 +17,7 @@ import React from 'react';
 import { ConfigProvider } from 'antd';
 import './App.css';
 import './assets/fonts/fonts.css';
+import './styles/modern.css';
 import './i18n';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ThemeProvider, useTheme } from '@/contexts/ThemeContext';
