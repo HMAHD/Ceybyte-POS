@@ -14,6 +14,7 @@
  */
 
 import React, { useState, ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Layout,
   Menu,
@@ -42,7 +43,7 @@ import {
   ThunderboltOutlined,
   GlobalOutlined,
   BgColorsOutlined,
-  KeyboardOutlined,
+  KeyOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNetwork } from '@/contexts/NetworkContext';
@@ -115,6 +116,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   children,
   selectedKey = 'dashboard',
 }) => {
+  const navigate = useNavigate();
   const { user, logout, hasPermission } = useAuth();
   const { config: networkConfig, connectionStatus } = useNetwork();
   const { t } = useTranslation();
@@ -208,7 +210,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     },
     {
       key: 'shortcuts',
-      icon: <KeyboardOutlined />,
+      icon: <KeyOutlined />,
       label: (
         <LocalizedText>
           {t('user.shortcuts', 'Keyboard Shortcuts')}
@@ -230,8 +232,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     if (key === 'shortcuts') {
       setShowShortcuts(true);
     } else {
-      // Handle other menu navigation
-      console.log('Navigate to:', key);
+      // Navigate to the selected route
+      navigate(`/${key}`);
     }
   };
 
@@ -245,9 +247,33 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     },
     {
       key: KEYBOARD_SHORTCUTS.settings,
-      action: () => handleMenuClick('settings'),
+      action: () => navigate('/settings'),
       description: 'Open settings',
       category: 'global',
+    },
+    {
+      key: 'F1',
+      action: () => navigate('/dashboard'),
+      description: 'Go to dashboard',
+      category: 'navigation',
+    },
+    {
+      key: 'F2',
+      action: () => navigate('/pos'),
+      description: 'Open POS interface',
+      category: 'navigation',
+    },
+    {
+      key: 'F3',
+      action: () => navigate('/products'),
+      description: 'Manage products',
+      category: 'navigation',
+    },
+    {
+      key: 'F4',
+      action: () => navigate('/customers'),
+      description: 'Manage customers',
+      category: 'navigation',
     },
     // Add more shortcuts as needed
   ]);

@@ -15,7 +15,7 @@
 
 import React, { useEffect, useCallback } from 'react';
 import { Modal, Typography, Row, Col, Tag, Divider } from 'antd';
-import { KeyboardOutlined } from '@ant-design/icons';
+import { KeyOutlined } from '@ant-design/icons';
 import { useTranslation } from '@/hooks/useTranslation';
 import LocalizedText from '@/components/LocalizedText';
 import { KEYBOARD_SHORTCUTS } from '@/theme/designSystem';
@@ -135,7 +135,7 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsProps> = ({
     <Modal
       title={
         <div>
-          <KeyboardOutlined className='mr-2' />
+          <KeyOutlined className='mr-2' />
           <LocalizedText>
             {t('shortcuts.title', 'Keyboard Shortcuts')}
           </LocalizedText>

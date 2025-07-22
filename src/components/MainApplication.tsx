@@ -14,13 +14,13 @@
  */
 
 import React, { useState } from 'react';
+import { RouterProvider } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNetwork } from '@/contexts/NetworkContext';
 import LoginScreen from '@/components/LoginScreen';
 import HelperModeInterface from '@/components/HelperModeInterface';
-import ProtectedRoute from '@/components/ProtectedRoute';
-import { DashboardInterface } from '@/components/DashboardInterface';
 import NetworkSelectionDialog from '@/components/NetworkSelectionDialog';
+import router from '@/routes';
 import type { NetworkConfiguration } from '@/types/network';
 
 export const MainApplication: React.FC = () => {
@@ -65,12 +65,8 @@ export const MainApplication: React.FC = () => {
     return <HelperModeInterface />;
   }
 
-  // Show main dashboard for owner and cashier users
-  return (
-    <ProtectedRoute requiredPermission='sales'>
-      <DashboardInterface />
-    </ProtectedRoute>
-  );
+  // Show main router-based application for owner and cashier users
+  return <RouterProvider router={router} />;
 };
 
 export default MainApplication;
