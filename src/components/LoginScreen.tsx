@@ -13,7 +13,7 @@
  * └──────────────────────────────────────────────────────────────────────────────────────────────────┘
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, Button, Input, Form, Alert, Space, Segmented, Row, Col, Typography } from 'antd';
 import { UserOutlined, LockOutlined, SafetyOutlined } from '@ant-design/icons';
 import { useAuth } from '@/contexts/AuthContext';
@@ -36,15 +36,13 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
     const [username, setUsername] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const [passwordForm] = Form.useForm();
-    const [pinForm] = Form.useForm();
 
     const handlePasswordLogin = async (values: any) => {
         setError('');
         setIsLoading(true);
 
         try {
-            const success = await login(values.username || username, values.password || password);
+            const success = await login(values.username || username, values.password);
             if (success) {
                 onLoginSuccess?.();
             } else {
@@ -63,7 +61,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
         setIsLoading(true);
 
         try {
-            const success = await pinLogin(values.username || username, values.pin || pin);
+            const success = await pinLogin(values.username || username, values.pin);
             if (success) {
                 onLoginSuccess?.();
             } else {
@@ -81,15 +79,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
         setUsername(user);
         setLoginMode('pin');
         setError('');
-        // Update form values
-        pinForm.setFieldsValue({ username: user });
     };
-
-    // Update form values when username changes
-    useEffect(() => {
-        passwordForm.setFieldsValue({ username });
-        pinForm.setFieldsValue({ username });
-    }, [username, passwordForm, pinForm]);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -146,10 +136,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
 
                         {/* Password Login Form */}
                         {loginMode === 'password' && (
-                            <Form 
-                                form={passwordForm}
-                                onFinish={handlePasswordLogin} 
-                                layout="vertical" 
+                            <Form
+                                onFinish={handlePasswordLogin}
+                                layout="vertical"
                                 size="large"
                                 initialValues={{ username }}
                             >
@@ -195,10 +184,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
 
                         {/* PIN Login Form */}
                         {loginMode === 'pin' && (
-                            <Form 
-                                form={pinForm}
-                                onFinish={handlePinLogin} 
-                                layout="vertical" 
+                            <Form
+                                onFinish={handlePinLogin}
+                                layout="vertical"
                                 size="large"
                                 initialValues={{ username }}
                             >
