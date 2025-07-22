@@ -71,15 +71,9 @@
   100% { background-position: 200% 0; }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-5px); }
-}
+/* Removed idle float animation - keeping only interaction-based animations */
 
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 5px rgba(0, 102, 204, 0.2); }
-  50% { box-shadow: 0 0 20px rgba(0, 102, 204, 0.4); }
-}
+/* Removed idle glow animation - keeping only interaction-based animations */
 
 /* ====================
    Modern Card Styles
@@ -235,22 +229,25 @@
 
 /* Custom Ant Design Menu Styling */
 .ant-menu-inline .ant-menu-item {
-  margin: 4px 8px !important;
-  border-radius: 8px !important;
-  transition: all var(--transition-fast) !important;
+  margin: 4px 12px !important;
+  border-radius: 10px !important;
+  transition: all var(--transition-normal) !important;
   position: relative !important;
   overflow: hidden !important;
+  font-weight: 500 !important;
 }
 
 .ant-menu-inline .ant-menu-item:hover {
-  background: rgba(0, 102, 204, 0.06) !important;
-  transform: translateX(2px) !important;
+  background: rgba(0, 102, 204, 0.08) !important;
+  transform: translateX(3px) !important;
+  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1) !important;
 }
 
 .ant-menu-inline .ant-menu-item-selected {
-  background: linear-gradient(135deg, #4da6ff 0%, #1a8cff 100%) !important;
+  background: #0066cc !important;
   color: white !important;
-  box-shadow: var(--shadow-primary) !important;
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25) !important;
+  font-weight: 600 !important;
 }
 
 .ant-menu-inline .ant-menu-item-selected::before {
@@ -398,7 +395,6 @@
   border-radius: 50%;
   display: inline-block;
   margin-right: 6px;
-  animation: glow 2s ease-in-out infinite;
 }
 
 .status-dot.online { background: #22c55e; }
@@ -425,9 +421,7 @@
   animation: scaleIn 0.2s ease-out;
 }
 
-.float {
-  animation: float 3s ease-in-out infinite;
-}
+/* Removed idle float class - using only interaction-based hover-scale instead */
 
 /* ====================
    Hover Utilities
@@ -444,7 +438,7 @@
 }
 
 .hover-scale:hover {
-  transform: scale(1.02);
+  transform: scale(1.05);
   transition: all var(--transition-spring);
 }
 

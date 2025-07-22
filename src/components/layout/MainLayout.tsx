@@ -90,24 +90,32 @@ const StatusIndicator: React.FC<StatusIndicatorProps> = ({
     }
   };
 
-  const getColor = () => {
+  const getStatusInfo = () => {
     switch (status) {
       case 'connected':
-        return '#52c41a';
+        return { color: '#22c55e', bgColor: '#dcfce7', dotColor: '#16a34a' };
       case 'warning':
-        return '#fa8c16';
+        return { color: '#f59e0b', bgColor: '#fef3c7', dotColor: '#d97706' };
       case 'disconnected':
-        return '#f5222d';
+        return { color: '#ef4444', bgColor: '#fee2e2', dotColor: '#dc2626' };
       default:
-        return '#d9d9d9';
+        return { color: '#6b7280', bgColor: '#f3f4f6', dotColor: '#9ca3af' };
     }
   };
 
+  const statusInfo = getStatusInfo();
+
   return (
-    <Tooltip title={label}>
-      <Badge dot color={getColor()} offset={[-2, 2]}>
-        <span style={{ color: getColor(), fontSize: 16 }}>{getIcon()}</span>
-      </Badge>
+    <Tooltip title={label} placement="bottom">
+      <div className="relative inline-flex items-center justify-center w-8 h-8 rounded-lg hover:scale-105 transition-all duration-200 cursor-pointer"
+           style={{ 
+             backgroundColor: statusInfo.bgColor,
+             color: statusInfo.color 
+           }}>
+        <span className="text-sm font-medium">{getIcon()}</span>
+        <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full border-2 border-white"
+              style={{ backgroundColor: statusInfo.dotColor }}></span>
+      </div>
     </Tooltip>
   );
 };
@@ -288,23 +296,24 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         width={240}
         className='modern-sidebar shadow-lg'
         style={{
-          background: 'linear-gradient(180deg, #ffffff 0%, #fafafa 100%)',
-          borderRight: '1px solid rgba(0, 0, 0, 0.06)',
+          background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)',
+          borderRight: '1px solid rgba(0, 102, 204, 0.08)',
+          boxShadow: '2px 0 8px rgba(0, 0, 0, 0.05)'
         }}
       >
         {/* Logo */}
-        <div className='p-4 text-center border-b border-gray-100 mb-4'>
+        <div className='p-4 text-center border-b border-blue-50 mb-4'>
           {!collapsed ? (
             <div className='flex items-center justify-center space-x-2'>
-              <div className='w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-md'>
+              <div className='w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-200'>
                 <span className='text-white font-bold text-sm'>CP</span>
               </div>
-              <Title level={4} className='mb-0 bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent'>
+              <Title level={4} className='mb-0 text-blue-700 font-bold'>
                 <LocalizedText>{APP_NAME}</LocalizedText>
               </Title>
             </div>
           ) : (
-            <div className='w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-md mx-auto'>
+            <div className='w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-lg mx-auto hover:shadow-xl transition-shadow duration-200'>
               <span className='text-white font-bold text-sm'>CP</span>
             </div>
           )}
@@ -324,35 +333,18 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
           />
         </div>
 
-        {/* User Info in Sidebar (when expanded) */}
-        {!collapsed && (
-          <div className='absolute bottom-4 left-4 right-4'>
-            <div className='p-3 bg-gray-50 rounded-lg'>
-              <div className='flex items-center space-x-2'>
-                <Avatar size='small' icon={<UserOutlined />} />
-                <div className='flex-1 min-w-0'>
-                  <Text className='text-xs font-medium truncate'>
-                    <LocalizedText>{user?.name}</LocalizedText>
-                  </Text>
-                  <br />
-                  <Tag color='blue'>
-                    <LocalizedText>{user?.role}</LocalizedText>
-                  </Tag>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* User info removed from sidebar as it's already in header */}
       </Sider>
 
       <Layout>
         {/* Header */}
         <Header
-          className='bg-white shadow-sm border-b px-6 backdrop-blur-sm'
+          className='bg-white shadow-md border-b px-6 backdrop-blur-lg'
           style={{ 
-            height: 64, 
-            lineHeight: '64px',
-            background: 'rgba(255, 255, 255, 0.95)',
+            height: 60, 
+            lineHeight: '60px',
+            background: 'rgba(255, 255, 255, 0.98)',
+            borderBottom: '1px solid rgba(0, 102, 204, 0.1)'
           }}
         >
           <div className='flex justify-between items-center h-full'>
@@ -455,7 +447,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         </Content>
 
         {/* Footer */}
-        <Footer className='bg-white border-t text-center py-3 shadow-sm' style={{ background: 'rgba(255, 255, 255, 0.95)' }}>
+        <Footer className='bg-white border-t text-center py-2 shadow-sm' style={{ 
+          background: 'rgba(255, 255, 255, 0.98)', 
+          borderTop: '1px solid rgba(0, 102, 204, 0.1)',
+          height: '48px'
+        }}>
           <Space split={<Divider type='vertical' />} size='middle'>
             <Text type='secondary' className='text-xs'>
               Powered by <Text strong>{COMPANY_NAME}</Text>

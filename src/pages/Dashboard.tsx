@@ -102,13 +102,13 @@ const DashboardPage: React.FC = () => {
   };
 
   return (
-    <div className='p-6 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100'>
-      <div className='max-w-7xl mx-auto'>
+    <div className='p-4 h-screen bg-gray-50 overflow-hidden'>
+      <div className='max-w-full mx-auto h-full flex flex-col'>
         {/* Welcome Section */}
-        <div className='mb-8 fade-in'>
+        <div className='mb-4 flex-shrink-0'>
           <div className='flex items-center justify-between mb-4'>
             <div>
-              <Title level={2} className='mb-2 bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent'>
+              <Title level={2} className='mb-2 text-gray-800'>
                 <LocalizedText>
                   {t('dashboard.welcome', `Welcome, ${user?.name}`)}
                 </LocalizedText>
@@ -125,10 +125,11 @@ const DashboardPage: React.FC = () => {
         </div>
 
         {/* Quick Stats */}
+        <div className='flex-shrink-0'>
         <ContentLoading
           loading={statsLoading}
           skeleton={
-            <Row gutter={[24, 24]} className='mb-8'>
+            <Row gutter={[16, 16]} className='mb-4'>
               {[1, 2, 3, 4].map(i => (
                 <Col xs={24} sm={12} lg={6} key={i}>
                   <Card loading className='modern-card' />
@@ -137,9 +138,9 @@ const DashboardPage: React.FC = () => {
             </Row>
           }
         >
-          <Row gutter={[24, 24]} className='mb-8'>
+          <Row gutter={[16, 16]} className='mb-4'>
             <Col xs={24} sm={12} lg={6}>
-              <Card className='modern-card hover-lift slide-in-left' style={{ animationDelay: '0.1s' }}>
+              <Card className='modern-card hover-lift'>
                 <div className='flex items-center justify-between'>
                   <Statistic
                     title={
@@ -163,7 +164,7 @@ const DashboardPage: React.FC = () => {
             </Col>
 
             <Col xs={24} sm={12} lg={6}>
-              <Card className='modern-card hover-lift slide-in-left' style={{ animationDelay: '0.2s' }}>
+              <Card className='modern-card hover-lift'>
                 <div className='flex items-center justify-between'>
                   <Statistic
                     title={
@@ -179,15 +180,15 @@ const DashboardPage: React.FC = () => {
                       fontWeight: '600'
                     }}
                   />
-                  <div className='w-12 h-12 rounded-full bg-green-50 flex items-center justify-center hover-glow'>
-                    <DollarOutlined className='text-green-500 text-xl float' />
+                  <div className='w-12 h-12 rounded-full bg-green-50 flex items-center justify-center hover-scale'>
+                    <DollarOutlined className='text-green-500 text-xl' />
                   </div>
                 </div>
               </Card>
             </Col>
 
             <Col xs={24} sm={12} lg={6}>
-              <Card className='modern-card hover-lift slide-in-left' style={{ animationDelay: '0.3s' }}>
+              <Card className='modern-card hover-lift'>
                 <div className='flex items-center justify-between'>
                   <Statistic
                     title={
@@ -204,15 +205,15 @@ const DashboardPage: React.FC = () => {
                       fontWeight: '600'
                     }}
                   />
-                  <div className='w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center hover-glow'>
-                    <ExclamationOutlined className='text-orange-500 text-xl float' style={{ animationDelay: '0.2s' }} />
+                  <div className='w-12 h-12 rounded-full bg-orange-50 flex items-center justify-center hover-scale'>
+                    <ExclamationOutlined className='text-orange-500 text-xl' />
                   </div>
                 </div>
               </Card>
             </Col>
 
             <Col xs={24} sm={12} lg={6}>
-              <Card className='modern-card hover-lift slide-in-left' style={{ animationDelay: '0.4s' }}>
+              <Card className='modern-card hover-lift'>
                 <div className='flex items-center justify-between'>
                   <Statistic
                     title={
@@ -230,25 +231,25 @@ const DashboardPage: React.FC = () => {
                       fontWeight: '600'
                     }}
                   />
-                  <div className='w-12 h-12 rounded-full bg-red-50 flex items-center justify-center hover-glow'>
-                    <CreditCardOutlined className='text-red-500 text-xl float' style={{ animationDelay: '0.4s' }} />
+                  <div className='w-12 h-12 rounded-full bg-red-50 flex items-center justify-center hover-scale'>
+                    <CreditCardOutlined className='text-red-500 text-xl' />
                   </div>
                 </div>
               </Card>
             </Col>
           </Row>
         </ContentLoading>
+        </div>
 
         {/* Quick Actions */}
-        <div className='mb-8'>
-          <Title level={3} className='mb-6 text-gray-700'>
+        <div className='mb-4 flex-1 overflow-auto'>
+          <Title level={3} className='mb-4 text-gray-700'>
             <LocalizedText>Quick Actions</LocalizedText>
           </Title>
-          <Row gutter={[24, 24]}>
+          <Row gutter={[16, 16]}>
           <Col xs={24} md={12} lg={8}>
             <Card
-              className='modern-card hover-lift h-full scale-in'
-              style={{ animationDelay: '0.5s' }}
+              className='modern-card hover-lift h-full'
               actions={[
                 <Button
                   key='start-sale'
@@ -265,8 +266,8 @@ const DashboardPage: React.FC = () => {
               ]}
             >
               <div className='text-center p-4'>
-                <div className='w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center mx-auto mb-4 shadow-lg'>
-                  <ShoppingCartOutlined className='text-white text-2xl' />
+                <div className='w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center mx-auto mb-3 shadow-lg hover-scale'>
+                  <ShoppingCartOutlined className='text-white text-lg' />
                 </div>
                 <Title level={4} className='mb-2 text-gray-800'>
                   <LocalizedText>{t('pos.newSale')}</LocalizedText>
@@ -283,8 +284,7 @@ const DashboardPage: React.FC = () => {
           {hasPermission('inventory') && (
             <Col xs={24} md={12} lg={8}>
               <Card
-                className='modern-card hover-lift h-full scale-in'
-                style={{ animationDelay: '0.6s' }}
+                className='modern-card hover-lift h-full'
                 actions={[
                   <Button
                     key='manage-products'
@@ -300,9 +300,9 @@ const DashboardPage: React.FC = () => {
                   </Button>,
                 ]}
               >
-                <div className='text-center p-4'>
-                  <div className='w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center mx-auto mb-4 shadow-lg float'>
-                    <FileTextOutlined className='text-white text-2xl' />
+                <div className='text-center p-3'>
+                  <div className='w-12 h-12 rounded-full bg-green-500 flex items-center justify-center mx-auto mb-3 shadow-lg hover-scale'>
+                    <FileTextOutlined className='text-white text-lg' />
                   </div>
                   <Title level={4} className='mb-2 text-gray-800'>
                     <LocalizedText>{t('navigation.products')}</LocalizedText>
@@ -319,8 +319,7 @@ const DashboardPage: React.FC = () => {
 
           <Col xs={24} md={12} lg={8}>
             <Card
-              className='modern-card hover-lift h-full scale-in'
-              style={{ animationDelay: '0.7s' }}
+              className='modern-card hover-lift h-full'
               actions={[
                 <Button
                   key='manage-customers'
@@ -337,8 +336,8 @@ const DashboardPage: React.FC = () => {
               ]}
             >
               <div className='text-center p-4'>
-                <div className='w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center mx-auto mb-4 shadow-lg float' style={{ animationDelay: '0.2s' }}>
-                  <UserOutlined className='text-white text-2xl' />
+                <div className='w-16 h-16 rounded-full bg-purple-500 flex items-center justify-center mx-auto mb-3 shadow-lg hover-scale'>
+                  <UserOutlined className='text-white text-lg' />
                 </div>
                 <Title level={4} className='mb-2 text-gray-800'>
                   <LocalizedText>{t('navigation.customers')}</LocalizedText>
@@ -355,8 +354,7 @@ const DashboardPage: React.FC = () => {
           {hasPermission('suppliers') && (
             <Col xs={24} md={12} lg={8}>
               <Card
-                className='modern-card hover-lift h-full scale-in'
-                style={{ animationDelay: '0.8s' }}
+                className='modern-card hover-lift h-full'
                 actions={[
                   <Button
                     key='manage-suppliers'
@@ -372,9 +370,9 @@ const DashboardPage: React.FC = () => {
                   </Button>,
                 ]}
               >
-                <div className='text-center p-4'>
-                  <div className='w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center mx-auto mb-4 shadow-lg float' style={{ animationDelay: '0.4s' }}>
-                    <TeamOutlined className='text-white text-2xl' />
+                <div className='text-center p-3'>
+                  <div className='w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center mx-auto mb-3 shadow-lg hover-scale'>
+                    <TeamOutlined className='text-white text-lg' />
                   </div>
                   <Title level={4} className='mb-2 text-gray-800'>
                     <LocalizedText>{t('navigation.suppliers')}</LocalizedText>
@@ -395,8 +393,7 @@ const DashboardPage: React.FC = () => {
           {hasPermission('reports') && (
             <Col xs={24} md={12} lg={8}>
               <Card
-                className='modern-card hover-lift h-full scale-in'
-                style={{ animationDelay: '0.9s' }}
+                className='modern-card hover-lift h-full'
                 actions={[
                   <Button
                     key='view-reports'
@@ -412,9 +409,9 @@ const DashboardPage: React.FC = () => {
                   </Button>,
                 ]}
               >
-                <div className='text-center p-4'>
-                  <div className='w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center mx-auto mb-4 shadow-lg float' style={{ animationDelay: '0.6s' }}>
-                    <FileTextOutlined className='text-white text-2xl' />
+                <div className='text-center p-3'>
+                  <div className='w-12 h-12 rounded-full bg-cyan-500 flex items-center justify-center mx-auto mb-3 shadow-lg hover-scale'>
+                    <FileTextOutlined className='text-white text-lg' />
                   </div>
                   <Title level={4} className='mb-2 text-gray-800'>
                     <LocalizedText>{t('navigation.reports')}</LocalizedText>
@@ -435,8 +432,7 @@ const DashboardPage: React.FC = () => {
           {hasPermission('settings') && (
             <Col xs={24} md={12} lg={8}>
               <Card
-                className='modern-card hover-lift h-full scale-in'
-                style={{ animationDelay: '1.0s' }}
+                className='modern-card hover-lift h-full'
                 actions={[
                   <Button
                     key='configure-settings'
@@ -452,9 +448,9 @@ const DashboardPage: React.FC = () => {
                   </Button>,
                 ]}
               >
-                <div className='text-center p-4'>
-                  <div className='w-16 h-16 rounded-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center mx-auto mb-4 shadow-lg float' style={{ animationDelay: '0.8s' }}>
-                    <SettingOutlined className='text-white text-2xl' />
+                <div className='text-center p-3'>
+                  <div className='w-12 h-12 rounded-full bg-red-500 flex items-center justify-center mx-auto mb-3 shadow-lg hover-scale'>
+                    <SettingOutlined className='text-white text-lg' />
                   </div>
                   <Title level={4} className='mb-2 text-gray-800'>
                     <LocalizedText>{t('navigation.settings')}</LocalizedText>
@@ -474,11 +470,13 @@ const DashboardPage: React.FC = () => {
           </Row>
         </div>
 
-        {/* System Status */}
+        {/* System Status - Compact */}
+        <div className='flex-shrink-0'>
         <Card
-          className='modern-card fade-in'
+          className='modern-card'
+          size='small'
           title={
-            <span className='text-gray-700 font-semibold'>
+            <span className='text-gray-700 font-semibold text-sm'>
               <LocalizedText>
                 {t('dashboard.systemStatus', 'System Status')}
               </LocalizedText>
@@ -532,6 +530,7 @@ const DashboardPage: React.FC = () => {
             </div>
           </Space>
         </Card>
+        </div>
       </div>
     </div>
   );
