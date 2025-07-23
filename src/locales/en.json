@@ -10,6 +10,7 @@
     "products": "Products",
     "customers": "Customers",
     "suppliers": "Suppliers",
+    "users": "User Management",
     "reports": "Reports",
     "settings": "Settings",
     "manage": "Manage",
@@ -200,7 +201,11 @@
     "dashed": "Dashed Button",
     "total": "Total",
     "continue": "Continue",
-    "back": "Back"
+    "back": "Back",
+    "refresh": "Refresh",
+    "filter": "Filter",
+    "clear": "Clear",
+    "view": "View"
   },
   "errors": {
     "networkError": "Network connection error"
@@ -231,6 +236,193 @@
     "f2": "F2 - Product Search",
     "ctrlH": "Ctrl+H - Hold Sale",
     "ctrlR": "Ctrl+R - Retrieve Sale"
+  },
+  "users": {
+    "title": "User Management",
+    "description": "Manage system users, roles, and permissions",
+    "table": {
+      "user": "User",
+      "role": "Role",
+      "contact": "Contact",
+      "status": "Status",
+      "lastLogin": "Last Login",
+      "actions": "Actions",
+      "noContact": "No contact",
+      "neverLoggedIn": "Never"
+    },
+    "search": {
+      "placeholder": "Search by name or username..."
+    },
+    "filters": {
+      "role": "Filter by role",
+      "status": "Filter by status"
+    },
+    "roles": {
+      "owner": "Owner",
+      "cashier": "Cashier",
+      "helper": "Helper"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "actions": {
+      "create": "Add User",
+      "view": "View Details",
+      "edit": "Edit User",
+      "delete": "Delete User",
+      "resetPassword": "Reset Password",
+      "activate": "Activate",
+      "deactivate": "Deactivate"
+    },
+    "create": {
+      "title": "Create New User",
+      "submit": "Create User",
+      "sections": {
+        "basicInfo": "Basic Information",
+        "authentication": "Authentication",
+        "rolePermissions": "Role & Permissions",
+        "additionalSettings": "Additional Settings",
+        "contactInfo": "Contact Information",
+        "otherSettings": "Other Settings"
+      },
+      "rolePermissions": "Role: {role}",
+      "permissionsInclude": "This role includes the following permissions:",
+      "usernameNote": "Username cannot be changed",
+      "usernameDescription": "Current username: {username}"
+    },
+    "edit": {
+      "title": "Edit User",
+      "submit": "Update User",
+      "sections": {
+        "basicInfo": "Basic Information",
+        "pin": "PIN Management",
+        "rolePermissions": "Role & Permissions",
+        "additionalSettings": "Additional Settings"
+      },
+      "rolePermissions": "Role: {role}",
+      "permissionsInclude": "This role includes the following permissions:",
+      "usernameNote": "Username cannot be changed",
+      "usernameDescription": "Current username: {username}",
+      "ownAccountNote": "You cannot change your own role or status"
+    },
+    "delete": {
+      "title": "Delete User",
+      "confirmation": "Are you sure you want to delete {name}? This action cannot be undone."
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "confirmation": "Are you sure you want to reset the password for this user?"
+    },
+    "fields": {
+      "username": "Username",
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "password": "Password",
+      "newPassword": "New Password",
+      "pin": "PIN",
+      "newPin": "New PIN",
+      "role": "Role",
+      "preferredLanguage": "Preferred Language",
+      "status": "Account Status",
+      "notes": "Notes",
+      "enablePin": "Enable PIN"
+    },
+    "placeholders": {
+      "username": "Enter username (letters and numbers only)",
+      "name": "Enter full name",
+      "email": "Enter email address",
+      "phone": "Enter phone number",
+      "password": "Enter password (minimum 6 characters)",
+      "pin": "Enter 4-6 digit PIN",
+      "newPin": "Enter new PIN or leave empty to keep current",
+      "notes": "Enter any additional notes about this user"
+    },
+    "validation": {
+      "usernameRequired": "Username is required",
+      "usernameMinLength": "Username must be at least 3 characters",
+      "usernameFormat": "Username must contain only letters and numbers",
+      "usernameExists": "Username already exists",
+      "nameRequired": "Full name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "emailFormat": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "pinRequired": "PIN is required",
+      "pinFormat": "PIN must be 4-6 digits",
+      "roleRequired": "Role selection is required"
+    },
+    "help": {
+      "pinSwitch": "Allow quick login with PIN",
+      "pinDescription": "PIN allows quick switching between users without full login",
+      "pinEnabled": "PIN is currently enabled",
+      "pinDisabled": "PIN is currently disabled",
+      "pinWillBeRemoved": "Disabling will remove the current PIN"
+    },
+    "permissions": {
+      "sales": "Point of Sale",
+      "inventory": "Product Management",
+      "customers": "Customer Management",
+      "suppliers": "Supplier Management",
+      "reports": "View Reports",
+      "basic_reports": "Basic Reports",
+      "settings": "System Settings",
+      "users": "User Management",
+      "backup": "Backup & Restore",
+      "system": "System Administration",
+      "admin": "Full Administration"
+    },
+    "messages": {
+      "loadError": "Failed to load users",
+      "createError": "Failed to create user",
+      "updateError": "Failed to update user",
+      "deleteError": "Failed to delete user",
+      "statusUpdateError": "Failed to update user status",
+      "passwordResetError": "Failed to reset password",
+      "userCreated": "User created successfully",
+      "userUpdated": "User updated successfully",
+      "userDeleted": "User deleted successfully",
+      "statusUpdated": "User status updated successfully",
+      "passwordReset": "Password reset successfully",
+      "accessDenied": "Access denied. Only owners can manage users."
+    },
+    "pagination": {
+      "total": "Showing {start}-{end} of {total} users"
+    },
+    "details": {
+      "sections": {
+        "basicInfo": "Basic Information",
+        "rolePermissions": "Role & Permissions",
+        "activity": "Activity History",
+        "notes": "Notes"
+      },
+      "accountStatus": "Account Status",
+      "userRole": "User Role",
+      "quickAccess": "Quick Access",
+      "pinEnabled": "PIN Enabled",
+      "pinDisabled": "PIN Disabled",
+      "role": "Role",
+      "permissions": "Permissions",
+      "lastLogin": "Last Login",
+      "lastActivity": "Last Activity",
+      "accountCreated": "Account Created",
+      "lastUpdated": "Last Updated",
+      "neverLoggedIn": "Never logged in",
+      "noActivity": "No recent activity"
+    },
+    "time": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "daysAgo": "{days} days ago",
+      "weeksAgo": "{weeks} weeks ago",
+      "monthsAgo": "{months} months ago"
+    }
+  },
+  "languages": {
+    "en": "English",
+    "si": "සිංහල",
+    "ta": "தமிழ්"
   },
   "currency": {
     "symbol": "Rs.",

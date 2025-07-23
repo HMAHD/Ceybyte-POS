@@ -176,14 +176,14 @@ export const UPSStatusIndicator: React.FC<UPSStatusIndicatorProps> = ({
         <LocalizedText>{getStatusText(upsInfo.status)}</LocalizedText>
       </div>
       <div className='text-sm text-gray-700'>
-        <LocalizedText>
-          {t('ups.batteryLevel', 'Battery Level')}
-        </LocalizedText>
-        : <span className='font-medium'>{upsInfo.batteryLevel}%</span>
+        <LocalizedText>{t('ups.batteryLevel', 'Battery Level')}</LocalizedText>:{' '}
+        <span className='font-medium'>{upsInfo.batteryLevel}%</span>
       </div>
       <div className='text-sm text-gray-700'>
         <LocalizedText>{t('ups.estimatedRuntime', 'Runtime')}</LocalizedText>:{' '}
-        <span className='font-medium'>{formatRuntime(upsInfo.estimatedRuntime)}</span>
+        <span className='font-medium'>
+          {formatRuntime(upsInfo.estimatedRuntime)}
+        </span>
       </div>
       {upsInfo.model && (
         <div className='text-sm text-gray-700'>
@@ -237,17 +237,20 @@ export const UPSStatusIndicator: React.FC<UPSStatusIndicatorProps> = ({
   }
 
   return (
-    <Tooltip 
-      title={tooltipContent} 
-      placement='bottomRight' 
-      overlayClassName='ups-tooltip'
+    <Tooltip
+      title={tooltipContent}
+      placement='bottomRight'
+      classNames={{ root: 'ups-tooltip' }}
       color='white'
-      overlayInnerStyle={{
-        backgroundColor: 'white',
-        color: '#374151',
-        border: '1px solid #e5e7eb',
-        borderRadius: '8px',
-        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+      styles={{
+        body: {
+          backgroundColor: 'white',
+          color: '#374151',
+          border: '1px solid #e5e7eb',
+          borderRadius: '8px',
+          boxShadow:
+            '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        }
       }}
     >
       <Badge

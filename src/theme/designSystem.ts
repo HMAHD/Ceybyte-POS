@@ -171,7 +171,7 @@ export const BORDER_RADIUS = {
   '2xl': '20px',
   '3xl': '24px',
   full: '9999px',
-  
+
   // Component specific
   card: '12px',
   button: '8px',
@@ -188,17 +188,21 @@ export const SHADOWS = {
   md: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
   lg: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
   xl: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-  
+
   // Colored shadows
-  primary: '0 10px 15px -3px rgba(0, 102, 204, 0.1), 0 4px 6px -2px rgba(0, 102, 204, 0.05)',
-  success: '0 10px 15px -3px rgba(34, 197, 94, 0.1), 0 4px 6px -2px rgba(34, 197, 94, 0.05)',
-  warning: '0 10px 15px -3px rgba(245, 158, 11, 0.1), 0 4px 6px -2px rgba(245, 158, 11, 0.05)',
-  error: '0 10px 15px -3px rgba(239, 68, 68, 0.1), 0 4px 6px -2px rgba(239, 68, 68, 0.05)',
-  
+  primary:
+    '0 10px 15px -3px rgba(0, 102, 204, 0.1), 0 4px 6px -2px rgba(0, 102, 204, 0.05)',
+  success:
+    '0 10px 15px -3px rgba(34, 197, 94, 0.1), 0 4px 6px -2px rgba(34, 197, 94, 0.05)',
+  warning:
+    '0 10px 15px -3px rgba(245, 158, 11, 0.1), 0 4px 6px -2px rgba(245, 158, 11, 0.05)',
+  error:
+    '0 10px 15px -3px rgba(239, 68, 68, 0.1), 0 4px 6px -2px rgba(239, 68, 68, 0.05)',
+
   // Inner shadows
   inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
   innerLg: 'inset 0 4px 8px 0 rgba(0, 0, 0, 0.12)',
-  
+
   // Glass morphism
   glass: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
 };
@@ -271,18 +275,19 @@ export const GRADIENTS = {
   primary: 'linear-gradient(135deg, #0066cc 0%, #0052a3 100%)',
   primaryLight: 'linear-gradient(135deg, #4da6ff 0%, #1a8cff 100%)',
   primarySubtle: 'linear-gradient(135deg, #e6f3ff 0%, #b3d9ff 100%)',
-  
+
   // Status gradients
   success: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
   successLight: 'linear-gradient(135deg, #86efac 0%, #4ade80 100%)',
   warning: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
   error: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
-  
+
   // Neutral gradients
-  glass: 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)',
+  glass:
+    'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)',
   surface: 'linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%)',
   dark: 'linear-gradient(135deg, #262626 0%, #171717 100%)',
-  
+
   // Special gradients
   rainbow: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
   ocean: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -307,14 +312,14 @@ export const ANIMATION = {
     spring: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
     bounce: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
   },
-  
+
   // Modern micro-interactions
   hover: {
     scale: 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
     lift: 'transform 0.2s ease-out, box-shadow 0.2s ease-out',
     glow: 'box-shadow 0.3s ease-out',
   },
-  
+
   // Loading animations
   pulse: 'animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
   spin: 'animation: spin 1s linear infinite',

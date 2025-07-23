@@ -44,6 +44,8 @@ import {
   GlobalOutlined,
   BgColorsOutlined,
   KeyOutlined,
+  UsergroupAddOutlined,
+  ContactsTwoTone,
 } from '@ant-design/icons';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNetwork } from '@/contexts/NetworkContext';
@@ -106,15 +108,19 @@ const StatusIndicator: React.FC<StatusIndicatorProps> = ({
   const statusInfo = getStatusInfo();
 
   return (
-    <Tooltip title={label} placement="bottom">
-      <div className="relative inline-flex items-center justify-center w-8 h-8 rounded-lg hover:scale-105 transition-all duration-200 cursor-pointer"
-           style={{ 
-             backgroundColor: statusInfo.bgColor,
-             color: statusInfo.color 
-           }}>
-        <span className="text-sm font-medium">{getIcon()}</span>
-        <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full border-2 border-white"
-              style={{ backgroundColor: statusInfo.dotColor }}></span>
+    <Tooltip title={label} placement='bottom'>
+      <div
+        className='relative inline-flex items-center justify-center w-8 h-8 rounded-lg hover:scale-105 transition-all duration-200 cursor-pointer'
+        style={{
+          backgroundColor: statusInfo.bgColor,
+          color: statusInfo.color,
+        }}
+      >
+        <span className='text-sm font-medium'>{getIcon()}</span>
+        <span
+          className='absolute -top-1 -right-1 w-3 h-3 rounded-full border-2 border-white'
+          style={{ backgroundColor: statusInfo.dotColor }}
+        ></span>
       </div>
     </Tooltip>
   );
@@ -176,6 +182,16 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         <LocalizedText>{t('navigation.suppliers', 'Suppliers')}</LocalizedText>
       ),
       permission: 'suppliers',
+    },
+    {
+      key: 'users',
+      icon: <ContactsTwoTone twoToneColor={['#8b5cf6', '#c4b5fd']} />,
+      label: (
+        <LocalizedText>
+          {t('navigation.users', 'User Management')}
+        </LocalizedText>
+      ),
+      permission: 'users',
     },
     {
       key: 'reports',
@@ -298,7 +314,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         style={{
           background: '#ffffff',
           borderRight: '1px solid #e5e7eb',
-          boxShadow: '2px 0 4px rgba(0, 0, 0, 0.03)'
+          boxShadow: '2px 0 4px rgba(0, 0, 0, 0.03)',
         }}
       >
         {/* Logo */}
@@ -340,13 +356,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         {/* Header */}
         <Header
           className='bg-white shadow-sm border-b px-2 sm:px-4 backdrop-blur-lg'
-          style={{ 
-            height: 56, 
+          style={{
+            height: 56,
             lineHeight: 'normal',
             background: '#ffffff',
             borderBottom: '1px solid #e5e7eb',
             display: 'flex',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <div className='flex justify-between items-center w-full'>
@@ -365,7 +381,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
               <div className='flex items-center space-x-1 sm:space-x-2 px-1 sm:px-2 py-1 bg-white rounded-lg border border-gray-200'>
                 <Text type='secondary' className='text-xs sm:text-sm'>
                   <span className='hidden sm:inline'>
-                    <LocalizedText>{t('header.terminal', 'Terminal')}:</LocalizedText>
+                    <LocalizedText>
+                      {t('header.terminal', 'Terminal')}:
+                    </LocalizedText>
                   </span>
                   <Text className='ml-1 font-medium text-blue-600'>
                     {networkConfig.terminalName ||
@@ -417,36 +435,39 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 
               {/* User Menu */}
               <div className='ml-2'>
-              <Dropdown
-                menu={{
-                  items: userMenuItems,
-                  onClick: ({ key }) => {
-                    if (key === 'logout') {
-                      logout();
-                    } else {
-                      handleMenuClick(key);
-                    }
-                  },
-                }}
-                placement='bottomRight'
-              >
-                <Button type='text' className='flex items-center px-3 py-1 hover:bg-gray-100 rounded-lg border border-gray-200'>
-                  <Avatar
-                    size={24}
-                    icon={<UserOutlined />}
-                    className='mr-2'
-                    style={{ backgroundColor: '#0066cc' }}
-                  />
-                  <div className='hidden lg:block text-left'>
-                    <div className='text-sm font-medium text-gray-900'>
-                      <LocalizedText>{user?.name}</LocalizedText>
+                <Dropdown
+                  menu={{
+                    items: userMenuItems,
+                    onClick: ({ key }) => {
+                      if (key === 'logout') {
+                        logout();
+                      } else {
+                        handleMenuClick(key);
+                      }
+                    },
+                  }}
+                  placement='bottomRight'
+                >
+                  <Button
+                    type='text'
+                    className='flex items-center px-3 py-1 hover:bg-gray-100 rounded-lg border border-gray-200'
+                  >
+                    <Avatar
+                      size={24}
+                      icon={<UserOutlined />}
+                      className='mr-2'
+                      style={{ backgroundColor: '#0066cc' }}
+                    />
+                    <div className='hidden lg:block text-left'>
+                      <div className='text-sm font-medium text-gray-900'>
+                        <LocalizedText>{user?.name}</LocalizedText>
+                      </div>
+                      <div className='text-xs text-gray-500'>
+                        <LocalizedText>{user?.role}</LocalizedText>
+                      </div>
                     </div>
-                    <div className='text-xs text-gray-500'>
-                      <LocalizedText>{user?.role}</LocalizedText>
-                    </div>
-                  </div>
-                </Button>
-              </Dropdown>
+                  </Button>
+                </Dropdown>
               </div>
             </div>
           </div>
@@ -454,43 +475,47 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 
         {/* Main Content */}
         <Content className='bg-transparent overflow-auto'>
-          <div className='min-h-full'>
-            {children}
-          </div>
+          <div className='min-h-full'>{children}</div>
         </Content>
 
         {/* Footer */}
-        <Footer className='bg-white border-t text-center py-1 px-2 shadow-sm' style={{ 
-          background: 'rgba(255, 255, 255, 0.98)', 
-          borderTop: '1px solid rgba(0, 102, 204, 0.1)',
-          minHeight: '40px'
-        }}>
+        <Footer
+          className='bg-white border-t text-center py-1 px-2 shadow-sm'
+          style={{
+            background: 'rgba(255, 255, 255, 0.98)',
+            borderTop: '1px solid rgba(0, 102, 204, 0.1)',
+            minHeight: '40px',
+          }}
+        >
           <div className='flex flex-wrap items-center justify-between gap-2 text-xs'>
             <Text type='secondary' className='text-xs'>
-              <span className='hidden sm:inline'>Powered by </span><Text strong>{COMPANY_NAME}</Text>
+              <span className='hidden sm:inline'>Powered by </span>
+              <Text strong>{COMPANY_NAME}</Text>
             </Text>
             <div className='hidden lg:flex text-xs gap-4'>
-                <ShortcutHint
-                  shortcut={KEYBOARD_SHORTCUTS.quickSale}
-                  description={t('shortcuts.quickSale', 'Quick Sale')}
-                />
-                <ShortcutHint
-                  shortcut={KEYBOARD_SHORTCUTS.customerMode}
-                  description={t('shortcuts.customerMode', 'Customer Mode')}
-                />
-                <ShortcutHint
-                  shortcut={KEYBOARD_SHORTCUTS.settings}
-                  description={t('shortcuts.settings', 'Settings')}
-                />
-                <ShortcutHint
-                  shortcut={KEYBOARD_SHORTCUTS.help}
-                  description={t('shortcuts.help', 'Help')}
-                />
+              <ShortcutHint
+                shortcut={KEYBOARD_SHORTCUTS.quickSale}
+                description={t('shortcuts.quickSale', 'Quick Sale')}
+              />
+              <ShortcutHint
+                shortcut={KEYBOARD_SHORTCUTS.customerMode}
+                description={t('shortcuts.customerMode', 'Customer Mode')}
+              />
+              <ShortcutHint
+                shortcut={KEYBOARD_SHORTCUTS.settings}
+                description={t('shortcuts.settings', 'Settings')}
+              />
+              <ShortcutHint
+                shortcut={KEYBOARD_SHORTCUTS.help}
+                description={t('shortcuts.help', 'Help')}
+              />
             </div>
             <Text type='secondary' className='text-xs'>
               <GlobalOutlined className='mr-1' />
               <span className='hidden sm:inline'>
-                <LocalizedText>{t('footer.version', 'Version')}</LocalizedText>{' '}
+                <LocalizedText>
+                  {t('footer.version', 'Version')}
+                </LocalizedText>{' '}
               </span>
               1.0.0
             </Text>

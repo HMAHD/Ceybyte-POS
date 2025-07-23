@@ -122,7 +122,7 @@ class SecurityEvent(BaseModel):
     terminal_id = Column(String(50), nullable=True)
     
     # Additional data
-    metadata = Column(Text, nullable=True)  # JSON string for additional context
+    event_metadata = Column(Text, nullable=True)  # JSON string for additional context
     
     # Timing
     occurred_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))

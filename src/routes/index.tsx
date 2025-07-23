@@ -21,6 +21,7 @@ import POSPage from '@/pages/POS';
 import ProductsPage from '@/pages/Products';
 import CustomersPage from '@/pages/Customers';
 import SuppliersPage from '@/pages/Suppliers';
+import UsersPage from '@/pages/Users';
 import ReportsPage from '@/pages/Reports';
 import SettingsPage from '@/pages/Settings';
 
@@ -75,6 +76,16 @@ export const router = createBrowserRouter([
       <ProtectedRoute requiredPermission='suppliers'>
         <MainLayout selectedKey='suppliers'>
           <SuppliersPage />
+        </MainLayout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/users',
+    element: (
+      <ProtectedRoute requiredPermission='users'>
+        <MainLayout selectedKey='users'>
+          <UsersPage />
         </MainLayout>
       </ProtectedRoute>
     ),

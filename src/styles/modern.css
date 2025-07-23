@@ -22,15 +22,23 @@
   --gradient-success: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
   --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
   --gradient-error: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
-  
+  --gradient-glass: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+
   /* Shadows */
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-primary: 0 10px 15px -3px rgba(0, 102, 204, 0.1), 0 4px 6px -2px rgba(0, 102, 204, 0.05);
+  --shadow-md:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-primary:
+    0 10px 15px -3px rgba(0, 102, 204, 0.1),
+    0 4px 6px -2px rgba(0, 102, 204, 0.05);
   --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  
+
   /* Animations */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -42,33 +50,66 @@
    Keyframe Animations
    ==================== */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes slideInRight {
-  from { opacity: 0; transform: translateX(20px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 /* Removed idle float animation - keeping only interaction-based animations */
@@ -103,7 +144,9 @@
   background: var(--gradient-primary);
   border-radius: 12px;
   padding: 1px;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   mask-composite: subtract;
   pointer-events: none;
 }
@@ -135,7 +178,12 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transition: left var(--transition-normal);
 }
 
@@ -184,8 +232,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* ====================
@@ -399,10 +451,18 @@
   margin-right: 6px;
 }
 
-.status-dot.online { background: #22c55e; }
-.status-dot.offline { background: #6b7280; }
-.status-dot.warning { background: #f59e0b; }
-.status-dot.error { background: #ef4444; }
+.status-dot.online {
+  background: #22c55e;
+}
+.status-dot.offline {
+  background: #6b7280;
+}
+.status-dot.warning {
+  background: #f59e0b;
+}
+.status-dot.error {
+  background: #ef4444;
+}
 
 /* ====================
    Animation Utilities
@@ -452,12 +512,12 @@
     border-radius: 8px;
     margin: 0 4px;
   }
-  
+
   .modern-button {
     padding: 12px 16px;
     font-size: 14px;
   }
-  
+
   .sidebar-item {
     margin: 1px 4px;
   }
@@ -469,25 +529,26 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    --shadow-md:
+      0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
   }
-  
+
   .modern-card {
     background: #ffffff;
     border-color: #e5e7eb;
   }
-  
+
   .modern-sidebar {
     background: #ffffff;
     border-right-color: #e5e7eb;
   }
-  
+
   .modern-input {
     background: #374151;
     border-color: #4b5563;
     color: #f9fafb;
   }
-  
+
   .modern-input:focus {
     border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
@@ -523,23 +584,28 @@
 /* Outer Lotus Petals Blooming */
 @keyframes lotus-bloom {
   0% {
-    transform: translateY(0) translateX(0) scale(0) rotate(var(--petal-rotation));
+    transform: translateY(0) translateX(0) scale(0)
+      rotate(var(--petal-rotation));
     opacity: 0;
   }
   20% {
-    transform: translateY(-2px) translateX(0) scale(0.3) rotate(var(--petal-rotation));
+    transform: translateY(-2px) translateX(0) scale(0.3)
+      rotate(var(--petal-rotation));
     opacity: 0.2;
   }
   50% {
-    transform: translateY(-4px) translateX(-2px) scale(0.7) rotate(var(--petal-rotation));
+    transform: translateY(-4px) translateX(-2px) scale(0.7)
+      rotate(var(--petal-rotation));
     opacity: 0.4;
   }
   80% {
-    transform: translateY(-6px) translateX(-4px) scale(0.95) rotate(var(--petal-rotation));
+    transform: translateY(-6px) translateX(-4px) scale(0.95)
+      rotate(var(--petal-rotation));
     opacity: 0.45;
   }
   100% {
-    transform: translateY(-8px) translateX(-6px) scale(1) rotate(var(--petal-rotation));
+    transform: translateY(-8px) translateX(-6px) scale(1)
+      rotate(var(--petal-rotation));
     opacity: 0.4;
   }
 }
@@ -547,19 +613,23 @@
 /* Inner Lotus Petals Blooming */
 @keyframes lotus-bloom-inner {
   0% {
-    transform: translateY(0) translateX(0) scale(0) rotate(var(--petal-rotation));
+    transform: translateY(0) translateX(0) scale(0)
+      rotate(var(--petal-rotation));
     opacity: 0;
   }
   30% {
-    transform: translateY(-1px) translateX(0) scale(0.2) rotate(var(--petal-rotation));
+    transform: translateY(-1px) translateX(0) scale(0.2)
+      rotate(var(--petal-rotation));
     opacity: 0.3;
   }
   60% {
-    transform: translateY(-3px) translateX(-1px) scale(0.6) rotate(var(--petal-rotation));
+    transform: translateY(-3px) translateX(-1px) scale(0.6)
+      rotate(var(--petal-rotation));
     opacity: 0.5;
   }
   100% {
-    transform: translateY(-4px) translateX(-2px) scale(1) rotate(var(--petal-rotation));
+    transform: translateY(-4px) translateX(-2px) scale(1)
+      rotate(var(--petal-rotation));
     opacity: 0.5;
   }
 }
@@ -585,7 +655,8 @@
 
 /* Water Flow Animation */
 @keyframes water-flow {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0) scaleY(1);
     opacity: 0.3;
   }
@@ -651,7 +722,8 @@
 
 /* Floating Petals from Bloomed Lotus */
 @keyframes petal-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) translateX(0px) rotate(0deg);
     opacity: 0.3;
   }
@@ -670,7 +742,8 @@
 }
 
 @keyframes petal-float-slow {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) translateX(0px) rotate(0deg) scale(1);
     opacity: 0.25;
   }
@@ -686,7 +759,8 @@
 
 /* Multiple Petal Drift Animations - Each with unique path */
 @keyframes petal-drift-1 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.25;
   }
@@ -705,7 +779,8 @@
 }
 
 @keyframes petal-drift-2 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.3;
   }
@@ -724,7 +799,8 @@
 }
 
 @keyframes petal-drift-3 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.28;
   }
@@ -739,7 +815,8 @@
 }
 
 @keyframes petal-drift-4 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.25;
   }
@@ -754,7 +831,8 @@
 }
 
 @keyframes petal-drift-5 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.35;
   }
@@ -769,7 +847,8 @@
 }
 
 @keyframes petal-drift-6 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.2;
   }
@@ -780,7 +859,8 @@
 }
 
 @keyframes petal-drift-7 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.28;
   }
@@ -795,7 +875,8 @@
 }
 
 @keyframes petal-drift-8 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.22;
   }
@@ -806,7 +887,8 @@
 }
 
 @keyframes petal-drift-9 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.32;
   }
@@ -821,7 +903,8 @@
 }
 
 @keyframes petal-drift-10 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.26;
   }
@@ -832,7 +915,8 @@
 }
 
 @keyframes petal-drift-11 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.24;
   }
@@ -847,7 +931,8 @@
 }
 
 @keyframes petal-drift-12 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.28;
   }
@@ -863,7 +948,8 @@
 
 /* Lotus Bud Swaying Animations */
 @keyframes bud-sway-1 {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg) scale(1);
     opacity: 0.2;
   }
@@ -874,7 +960,8 @@
 }
 
 @keyframes bud-sway-2 {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg) scale(1);
     opacity: 0.18;
   }
@@ -889,7 +976,8 @@
 }
 
 @keyframes bud-sway-3 {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg) scale(1);
     opacity: 0.22;
   }
@@ -904,7 +992,8 @@
 }
 
 @keyframes bud-sway-4 {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg) scale(1);
     opacity: 0.25;
   }
@@ -915,7 +1004,8 @@
 }
 
 @keyframes bud-sway-5 {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg) scale(1);
     opacity: 0.2;
   }
@@ -931,7 +1021,8 @@
 
 /* Lotus Leaf Floating Animations */
 @keyframes leaf-float-1 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.25;
   }
@@ -946,7 +1037,8 @@
 }
 
 @keyframes leaf-float-2 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.2;
   }
@@ -957,7 +1049,8 @@
 }
 
 @keyframes leaf-float-3 {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) translateY(0px) rotate(0deg) scale(1);
     opacity: 0.22;
   }
@@ -973,7 +1066,8 @@
 
 /* Interactive Mini Lotus Animations */
 @keyframes mini-lotus-gentle {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg) scale(1);
     opacity: 0.6;
   }
@@ -992,7 +1086,8 @@
 }
 
 @keyframes mini-lotus-excited {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg) scale(1);
     opacity: 0.9;
   }
@@ -1042,7 +1137,8 @@
 }
 
 @keyframes mini-lotus-center-glow {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.5;
     box-shadow: 0 0 4px rgba(252, 211, 77, 0.3);
@@ -1055,7 +1151,8 @@
 }
 
 @keyframes lotus-float-slow {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) translateX(0px) rotate(45deg) scale(1);
     opacity: 0.35;
   }
@@ -1070,7 +1167,8 @@
 }
 
 @keyframes lotus-float-medium {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) translateX(0px) rotate(-12deg) scale(1);
     opacity: 0.3;
   }
@@ -1086,7 +1184,8 @@
 
 /* Temple Glow Animation - Traditional Architecture */
 @keyframes temple-glow {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg) scale(1);
     opacity: 0.25;
     box-shadow: 0 0 10px rgba(251, 146, 60, 0.3);
@@ -1110,7 +1209,8 @@
 
 /* Cultural Pulse - Traditional Patterns */
 @keyframes cultural-pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1) rotate(0deg);
     opacity: 0.2;
   }
@@ -1122,7 +1222,8 @@
 
 /* Peacock Feather Sway - National Bird */
 @keyframes feather-sway {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg) translateY(0px);
     opacity: 0.3;
   }
@@ -1141,7 +1242,8 @@
 }
 
 @keyframes feather-sway-slow {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg) translateY(0px) scaleY(1);
     opacity: 0.25;
   }
@@ -1157,7 +1259,8 @@
 
 /* Ocean Waves - Indian Ocean */
 @keyframes ocean-flow {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0px) scaleY(1);
     opacity: 0.2;
   }
@@ -1177,7 +1280,8 @@
 
 /* Traditional Lamp Glow - Pahana/Deepa */
 @keyframes lamp-glow {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.4;
     box-shadow: 0 0 8px rgba(252, 211, 77, 0.6);
@@ -1190,7 +1294,8 @@
 }
 
 @keyframes lamp-glow-slow {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.35;
     box-shadow: 0 0 6px rgba(245, 158, 11, 0.5);
@@ -1204,7 +1309,8 @@
 
 /* Cultural Gradient Shift */
 @keyframes cultural-shift {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.15;
     transform: translateX(0%) rotate(0deg);
   }
@@ -1495,10 +1601,18 @@
 }
 
 /* Rotation utilities for mini lotus petals */
-.rotate-60 { transform: rotate(60deg); }
-.rotate-120 { transform: rotate(120deg); }
-.rotate-240 { transform: rotate(240deg); }
-.rotate-300 { transform: rotate(300deg); }
+.rotate-60 {
+  transform: rotate(60deg);
+}
+.rotate-120 {
+  transform: rotate(120deg);
+}
+.rotate-240 {
+  transform: rotate(240deg);
+}
+.rotate-300 {
+  transform: rotate(300deg);
+}
 
 /* Gradient utilities */
 .bg-gradient-radial {
@@ -1506,27 +1620,83 @@
 }
 
 .water-surface {
-  clip-path: polygon(0% 100%, 0% 80%, 5% 82%, 10% 78%, 15% 85%, 20% 80%, 25% 88%, 30% 82%, 35% 90%, 40% 85%, 45% 92%, 50% 88%, 55% 95%, 60% 90%, 65% 93%, 70% 87%, 75% 95%, 80% 90%, 85% 98%, 90% 92%, 95% 96%, 100% 90%, 100% 100%);
+  clip-path: polygon(
+    0% 100%,
+    0% 80%,
+    5% 82%,
+    10% 78%,
+    15% 85%,
+    20% 80%,
+    25% 88%,
+    30% 82%,
+    35% 90%,
+    40% 85%,
+    45% 92%,
+    50% 88%,
+    55% 95%,
+    60% 90%,
+    65% 93%,
+    70% 87%,
+    75% 95%,
+    80% 90%,
+    85% 98%,
+    90% 92%,
+    95% 96%,
+    100% 90%,
+    100% 100%
+  );
   filter: blur(1px);
 }
 
 /* Rotation utilities for petals */
-.rotate-0 { transform: rotate(0deg); }
-.rotate-22 { transform: rotate(22.5deg); }
-.rotate-45 { transform: rotate(45deg); }
-.rotate-67 { transform: rotate(67.5deg); }
-.rotate-90 { transform: rotate(90deg); }
-.rotate-112 { transform: rotate(112.5deg); }
-.rotate-135 { transform: rotate(135deg); }
-.rotate-157 { transform: rotate(157.5deg); }
-.rotate-180 { transform: rotate(180deg); }
-.rotate-202 { transform: rotate(202.5deg); }
-.rotate-225 { transform: rotate(225deg); }
-.rotate-247 { transform: rotate(247.5deg); }
-.rotate-270 { transform: rotate(270deg); }
-.rotate-292 { transform: rotate(292.5deg); }
-.rotate-315 { transform: rotate(315deg); }
-.rotate-337 { transform: rotate(337.5deg); }
+.rotate-0 {
+  transform: rotate(0deg);
+}
+.rotate-22 {
+  transform: rotate(22.5deg);
+}
+.rotate-45 {
+  transform: rotate(45deg);
+}
+.rotate-67 {
+  transform: rotate(67.5deg);
+}
+.rotate-90 {
+  transform: rotate(90deg);
+}
+.rotate-112 {
+  transform: rotate(112.5deg);
+}
+.rotate-135 {
+  transform: rotate(135deg);
+}
+.rotate-157 {
+  transform: rotate(157.5deg);
+}
+.rotate-180 {
+  transform: rotate(180deg);
+}
+.rotate-202 {
+  transform: rotate(202.5deg);
+}
+.rotate-225 {
+  transform: rotate(225deg);
+}
+.rotate-247 {
+  transform: rotate(247.5deg);
+}
+.rotate-270 {
+  transform: rotate(270deg);
+}
+.rotate-292 {
+  transform: rotate(292.5deg);
+}
+.rotate-315 {
+  transform: rotate(315deg);
+}
+.rotate-337 {
+  transform: rotate(337.5deg);
+}
 
 /* Traditional Cultural Element Shapes */
 .lotus-petal {
@@ -1536,13 +1706,21 @@
 
 .srilanka-pattern {
   border-radius: 20% 80% 20% 80%;
-  background: radial-gradient(circle at 30% 30%, rgba(251, 146, 60, 0.1), transparent 50%);
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(251, 146, 60, 0.1),
+    transparent 50%
+  );
 }
 
 .srilanka-diamond {
   transform: rotate(45deg);
   border-radius: 15%;
-  background: radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.1), transparent 60%);
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(34, 197, 94, 0.1),
+    transparent 60%
+  );
 }
 
 .peacock-feather {
@@ -1551,7 +1729,21 @@
 }
 
 .ocean-waves {
-  clip-path: polygon(0% 100%, 0% 60%, 10% 65%, 20% 60%, 30% 68%, 40% 62%, 50% 70%, 60% 65%, 70% 72%, 80% 68%, 90% 75%, 100% 70%, 100% 100%);
+  clip-path: polygon(
+    0% 100%,
+    0% 60%,
+    10% 65%,
+    20% 60%,
+    30% 68%,
+    40% 62%,
+    50% 70%,
+    60% 65%,
+    70% 72%,
+    80% 68%,
+    90% 75%,
+    100% 70%,
+    100% 100%
+  );
 }
 
 .lamp-light {
@@ -1821,7 +2013,7 @@
     box-shadow: none;
     border: 1px solid #e5e7eb;
   }
-  
+
   .gradient-button,
   .modern-button {
     background: #f9fafb !important;

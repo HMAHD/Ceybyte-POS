@@ -38,6 +38,20 @@ MAX_LOGIN_ATTEMPTS = 5  # Maximum failed attempts before lockout
 LOCKOUT_DURATION_MINUTES = 15  # Lockout duration after max attempts
 ATTEMPT_WINDOW_MINUTES = 60  # Time window for counting attempts
 
+# Password complexity rules
+PASSWORD_MIN_LENGTH = 6  # Minimum password length for Sri Lankan business context
+PASSWORD_COMPLEXITY_RULES = {
+    "min_length": PASSWORD_MIN_LENGTH,
+    "require_uppercase": False,  # Relaxed for Sri Lankan businesses
+    "require_lowercase": False,
+    "require_numbers": False,
+    "require_special_chars": False,
+    "common_passwords": [  # Common Sri Lankan passwords to block
+        "123456", "password", "admin123", "ceybyte", "admin", "user", 
+        "srilanka", "colombo", "kandy", "galle", "hello", "welcome"
+    ]
+}
+
 # User roles and permissions
 USER_ROLES = {
     "owner": {
@@ -62,8 +76,46 @@ USER_ROLES = {
 }
 
 
+def validate_password_complexity(password: str) -> Tuple[bool, str]:
+    """Validate password against complexity rules"""
+    rules = PASSWORD_COMPLEXITY_RULES
+    
+    # Check minimum length
+    if len(password) < rules["min_length"]:
+        return False, f"Password must be at least {rules['min_length']} characters long"
+    
+    # Check for common passwords
+    if password.lower() in [p.lower() for p in rules["common_passwords"]]:
+        return False, "Password is too common. Please choose a more secure password"
+    
+    # Check uppercase requirement (if enabled)
+    if rules.get("require_uppercase", False) and not any(c.isupper() for c in password):
+        return False, "Password must contain at least one uppercase letter"
+    
+    # Check lowercase requirement (if enabled)
+    if rules.get("require_lowercase", False) and not any(c.islower() for c in password):
+        return False, "Password must contain at least one lowercase letter"
+    
+    # Check numbers requirement (if enabled)
+    if rules.get("require_numbers", False) and not any(c.isdigit() for c in password):
+        return False, "Password must contain at least one number"
+    
+    # Check special characters requirement (if enabled)
+    if rules.get("require_special_chars", False):
+        special_chars = "!@#$%^&*()_+-=[]{}|;:,.<>?"
+        if not any(c in special_chars for c in password):
+            return False, "Password must contain at least one special character"
+    
+    return True, "Password meets complexity requirements"
+
+
 def hash_password(password: str) -> str:
-    """Hash password using bcrypt"""
+    """Hash password using bcrypt with complexity validation"""
+    # Validate password complexity first
+    is_valid, message = validate_password_complexity(password)
+    if not is_valid:
+        raise ValueError(message)
+    
     salt = bcrypt.gensalt()
     hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
     return hashed.decode('utf-8')
@@ -263,7 +315,7 @@ def log_security_event(
             ip_address=ip_address,
             user_agent=user_agent,
             terminal_id=terminal_id,
-            metadata=json.dumps(metadata) if metadata else None
+            event_metadata=json.dumps(metadata) if metadata else None
         )
         db.add(event)
         db.commit()

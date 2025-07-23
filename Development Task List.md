@@ -147,36 +147,36 @@
 
 ### Task 2.2: Implement User Authentication API
 
-- [ ] Backend authentication
-    - [ ] Create login endpoint with JWT tokens
-    - [ ] Password hashing with bcrypt
-    - [ ] PIN support for helper accounts
-    - [ ] Token refresh mechanism
-    - [ ] Brute force protection (5 attempts)
-    - [ ] Session management per terminal
-- [ ] Security features
-    - [ ] Token expiration handling
-    - [ ] Secure token storage
-    - [ ] Logout functionality
-    - [ ] Activity timeout settings
-    - [ ] Password complexity rules
-    - [ ] Helper mode restrictions
+- [x] Backend authentication
+    - [x] Create login endpoint with JWT tokens
+    - [x] Password hashing with bcrypt
+    - [x] PIN support for helper accounts
+    - [x] Token refresh mechanism
+    - [x] Brute force protection (5 attempts)
+    - [x] Session management per terminal
+- [x] Security features
+    - [x] Token expiration handling
+    - [x] Secure token storage
+    - [x] Logout functionality
+    - [x] Activity timeout settings
+    - [x] Password complexity rules
+    - [x] Helper mode restrictions
 
 ### Task 2.3: Create User Management Interface
 
-- [ ] User list page
-    - [ ] Display all users with status
-    - [ ] Search by name or username
-    - [ ] Filter by role (Owner, Cashier, Helper)
-    - [ ] Quick enable/disable toggle
-    - [ ] Last login information
-- [ ] User creation/editing
-    - [ ] Add new user form
-    - [ ] Role selection (simplified: Owner, Cashier, Helper)
-    - [ ] Terminal access permissions
-    - [ ] Password reset functionality
-    - [ ] PIN setup for helpers
-    - [ ] Active/inactive status
+- [x] User list page
+    - [x] Display all users with status
+    - [x] Search by name or username
+    - [x] Filter by role (Owner, Cashier, Helper)
+    - [x] Quick enable/disable toggle
+    - [x] Last login information
+- [x] User creation/editing
+    - [x] Add new user form
+    - [x] Role selection (simplified: Owner, Cashier, Helper)
+    - [x] Terminal access permissions
+    - [x] Password reset functionality
+    - [x] PIN setup for helpers
+    - [x] Active/inactive status
 
 ### Task 2.4: Implement Role-Based Access Control
 

@@ -124,10 +124,10 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
         {isOpen && (
           <>
             <div
-              className='fixed inset-0 z-10'
+              className='fixed inset-0 z-40'
               onClick={() => setIsOpen(false)}
             />
-            <div className='absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg border z-20'>
+            <div className='absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg border z-50'>
               {Object.entries(SUPPORTED_LANGUAGES).map(([code, config]) => (
                 <button
                   key={code}
