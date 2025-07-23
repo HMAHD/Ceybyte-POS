@@ -55,10 +55,12 @@ async def health_check():
 # API Routes
 from api.auth import router as auth_router
 from api.users import router as users_router
+from api.sessions import router as sessions_router
 
 # Include routers
 app.include_router(auth_router)
 app.include_router(users_router)
+app.include_router(sessions_router)
 
 if __name__ == "__main__":
     # This will be called when running the API standalone for development

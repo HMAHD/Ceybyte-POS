@@ -37,19 +37,23 @@ class AuthSession(BaseModel):
     token_type = Column(String(20), default="bearer")
     
     # Session timing
-    issued_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    login_time = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    logout_time = Column(DateTime(timezone=True), nullable=True)
     expires_at = Column(DateTime(timezone=True), nullable=False)
     refresh_expires_at = Column(DateTime(timezone=True), nullable=False)
     last_activity = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     
     # Session management
     is_active = Column(Boolean, default=True)
-    revoked_at = Column(DateTime(timezone=True), nullable=True)
-    revocation_reason = Column(String(100), nullable=True)  # logout, timeout, security, admin
+    logout_reason = Column(String(100), nullable=True)  # logout, timeout, security, admin, forced
+    
+    # Authentication method tracking
+    login_method = Column(String(50), default="password")  # password, pin
     
     # Security tracking
     ip_address = Column(String(45), nullable=True)  # IPv6 support
     user_agent = Column(Text, nullable=True)
+    location = Column(String(255), nullable=True)  # Location description
     
     # Relationships
     user = relationship("User", back_populates="auth_sessions")
@@ -70,8 +74,8 @@ class AuthSession(BaseModel):
     def revoke(self, reason: str = "logout"):
         """Revoke the session"""
         self.is_active = False
-        self.revoked_at = datetime.now(timezone.utc)
-        self.revocation_reason = reason
+        self.logout_time = datetime.now(timezone.utc)
+        self.logout_reason = reason
     
     def update_activity(self):
         """Update last activity timestamp"""

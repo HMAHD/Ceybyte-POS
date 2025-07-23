@@ -265,6 +265,7 @@ export class PermissionService {
       'reports': ['reports_basic'],
       'settings': ['settings_view'],
       'users': ['users_view'],
+      'sessions': ['users_view'], // Same as users - owner only
       'backup': ['system_backup'],
     };
 

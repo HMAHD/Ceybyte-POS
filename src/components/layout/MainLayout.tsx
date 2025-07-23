@@ -47,6 +47,7 @@ import {
   UsergroupAddOutlined,
   UserSwitchOutlined,
   ContactsTwoTone,
+  SecurityScanOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNetwork } from '@/contexts/NetworkContext';
@@ -197,6 +198,16 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         </LocalizedText>
       ),
       menuItem: 'users',
+    },
+    {
+      key: 'sessions',
+      icon: <SecurityScanOutlined />,
+      label: (
+        <LocalizedText>
+          {t('navigation.sessions', 'Session Management')}
+        </LocalizedText>
+      ),
+      menuItem: 'sessions',
     },
     {
       key: 'reports',

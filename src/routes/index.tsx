@@ -22,6 +22,7 @@ import ProductsPage from '@/pages/Products';
 import CustomersPage from '@/pages/Customers';
 import SuppliersPage from '@/pages/Suppliers';
 import UsersPage from '@/pages/Users';
+import SessionsPage from '@/pages/Sessions';
 import ReportsPage from '@/pages/Reports';
 import SettingsPage from '@/pages/Settings';
 
@@ -86,6 +87,16 @@ export const router = createBrowserRouter([
       <ProtectedRoute requiredRole='owner'>
         <MainLayout selectedKey='users'>
           <UsersPage />
+        </MainLayout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/sessions',
+    element: (
+      <ProtectedRoute requiredRole='owner'>
+        <MainLayout selectedKey='sessions'>
+          <SessionsPage />
         </MainLayout>
       </ProtectedRoute>
     ),
