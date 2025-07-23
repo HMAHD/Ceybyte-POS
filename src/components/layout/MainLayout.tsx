@@ -45,6 +45,7 @@ import {
   BgColorsOutlined,
   KeyOutlined,
   UsergroupAddOutlined,
+  UserSwitchOutlined,
   ContactsTwoTone,
 } from '@ant-design/icons';
 import { useAuth } from '@/contexts/AuthContext';
