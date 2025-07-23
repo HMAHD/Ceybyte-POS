@@ -180,18 +180,18 @@
 
 ### Task 2.4: Implement Role-Based Access Control
 
-- [ ] Simplified permission system
-    - [ ] Owner: Full system access
-    - [ ] Cashier: Sales, basic reports, no settings
-    - [ ] Helper: Only sales screen, no reports/money
-    - [ ] Quick role switching
-    - [ ] Session-based permissions
-- [ ] UI access control
-    - [ ] Hide/show menu items by role
-    - [ ] Disable restricted buttons
-    - [ ] Route protection in React
-    - [ ] API endpoint authorization
-    - [ ] Access denied messages
+- [x] Simplified permission system
+    - [x] Owner: Full system access
+    - [x] Cashier: Sales, basic reports, no settings
+    - [x] Helper: Only sales screen, no reports/money
+    - [x] Quick role switching
+    - [x] Session-based permissions
+- [x] UI access control
+    - [x] Hide/show menu items by role
+    - [x] Disable restricted buttons
+    - [x] Route protection in React
+    - [x] API endpoint authorization
+    - [x] Access denied messages
 
 ### Task 2.5: Create User Session Management
 

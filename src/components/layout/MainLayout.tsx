@@ -50,9 +50,11 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { useNetwork } from '@/contexts/NetworkContext';
 import { useTranslation } from '@/hooks/useTranslation';
+import { usePermissions } from '@/hooks/usePermissions';
 import LocalizedText from '@/components/LocalizedText';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import UPSStatusIndicator from '@/components/UPSStatusIndicator';
+import QuickRoleSwitch from '@/components/QuickRoleSwitch';
 import KeyboardShortcutsModal, {
   useKeyboardShortcuts,
   ShortcutHint,
@@ -131,11 +133,13 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   selectedKey = 'dashboard',
 }) => {
   const navigate = useNavigate();
-  const { user, logout, hasPermission } = useAuth();
+  const { user, logout } = useAuth();
+  const { shouldShowMenuItem } = usePermissions();
   const { config: networkConfig, connectionStatus } = useNetwork();
   const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
+  const [showQuickSwitch, setShowQuickSwitch] = useState(false);
 
   // Mock status - in real app, these would come from system monitoring
   const [printerStatus] = useState<'connected' | 'disconnected' | 'warning'>(
@@ -149,7 +153,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: (
         <LocalizedText>{t('navigation.dashboard', 'Dashboard')}</LocalizedText>
       ),
-      permission: 'dashboard',
+      menuItem: 'dashboard',
     },
     {
       key: 'pos',
@@ -157,7 +161,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: (
         <LocalizedText>{t('navigation.pos', 'Point of Sale')}</LocalizedText>
       ),
-      permission: 'sales',
+      menuItem: 'sales',
     },
     {
       key: 'products',
@@ -165,7 +169,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: (
         <LocalizedText>{t('navigation.products', 'Products')}</LocalizedText>
       ),
-      permission: 'inventory',
+      menuItem: 'products',
     },
     {
       key: 'customers',
@@ -173,7 +177,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: (
         <LocalizedText>{t('navigation.customers', 'Customers')}</LocalizedText>
       ),
-      permission: 'customers',
+      menuItem: 'customers',
     },
     {
       key: 'suppliers',
@@ -181,7 +185,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: (
         <LocalizedText>{t('navigation.suppliers', 'Suppliers')}</LocalizedText>
       ),
-      permission: 'suppliers',
+      menuItem: 'suppliers',
     },
     {
       key: 'users',
@@ -191,7 +195,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
           {t('navigation.users', 'User Management')}
         </LocalizedText>
       ),
-      permission: 'users',
+      menuItem: 'users',
     },
     {
       key: 'reports',
@@ -199,7 +203,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: (
         <LocalizedText>{t('navigation.reports', 'Reports')}</LocalizedText>
       ),
-      permission: 'reports',
+      menuItem: 'reports',
     },
     {
       type: 'divider' as const,
@@ -210,15 +214,15 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: (
         <LocalizedText>{t('navigation.settings', 'Settings')}</LocalizedText>
       ),
-      permission: 'settings',
+      menuItem: 'settings',
     },
   ];
 
   // Filter menu items based on user permissions
   const filteredMenuItems = menuItems.filter(item => {
     if (item.type === 'divider') return true;
-    if (!item.permission) return true;
-    return hasPermission(item.permission);
+    if (!item.menuItem) return true;
+    return shouldShowMenuItem(item.menuItem);
   });
 
   const userMenuItems = [
@@ -226,6 +230,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       key: 'profile',
       icon: <UserOutlined />,
       label: <LocalizedText>{t('user.profile', 'Profile')}</LocalizedText>,
+    },
+    {
+      key: 'quickSwitch',
+      icon: <UserSwitchOutlined />,
+      label: <LocalizedText>{t('user.quickSwitch', 'Quick User Switch')}</LocalizedText>,
     },
     {
       key: 'theme',
@@ -441,6 +450,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                     onClick: ({ key }) => {
                       if (key === 'logout') {
                         logout();
+                      } else if (key === 'quickSwitch') {
+                        setShowQuickSwitch(true);
                       } else {
                         handleMenuClick(key);
                       }
@@ -527,6 +538,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       <KeyboardShortcutsModal
         visible={showShortcuts}
         onClose={() => setShowShortcuts(false)}
+      />
+      
+      <QuickRoleSwitch
+        visible={showQuickSwitch}
+        onClose={() => setShowQuickSwitch(false)}
       />
     </Layout>
   );

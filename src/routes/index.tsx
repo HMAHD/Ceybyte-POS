@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
   {
     path: '/dashboard',
     element: (
-      <ProtectedRoute requiredPermission='sales'>
+      <ProtectedRoute requiredPermissions={['sales_view']}>
         <MainLayout selectedKey='dashboard'>
           <DashboardPage />
         </MainLayout>
@@ -43,7 +43,7 @@ export const router = createBrowserRouter([
   {
     path: '/pos',
     element: (
-      <ProtectedRoute requiredPermission='sales'>
+      <ProtectedRoute requiredPermissions={['sales_view']}>
         <MainLayout selectedKey='pos'>
           <POSPage />
         </MainLayout>
@@ -53,7 +53,7 @@ export const router = createBrowserRouter([
   {
     path: '/products',
     element: (
-      <ProtectedRoute requiredPermission='inventory'>
+      <ProtectedRoute requiredPermissions={['inventory_view']}>
         <MainLayout selectedKey='products'>
           <ProductsPage />
         </MainLayout>
@@ -63,7 +63,7 @@ export const router = createBrowserRouter([
   {
     path: '/customers',
     element: (
-      <ProtectedRoute requiredPermission='customers'>
+      <ProtectedRoute requiredPermissions={['customers_view']}>
         <MainLayout selectedKey='customers'>
           <CustomersPage />
         </MainLayout>
@@ -73,7 +73,7 @@ export const router = createBrowserRouter([
   {
     path: '/suppliers',
     element: (
-      <ProtectedRoute requiredPermission='suppliers'>
+      <ProtectedRoute requiredPermissions={['suppliers_view']}>
         <MainLayout selectedKey='suppliers'>
           <SuppliersPage />
         </MainLayout>
@@ -83,7 +83,7 @@ export const router = createBrowserRouter([
   {
     path: '/users',
     element: (
-      <ProtectedRoute requiredPermission='users'>
+      <ProtectedRoute requiredRole='owner'>
         <MainLayout selectedKey='users'>
           <UsersPage />
         </MainLayout>
@@ -93,7 +93,7 @@ export const router = createBrowserRouter([
   {
     path: '/reports',
     element: (
-      <ProtectedRoute requiredPermission='reports'>
+      <ProtectedRoute requiredPermissions={['reports_basic']}>
         <MainLayout selectedKey='reports'>
           <ReportsPage />
         </MainLayout>
@@ -103,7 +103,7 @@ export const router = createBrowserRouter([
   {
     path: '/settings',
     element: (
-      <ProtectedRoute requiredPermission='settings'>
+      <ProtectedRoute requiredPermissions={['settings_view']}>
         <MainLayout selectedKey='settings'>
           <SettingsPage />
         </MainLayout>
