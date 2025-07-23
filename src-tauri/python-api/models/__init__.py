@@ -15,6 +15,7 @@
 
 # Import all models to ensure they are registered with SQLAlchemy
 from .user import User
+from .auth_session import AuthSession, LoginAttempt, SecurityEvent
 from .category import Category
 from .unit_of_measure import UnitOfMeasure
 from .supplier import Supplier
@@ -34,6 +35,9 @@ from .delivery import Delivery
 
 __all__ = [
     "User",
+    "AuthSession",
+    "LoginAttempt", 
+    "SecurityEvent",
     "Category", 
     "UnitOfMeasure",
     "Supplier",

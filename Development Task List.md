@@ -111,18 +111,18 @@
 
 ### Task 1.7: Implement Multi-language System
 
-- [ ] Language framework setup
-    - [ ] Install and configure i18n library
-    - [ ] Create language file structure
-    - [ ] Set up English translations
-    - [ ] Add Sinhala translations
-    - [ ] Add Tamil translations with RTL support
-- [ ] UI language features
-    - [ ] Language switcher in header
-    - [ ] Persist language preference
-    - [ ] Currency formatting (Rs. X,XXX.XX)
-    - [ ] Date formatting (DD/MM/YYYY)
-    - [ ] Number formatting for each language
+- [x] Language framework setup
+    - [x] Install and configure i18n library
+    - [x] Create language file structure
+    - [x] Set up English translations
+    - [x] Add Sinhala translations
+    - [x] Add Tamil translations with RTL support
+- [x] UI language features
+    - [x] Language switcher in header
+    - [x] Persist language preference
+    - [x] Currency formatting (Rs. X,XXX.XX)
+    - [x] Date formatting (DD/MM/YYYY)
+    - [x] Number formatting for each language
 
 ---
 
@@ -130,20 +130,20 @@
 
 ### Task 2.1: Create Login Screen
 
-- [ ] Design login interface
-    - [ ] Beautiful login page with Ceybyte branding
-    - [ ] Username and password fields
-    - [ ] Terminal selection dropdown (if multi-terminal)
-    - [ ] Remember me checkbox
-    - [ ] Language selection on login
-    - [ ] Helper mode quick access button
-- [ ] Login functionality
-    - [ ] Enter key submits form
-    - [ ] Tab navigation between fields
-    - [ ] Loading state during authentication
-    - [ ] Error messages for invalid credentials
-    - [ ] Auto-focus on username field
-    - [ ] PIN-based quick login for helpers
+- [x] Design login interface
+    - [x] Beautiful login page with Ceybyte branding
+    - [x] Username and password fields
+    - [x] Terminal selection dropdown (if multi-terminal)
+    - [x] Remember me checkbox
+    - [x] Language selection on login
+    - [x] Helper mode quick access button
+- [x] Login functionality
+    - [x] Enter key submits form
+    - [x] Tab navigation between fields
+    - [x] Loading state during authentication
+    - [x] Error messages for invalid credentials
+    - [x] Auto-focus on username field
+    - [x] PIN-based quick login for helpers
 
 ### Task 2.2: Implement User Authentication API
 
