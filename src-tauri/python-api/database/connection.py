@@ -108,7 +108,7 @@ def _insert_default_data():
                 username="admin",
                 name="Administrator",
                 role="owner",
-                password_hash=hash_password("admin123"),
+                password_hash=hash_password("AdminPass2025!"),
                 pin="1234",
                 is_active=True
             )
@@ -121,7 +121,7 @@ def _insert_default_data():
                 username="cashier",
                 name="Cashier User",
                 role="cashier",
-                password_hash=hash_password("cashier123"),
+                password_hash=hash_password("CashierPass2025!"),
                 pin="2345",
                 is_active=True
             )
@@ -134,7 +134,7 @@ def _insert_default_data():
                 username="helper",
                 name="Helper User",
                 role="helper",
-                password_hash=hash_password("helper123"),
+                password_hash=hash_password("HelperPass2025!"),
                 pin="3456",
                 is_active=True
             )
