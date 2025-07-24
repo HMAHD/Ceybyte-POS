@@ -55,5 +55,192 @@
   "currency": {
     "symbol": "රු.",
     "format": "රු. {amount}"
+  },
+  "users": {
+    "title": "පරිශීලක කළමනාකරණය",
+    "description": "පද්ධතියේ පරිශීලකයින්, භූමිකාවන් සහ අවසර කළමනාකරණය කරන්න",
+    "table": {
+      "user": "පරිශීලකයා",
+      "role": "භූමිකාව",
+      "contact": "සම්බන්ධතා",
+      "status": "තත්ත්වය",
+      "lastLogin": "අවසන් පිවිසුම",
+      "actions": "ක්‍රියාමාර්ග",
+      "noContact": "සම්බන්ධතාවක් නැත",
+      "neverLoggedIn": "කිසිදා පිවිසුණේ නැත"
+    },
+    "search": {
+      "placeholder": "නම හෝ පරිශීලක නමෙන් සොයන්න..."
+    },
+    "filters": {
+      "role": "භූමිකාව අනුව පෙරහන් කරන්න",
+      "status": "තත්ත්වය අනුව පෙරහන් කරන්න"
+    },
+    "roles": {
+      "owner": "හිමිකරු",
+      "cashier": "මුදල්කරු",
+      "helper": "සහායක"
+    },
+    "status": {
+      "active": "සක්‍රීය",
+      "inactive": "අක්‍රීය"
+    },
+    "actions": {
+      "create": "පරිශීලකයෙකු එකතු කරන්න",
+      "view": "විස්තර බලන්න",
+      "edit": "පරිශීලකයා සංස්කරණය කරන්න",
+      "delete": "පරිශීලකයා මකන්න",
+      "resetPassword": "මුරපදය නැවත සකසන්න",
+      "activate": "සක්‍රීය කරන්න",
+      "deactivate": "අක්‍රීය කරන්න"
+    },
+    "messages": {
+      "loadError": "පරිශීලකයින් පූරණය කිරීමට අසමත් විය",
+      "createError": "පරිශීලකයා නිර්මාණය කිරීමට අසමත් විය",
+      "updateError": "පරිශීලකයා යාවත්කාලීන කිරීමට අසමත් විය",
+      "deleteError": "පරිශීලකයා මකාදැමීමට අසමත් විය",
+      "statusUpdateError": "පරිශීලක තත්ත්වය යාවත්කාලීන කිරීමට අසමත් විය",
+      "passwordResetError": "මුරපදය නැවත සැකසීමට අසමත් විය",
+      "userCreated": "පරිශීලකයා සාර්ථකව නිර්මාණය කරන ලදී",
+      "userUpdated": "පරිශීලකයා සාර්ථකව යාවත්කාලීන කරන ලදී",
+      "userDeleted": "පරිශීලකයා සාර්ථකව මකා දමන ලදී",
+      "statusUpdated": "පරිශීලක තත්ත්වය සාර්ථකව යාවත්කාලීන කරන ලදී",
+      "passwordReset": "මුරපදය සාර්ථකව නැවත සකසන ලදී",
+      "accessDenied": "ප්‍රවේශය ප්‍රතික්ෂේප විය. හිමිකරුවන්ට පමණක් පරිශීලකයින් කළමනාකරණය කළ හැකිය."
+    },
+    "pagination": {
+      "total": "පරිශීලකයින් {total} න් {start}-{end} පෙන්වමින්"
+    },
+    "create": {
+      "title": "නව පරිශීලකයෙකු නිර්මාණය කරන්න",
+      "submit": "පරිශීලකයා නිර්මාණය කරන්න",
+      "sections": {
+        "basicInfo": "මූලික තොරතුරු",
+        "authentication": "සත්‍යාපනය",
+        "rolePermissions": "භූමිකාව සහ අවසර",
+        "additionalSettings": "අමතර සැකසුම්",
+        "contactInfo": "සම්බන්ධතා තොරතුරු",
+        "otherSettings": "වෙනත් සැකසුම්"
+      },
+      "rolePermissions": "භූමිකාව: {role}",
+      "permissionsInclude": "මෙම භූමිකාවට පහත අවසර ඇතුළත් වේ:",
+      "usernameNote": "පරිශීලක නම වෙනස් කළ නොහැක",
+      "usernameDescription": "වර්තමාන පරිශීලක නම: {username}"
+    },
+    "edit": {
+      "title": "පරිශීලකයා සංස්කරණය කරන්න",
+      "submit": "පරිශීලකයා යාවත්කාලීන කරන්න",
+      "sections": {
+        "basicInfo": "මූලික තොරතුරු",
+        "pin": "PIN කළමනාකරණය",
+        "rolePermissions": "භූමිකාව සහ අවසර",
+        "additionalSettings": "අමතර සැකසුම්"
+      },
+      "rolePermissions": "භූමිකාව: {role}",
+      "permissionsInclude": "මෙම භූමිකාවට පහත අවසර ඇතුළත් වේ:",
+      "usernameNote": "පරිශීලක නම වෙනස් කළ නොහැක",
+      "usernameDescription": "වර්තමාන පරිශීලක නම: {username}",
+      "ownAccountNote": "ඔබට ඔබේම භූමිකාව හෝ තත්ත්වය වෙනස් කළ නොහැක"
+    },
+    "delete": {
+      "title": "පරිශීලකයා මකන්න",
+      "confirmation": "ඔබට {name} මකා දැමීමට අවශ්‍ය බව විශ්වාසද? මෙම ක්‍රියාව අප්‍රතිවර්තනීය වේ."
+    },
+    "resetPassword": {
+      "title": "මුරපදය නැවත සකසන්න",
+      "confirmation": "මෙම පරිශීලකයාගේ මුරපදය නැවත සැකසීමට ඔබට අවශ්‍ය බව විශ්වාසද?"
+    },
+    "fields": {
+      "username": "පරිශීලක නම",
+      "name": "සම්පූර්ණ නම",
+      "email": "ඊමේල් ලිපිනය",
+      "phone": "දුරකථන අංකය",
+      "password": "මුරපදය",
+      "newPassword": "නව මුරපදය",
+      "pin": "PIN",
+      "newPin": "නව PIN",
+      "role": "භූමිකාව",
+      "preferredLanguage": "මනාප භාෂාව",
+      "status": "ගිණුම් තත්ත්වය",
+      "notes": "සටහන්",
+      "enablePin": "PIN සක්‍රීය කරන්න"
+    },
+    "placeholders": {
+      "username": "පරිශීලක නම ඇතුළත් කරන්න (අකුරු සහ සංඛ්‍යා පමණක්)",
+      "name": "සම්පූර්ණ නම ඇතුළත් කරන්න",
+      "email": "ඊමේල් ලිපිනය ඇතුළත් කරන්න",
+      "phone": "දුරකථන අංකය ඇතුළත් කරන්න",
+      "password": "මුරපදය ඇතුළත් කරන්න (අවම අක්ෂර 6ක්)",
+      "pin": "4-6 ඉලක්කම් PIN ඇතුළත් කරන්න",
+      "newPin": "නව PIN ඇතුළත් කරන්න හෝ වර්තමාන එක තබා ගැනීමට හිස්ව තබන්න",
+      "notes": "මෙම පරිශීලකයා ගැන අමතර සටහන් ඇතුළත් කරන්න"
+    },
+    "validation": {
+      "usernameRequired": "පරිශීලක නම අවශ්‍ය වේ",
+      "usernameMinLength": "පරිශීලක නම අවම අක්ෂර 3ක් තිබිය යුතුය",
+      "usernameFormat": "පරිශීලක නමෙහි අකුරු සහ සංඛ්‍යා පමණක් තිබිය යුතුය",
+      "usernameExists": "පරිශීලක නම දැනටමත් පවතී",
+      "nameRequired": "සම්පූර්ණ නම අවශ්‍ය වේ",
+      "nameMinLength": "නම අවම අක්ෂර 2ක් තිබිය යුතුය",
+      "emailFormat": "කරුණාකර වලංගු ඊමේල් ලිපිනයක් ඇතුළත් කරන්න",
+      "passwordRequired": "මුරපදය අවශ්‍ය වේ",
+      "passwordMinLength": "මුරපදය අවම අක්ෂර 6ක් තිබිය යුතුය",
+      "pinRequired": "PIN අවශ්‍ය වේ",
+      "pinFormat": "PIN 4-6 ඉලක්කම් තිබිය යුතුය",
+      "roleRequired": "භූමිකාව තේරීම අවශ්‍ය වේ"
+    },
+    "help": {
+      "pinSwitch": "PIN සමඟ ඉක්මන් ප්‍රවේශයට ඉඩ දෙන්න",
+      "pinDescription": "PIN මගින් සම්පූර්ණ ප්‍රවේශයකින් තොරව පරිශීලකයින් අතර ඉක්මනින් මාරු වීමට ඉඩ දෙයි",
+      "pinEnabled": "PIN දැනට සක්‍රීයයි",
+      "pinDisabled": "PIN දැනට අක්‍රීයයි",
+      "pinWillBeRemoved": "අක්‍රීය කිරීම වර්තමාන PIN ඉවත් කරයි"
+    },
+    "permissions": {
+      "sales": "විකුණුම් ස්ථානය",
+      "inventory": "නිෂ්පාදන කළමනාකරණය",
+      "customers": "ගනුදෙනුකරු කළමනාකරණය",
+      "suppliers": "සැපයුම්කරු කළමනාකරණය",
+      "reports": "වාර්තා බලන්න",
+      "basic_reports": "මූලික වාර්තා",
+      "settings": "පද්ධති සැකසුම්",
+      "users": "පරිශීලක කළමනාකරණය",
+      "backup": "උපස්ථ කිරීම සහ ප්‍රතිස්ථාපනය",
+      "system": "පද්ධති පරිපාලනය",
+      "admin": "සම්පූර්ණ පරිපාලනය"
+    },
+    "details": {
+      "sections": {
+        "basicInfo": "මූලික තොරතුරු",
+        "rolePermissions": "භූමිකාව සහ අවසර",
+        "activity": "ක්‍රියාකාරකම් ඉතිහාසය",
+        "notes": "සටහන්"
+      },
+      "accountStatus": "ගිණුම් තත්ත්වය",
+      "userRole": "පරිශීලක භූමිකාව",
+      "quickAccess": "ඉක්මන් ප්‍රවේශය",
+      "pinEnabled": "PIN සක්‍රීයයි",
+      "pinDisabled": "PIN අක්‍රීයයි",
+      "role": "භූමිකාව",
+      "permissions": "අවසර",
+      "lastLogin": "අවසන් ප්‍රවේශය",
+      "lastActivity": "අවසන් ක්‍රියාකාරකම",
+      "accountCreated": "ගිණුම නිර්මාණය කළ දිනය",
+      "lastUpdated": "අවසන්වරට යාවත්කාලීන කළ දිනය",
+      "neverLoggedIn": "කිසිදා ප්‍රවේශ වී නැත",
+      "noActivity": "මෑත ක්‍රියාකාරකම් නැත"
+    },
+    "time": {
+      "today": "අද",
+      "yesterday": "ඊයේ",
+      "daysAgo": "දින {days}කට පෙර",
+      "weeksAgo": "සති {weeks}කට පෙර",
+      "monthsAgo": "මාස {months}කට පෙර"
+    }
+  },
+  "languages": {
+    "en": "English",
+    "si": "සිංහල",
+    "ta": "தமிழ್"
   }
 }

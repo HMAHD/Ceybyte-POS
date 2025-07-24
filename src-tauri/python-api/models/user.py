@@ -50,6 +50,7 @@ class User(BaseModel):
     # Relationships
     sales = relationship("Sale", back_populates="user")
     audit_logs = relationship("AuditLog", back_populates="user")
+    auth_sessions = relationship("AuthSession", back_populates="user")
     
     def __repr__(self):
         return f"<User(username='{self.username}', name='{self.name}', role='{self.role}')>"

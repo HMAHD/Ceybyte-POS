@@ -14,26 +14,33 @@
  */
 
 import React, { ReactNode } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { Result, Button } from 'antd';
+import { LockOutlined, HomeOutlined } from '@ant-design/icons';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTranslation } from '@/hooks/useTranslation';
+import { PermissionService, UserRole } from '@/utils/permissions';
 import LocalizedText from '@/components/LocalizedText';
 import LoginScreen from '@/components/LoginScreen';
 
 interface ProtectedRouteProps {
   children: ReactNode;
-  requiredPermission?: string;
-  requiredRole?: string;
-  fallback?: ReactNode;
+  requiredPermissions?: string[];
+  requiredRole?: UserRole;
+  fallbackPath?: string;
+  showAccessDenied?: boolean;
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
-  requiredPermission,
+  requiredPermissions = [],
   requiredRole,
-  fallback,
+  fallbackPath = '/dashboard',
+  showAccessDenied = true,
 }) => {
-  const { isAuthenticated, isLoading, user, hasPermission } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
   const { t } = useTranslation();
+  const location = useLocation();
 
   // Show loading spinner while checking authentication
   if (isLoading) {
@@ -49,94 +56,136 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     );
   }
 
-  // Show login screen if not authenticated
-  if (!isAuthenticated) {
-    return <LoginScreen />;
+  // Redirect to login if not authenticated
+  if (!isAuthenticated || !user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Check role requirement
-  if (requiredRole && user?.role !== requiredRole) {
-    return (
-      <div className='min-h-screen flex items-center justify-center'>
-        <div className='max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center'>
-          <div className='mb-4'>
-            <svg
-              className='w-16 h-16 text-red-500 mx-auto'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 19c-.77.833.192 2.5 1.732 2.5z'
-              />
-            </svg>
-          </div>
-          <LocalizedText
-            as='h2'
-            className='text-xl font-semibold text-gray-900 mb-2'
-          >
-            {t('auth.accessDenied')}
-          </LocalizedText>
-          <LocalizedText className='text-gray-600 mb-4'>
-            {t(
-              'auth.roleRequired',
-              `This feature requires ${requiredRole} role.`
-            )}
-          </LocalizedText>
-          <LocalizedText className='text-sm text-gray-500'>
-            {t('auth.currentRole', `Your current role: ${user?.role}`)}
-          </LocalizedText>
+  // Check role-based access
+  if (requiredRole && user.role !== requiredRole) {
+    if (showAccessDenied) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <Result
+            status="403"
+            title="403"
+            subTitle={
+              <LocalizedText>
+                {t('errors.accessDenied', 'Sorry, you are not authorized to access this page.')}
+              </LocalizedText>
+            }
+            icon={<LockOutlined className="text-red-500" />}
+            extra={
+              <Button type="primary" onClick={() => window.history.back()}>
+                <HomeOutlined />
+                <LocalizedText>{t('common.goBack', 'Go Back')}</LocalizedText>
+              </Button>
+            }
+          />
         </div>
-      </div>
-    );
+      );
+    }
+    return <Navigate to={fallbackPath} replace />;
   }
 
-  // Check permission requirement
-  if (requiredPermission && !hasPermission(requiredPermission)) {
-    return (
-      fallback || (
-        <div className='min-h-screen flex items-center justify-center'>
-          <div className='max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center'>
-            <div className='mb-4'>
-              <svg
-                className='w-16 h-16 text-orange-500 mx-auto'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M12 15v2m-6 0h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'
-                />
-              </svg>
-            </div>
-            <LocalizedText
-              as='h2'
-              className='text-xl font-semibold text-gray-900 mb-2'
-            >
-              {t('auth.accessDenied')}
-            </LocalizedText>
-            <LocalizedText className='text-gray-600 mb-4'>
-              {t(
-                'auth.permissionRequired',
-                `This feature requires '${requiredPermission}' permission.`
-              )}
-            </LocalizedText>
-            <LocalizedText className='text-sm text-gray-500'>
-              {t('auth.currentRole', `Your current role: ${user?.role}`)}
-            </LocalizedText>
+  // Check permission-based access
+  if (requiredPermissions.length > 0) {
+    const hasPermission = PermissionService.hasAnyPermission(user.role as UserRole, requiredPermissions);
+    
+    if (!hasPermission) {
+      if (showAccessDenied) {
+        return (
+          <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <Result
+              status="403"
+              title={
+                <LocalizedText>
+                  {t('errors.accessDeniedTitle', 'Access Denied')}
+                </LocalizedText>
+              }
+              subTitle={
+                <div className="space-y-2">
+                  <div>
+                    <LocalizedText>
+                      {t('errors.insufficientPermissions', 'You do not have sufficient permissions to access this page.')}
+                    </LocalizedText>
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    <LocalizedText>
+                      {t('errors.contactAdmin', 'Please contact your administrator if you believe this is an error.')}
+                    </LocalizedText>
+                  </div>
+                  <div className="text-xs text-gray-400">
+                    <LocalizedText>
+                      {t('errors.currentRole', 'Current role: {{role}}', { 
+                        role: PermissionService.getRoleName(user.role as UserRole) 
+                      })}
+                    </LocalizedText>
+                  </div>
+                </div>
+              }
+              icon={<LockOutlined className="text-red-500" />}
+              extra={
+                <div className="space-x-2">
+                  <Button onClick={() => window.history.back()}>
+                    <LocalizedText>{t('common.goBack', 'Go Back')}</LocalizedText>
+                  </Button>
+                  <Button type="primary" onClick={() => window.location.href = '/dashboard'}>
+                    <HomeOutlined />
+                    <LocalizedText>{t('common.dashboard', 'Dashboard')}</LocalizedText>
+                  </Button>
+                </div>
+              }
+            />
           </div>
-        </div>
-      )
-    );
+        );
+      }
+      return <Navigate to={fallbackPath} replace />;
+    }
   }
 
-  // User is authenticated and has required permissions
+  // Check route-based access
+  const canAccessRoute = PermissionService.canAccessRoute(user.role as UserRole, location.pathname);
+  if (!canAccessRoute) {
+    if (showAccessDenied) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <Result
+            status="403"
+            title={
+              <LocalizedText>
+                {t('errors.routeAccessDenied', 'Page Access Restricted')}
+              </LocalizedText>
+            }
+            subTitle={
+              <div className="space-y-2">
+                <div>
+                  <LocalizedText>
+                    {t('errors.routeNotAllowed', 'Your current role does not allow access to this page.')}
+                  </LocalizedText>
+                </div>
+                <div className="text-sm text-gray-500">
+                  <LocalizedText>
+                    {t('errors.availableFeatures', 'Please use the features available in your role or contact an administrator.')}
+                  </LocalizedText>
+                </div>
+              </div>
+            }
+            icon={<LockOutlined className="text-orange-500" />}
+            extra={
+              <Button type="primary" onClick={() => window.location.href = '/dashboard'}>
+                <HomeOutlined />
+                <LocalizedText>{t('common.dashboard', 'Dashboard')}</LocalizedText>
+              </Button>
+            }
+          />
+        </div>
+      );
+    }
+    return <Navigate to={fallbackPath} replace />;
+  }
+
+  // User has access, render the protected content
   return <>{children}</>;
 };
 

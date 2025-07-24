@@ -7,6 +7,7 @@
     "add": "එකතු කරන්න",
     "search": "සොයන්න",
     "loading": "පූරණය වෙමින්...",
+    "checking": "පරීක්ෂා කරමින්...",
     "error": "දෝෂය",
     "success": "සාර්ථකයි",
     "warning": "අනතුරු ඇඟවීම",
@@ -40,6 +41,7 @@
   },
   "navigation": {
     "dashboard": "උපකරණ පුවරුව",
+    "pos": "විකුණුම් ස්ථානය",
     "sales": "විකුණුම්",
     "products": "නිෂ්පාදන",
     "customers": "ගනුදෙනුකරුවන්",
@@ -47,7 +49,10 @@
     "inventory": "ඉන්වෙන්ටරි",
     "reports": "වාර්තා",
     "settings": "සැකසුම්",
-    "logout": "ඉවත් වන්න"
+    "logout": "ඉවත් වන්න",
+    "manage": "කළමනාකරණය",
+    "view": "බලන්න",
+    "configure": "සකසන්න"
   },
   "auth": {
     "login": "පිවිසීම",
@@ -159,6 +164,7 @@
     "supplierDeleted": "සැපයුම්කරු සාර්ථකව මකන ලදී"
   },
   "dashboard": {
+    "welcome": "ආයුබෝවන්, {{name}}",
     "todaySales": "අද විකුණුම්",
     "todayProfit": "අද ලාභය",
     "lowStockItems": "අඩු තොග අයිතම",
@@ -166,7 +172,12 @@
     "recentSales": "මෑත විකුණුම්",
     "topProducts": "ප්‍රමුඛ නිෂ්පාදන",
     "salesSummary": "විකුණුම් සාරාංශය",
-    "quickActions": "ඉක්මන් ක්‍රියා"
+    "quickActions": "ඉක්මන් ක්‍රියා",
+    "systemStatus": "පද්ධති තත්ත්වය",
+    "apiStatus": "API තත්ත්වය",
+    "userRole": "පරිශීලක භූමිකාව",
+    "refreshStats": "සංඛ්‍යාලේඛන නැවුම් කරන්න",
+    "refresh": "නැවුම් කරන්න"
   },
   "settings": {
     "settings": "සැකසුම්",

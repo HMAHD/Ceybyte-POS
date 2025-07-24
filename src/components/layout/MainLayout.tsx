@@ -14,6 +14,7 @@
  */
 
 import React, { useState, ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Layout,
   Menu,
@@ -42,14 +43,20 @@ import {
   ThunderboltOutlined,
   GlobalOutlined,
   BgColorsOutlined,
-  KeyboardOutlined,
+  KeyOutlined,
+  UsergroupAddOutlined,
+  UserSwitchOutlined,
+  ContactsTwoTone,
+  SecurityScanOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNetwork } from '@/contexts/NetworkContext';
 import { useTranslation } from '@/hooks/useTranslation';
+import { usePermissions } from '@/hooks/usePermissions';
 import LocalizedText from '@/components/LocalizedText';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import UPSStatusIndicator from '@/components/UPSStatusIndicator';
+import QuickRoleSwitch from '@/components/QuickRoleSwitch';
 import KeyboardShortcutsModal, {
   useKeyboardShortcuts,
   ShortcutHint,
@@ -89,24 +96,36 @@ const StatusIndicator: React.FC<StatusIndicatorProps> = ({
     }
   };
 
-  const getColor = () => {
+  const getStatusInfo = () => {
     switch (status) {
       case 'connected':
-        return '#52c41a';
+        return { color: '#22c55e', bgColor: '#dcfce7', dotColor: '#16a34a' };
       case 'warning':
-        return '#fa8c16';
+        return { color: '#f59e0b', bgColor: '#fef3c7', dotColor: '#d97706' };
       case 'disconnected':
-        return '#f5222d';
+        return { color: '#ef4444', bgColor: '#fee2e2', dotColor: '#dc2626' };
       default:
-        return '#d9d9d9';
+        return { color: '#6b7280', bgColor: '#f3f4f6', dotColor: '#9ca3af' };
     }
   };
 
+  const statusInfo = getStatusInfo();
+
   return (
-    <Tooltip title={label}>
-      <Badge dot color={getColor()} offset={[-2, 2]}>
-        <span style={{ color: getColor(), fontSize: 16 }}>{getIcon()}</span>
-      </Badge>
+    <Tooltip title={label} placement='bottom'>
+      <div
+        className='relative inline-flex items-center justify-center w-8 h-8 rounded-lg hover:scale-105 transition-all duration-200 cursor-pointer'
+        style={{
+          backgroundColor: statusInfo.bgColor,
+          color: statusInfo.color,
+        }}
+      >
+        <span className='text-sm font-medium'>{getIcon()}</span>
+        <span
+          className='absolute -top-1 -right-1 w-3 h-3 rounded-full border-2 border-white'
+          style={{ backgroundColor: statusInfo.dotColor }}
+        ></span>
+      </div>
     </Tooltip>
   );
 };
@@ -115,11 +134,14 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   children,
   selectedKey = 'dashboard',
 }) => {
-  const { user, logout, hasPermission } = useAuth();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const { shouldShowMenuItem } = usePermissions();
   const { config: networkConfig, connectionStatus } = useNetwork();
   const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
+  const [showQuickSwitch, setShowQuickSwitch] = useState(false);
 
   // Mock status - in real app, these would come from system monitoring
   const [printerStatus] = useState<'connected' | 'disconnected' | 'warning'>(
@@ -133,7 +155,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: (
         <LocalizedText>{t('navigation.dashboard', 'Dashboard')}</LocalizedText>
       ),
-      permission: 'dashboard',
+      menuItem: 'dashboard',
     },
     {
       key: 'pos',
@@ -141,7 +163,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: (
         <LocalizedText>{t('navigation.pos', 'Point of Sale')}</LocalizedText>
       ),
-      permission: 'sales',
+      menuItem: 'sales',
     },
     {
       key: 'products',
@@ -149,7 +171,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: (
         <LocalizedText>{t('navigation.products', 'Products')}</LocalizedText>
       ),
-      permission: 'inventory',
+      menuItem: 'products',
     },
     {
       key: 'customers',
@@ -157,7 +179,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: (
         <LocalizedText>{t('navigation.customers', 'Customers')}</LocalizedText>
       ),
-      permission: 'customers',
+      menuItem: 'customers',
     },
     {
       key: 'suppliers',
@@ -165,7 +187,27 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: (
         <LocalizedText>{t('navigation.suppliers', 'Suppliers')}</LocalizedText>
       ),
-      permission: 'suppliers',
+      menuItem: 'suppliers',
+    },
+    {
+      key: 'users',
+      icon: <ContactsTwoTone twoToneColor={['#8b5cf6', '#c4b5fd']} />,
+      label: (
+        <LocalizedText>
+          {t('navigation.users', 'User Management')}
+        </LocalizedText>
+      ),
+      menuItem: 'users',
+    },
+    {
+      key: 'sessions',
+      icon: <SecurityScanOutlined />,
+      label: (
+        <LocalizedText>
+          {t('navigation.sessions', 'Session Management')}
+        </LocalizedText>
+      ),
+      menuItem: 'sessions',
     },
     {
       key: 'reports',
@@ -173,7 +215,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: (
         <LocalizedText>{t('navigation.reports', 'Reports')}</LocalizedText>
       ),
-      permission: 'reports',
+      menuItem: 'reports',
     },
     {
       type: 'divider' as const,
@@ -184,15 +226,15 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: (
         <LocalizedText>{t('navigation.settings', 'Settings')}</LocalizedText>
       ),
-      permission: 'settings',
+      menuItem: 'settings',
     },
   ];
 
   // Filter menu items based on user permissions
   const filteredMenuItems = menuItems.filter(item => {
     if (item.type === 'divider') return true;
-    if (!item.permission) return true;
-    return hasPermission(item.permission);
+    if (!item.menuItem) return true;
+    return shouldShowMenuItem(item.menuItem);
   });
 
   const userMenuItems = [
@@ -202,13 +244,18 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       label: <LocalizedText>{t('user.profile', 'Profile')}</LocalizedText>,
     },
     {
+      key: 'quickSwitch',
+      icon: <UserSwitchOutlined />,
+      label: <LocalizedText>{t('user.quickSwitch', 'Quick User Switch')}</LocalizedText>,
+    },
+    {
       key: 'theme',
       icon: <BgColorsOutlined />,
       label: <LocalizedText>{t('user.theme', 'Theme Settings')}</LocalizedText>,
     },
     {
       key: 'shortcuts',
-      icon: <KeyboardOutlined />,
+      icon: <KeyOutlined />,
       label: (
         <LocalizedText>
           {t('user.shortcuts', 'Keyboard Shortcuts')}
@@ -230,8 +277,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     if (key === 'shortcuts') {
       setShowShortcuts(true);
     } else {
-      // Handle other menu navigation
-      console.log('Navigate to:', key);
+      // Navigate to the selected route
+      navigate(`/${key}`);
     }
   };
 
@@ -245,92 +292,121 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     },
     {
       key: KEYBOARD_SHORTCUTS.settings,
-      action: () => handleMenuClick('settings'),
+      action: () => navigate('/settings'),
       description: 'Open settings',
       category: 'global',
+    },
+    {
+      key: 'F1',
+      action: () => navigate('/dashboard'),
+      description: 'Go to dashboard',
+      category: 'navigation',
+    },
+    {
+      key: 'F2',
+      action: () => navigate('/pos'),
+      description: 'Open POS interface',
+      category: 'navigation',
+    },
+    {
+      key: 'F3',
+      action: () => navigate('/products'),
+      description: 'Manage products',
+      category: 'navigation',
+    },
+    {
+      key: 'F4',
+      action: () => navigate('/customers'),
+      description: 'Manage customers',
+      category: 'navigation',
     },
     // Add more shortcuts as needed
   ]);
 
   return (
-    <Layout className='min-h-screen'>
+    <Layout className='min-h-screen bg-gray-50'>
       {/* Sidebar */}
       <Sider
         trigger={null}
         collapsible
         collapsed={collapsed}
         width={240}
-        className='shadow-md'
+        className='modern-sidebar shadow-lg'
         style={{
-          background: '#fff',
-          borderRight: '1px solid #f0f0f0',
+          background: '#ffffff',
+          borderRight: '1px solid #e5e7eb',
+          boxShadow: '2px 0 4px rgba(0, 0, 0, 0.03)',
         }}
       >
         {/* Logo */}
-        <div className='p-4 text-center border-b border-gray-200'>
+        <div className='p-3 text-center border-b border-gray-100 mb-2'>
           {!collapsed ? (
-            <Title level={4} className='mb-0 text-blue-600'>
-              <LocalizedText>{APP_NAME}</LocalizedText>
-            </Title>
+            <div className='flex items-center justify-center space-x-2'>
+              <div className='w-8 h-8 rounded-lg bg-white border-2 border-blue-600 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow duration-200'>
+                <span className='text-blue-600 font-bold text-sm'>CP</span>
+              </div>
+              <div className='mb-0 text-gray-800 font-bold text-lg'>
+                <LocalizedText>{APP_NAME}</LocalizedText>
+              </div>
+            </div>
           ) : (
-            <div className='text-blue-600 text-xl font-bold'>CP</div>
+            <div className='w-8 h-8 rounded-lg bg-white border-2 border-blue-600 flex items-center justify-center shadow-sm mx-auto hover:shadow-md transition-shadow duration-200'>
+              <span className='text-white font-bold text-sm'>CP</span>
+            </div>
           )}
         </div>
 
         {/* Navigation Menu */}
-        <Menu
-          mode='inline'
-          selectedKeys={[selectedKey]}
-          items={filteredMenuItems}
-          onClick={({ key }) => handleMenuClick(key)}
-          className='border-none'
-        />
+        <div className='px-2'>
+          <Menu
+            mode='inline'
+            selectedKeys={[selectedKey]}
+            items={filteredMenuItems}
+            onClick={({ key }) => handleMenuClick(key)}
+            className='border-none bg-transparent'
+            style={{
+              fontSize: '14px',
+            }}
+          />
+        </div>
 
-        {/* User Info in Sidebar (when expanded) */}
-        {!collapsed && (
-          <div className='absolute bottom-4 left-4 right-4'>
-            <div className='p-3 bg-gray-50 rounded-lg'>
-              <div className='flex items-center space-x-2'>
-                <Avatar size='small' icon={<UserOutlined />} />
-                <div className='flex-1 min-w-0'>
-                  <Text className='text-xs font-medium truncate'>
-                    <LocalizedText>{user?.name}</LocalizedText>
-                  </Text>
-                  <br />
-                  <Tag color='blue'>
-                    <LocalizedText>{user?.role}</LocalizedText>
-                  </Tag>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* User info removed from sidebar as it's already in header */}
       </Sider>
 
       <Layout>
         {/* Header */}
         <Header
-          className='bg-white shadow-sm border-b px-4'
-          style={{ height: 64, lineHeight: '64px' }}
+          className='bg-white shadow-sm border-b px-2 sm:px-4 backdrop-blur-lg'
+          style={{
+            height: 56,
+            lineHeight: 'normal',
+            background: '#ffffff',
+            borderBottom: '1px solid #e5e7eb',
+            display: 'flex',
+            alignItems: 'center',
+          }}
         >
-          <div className='flex justify-between items-center h-full'>
+          <div className='flex justify-between items-center w-full'>
             {/* Left side - Collapse button and breadcrumb */}
             <div className='flex items-center'>
               <Button
                 type='text'
                 icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                 onClick={() => setCollapsed(!collapsed)}
-                className='mr-4'
+                className='mr-3 hover:bg-gray-100 rounded-md transition-colors'
+                size='middle'
+                style={{ height: '32px', width: '32px' }}
               />
 
-              {/* Terminal Status */}
-              <Space size='middle'>
-                <Text type='secondary'>
-                  <LocalizedText>
-                    {t('header.terminal', 'Terminal')}
-                  </LocalizedText>
-                  :
-                  <Text className='ml-1 font-medium'>
+              {/* Terminal Status - Always Visible */}
+              <div className='flex items-center space-x-1 sm:space-x-2 px-1 sm:px-2 py-1 bg-white rounded-lg border border-gray-200'>
+                <Text type='secondary' className='text-xs sm:text-sm'>
+                  <span className='hidden sm:inline'>
+                    <LocalizedText>
+                      {t('header.terminal', 'Terminal')}:
+                    </LocalizedText>
+                  </span>
+                  <Text className='ml-1 font-medium text-blue-600'>
                     {networkConfig.terminalName ||
                       networkConfig.terminalId ||
                       'MAIN-001'}
@@ -342,21 +418,22 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                       networkConfig.terminalType === 'main' ? 'blue' : 'green'
                     }
                     size='small'
+                    className='text-xs'
                   >
                     <LocalizedText>
                       {networkConfig.terminalType === 'main'
-                        ? t('network.main', 'Main')
-                        : t('network.client', 'Client')}
+                        ? t('network.main', 'MAIN')
+                        : t('network.client', 'CLIENT')}
                     </LocalizedText>
                   </Tag>
                 )}
-              </Space>
+              </div>
             </div>
 
             {/* Right side - Status indicators, language switcher, user menu */}
-            <Space size='middle'>
-              {/* Connection Status Indicators */}
-              <Space size='small'>
+            <div className='flex items-center space-x-1 sm:space-x-2'>
+              {/* Connection Status Indicators - Always Visible */}
+              <div className='flex items-center space-x-1 sm:space-x-2 px-1 sm:px-2 py-1 bg-gray-50 rounded-lg border border-gray-200'>
                 <StatusIndicator
                   type='network'
                   status={connectionStatus}
@@ -368,79 +445,104 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   label={t('status.printer', 'Printer Connection')}
                 />
                 <UPSStatusIndicator size='small' />
-              </Space>
+              </div>
 
-              <Divider type='vertical' />
+              <div className='w-px h-6 bg-gray-300'></div>
 
-              {/* Language Switcher */}
-              <LanguageSwitcher variant='compact' />
+              {/* Language Switcher - Always Visible */}
+              <div className='px-1'>
+                <LanguageSwitcher variant='compact' />
+              </div>
 
               {/* User Menu */}
-              <Dropdown
-                menu={{
-                  items: userMenuItems,
-                  onClick: ({ key }) => {
-                    if (key === 'logout') {
-                      logout();
-                    } else {
-                      handleMenuClick(key);
-                    }
-                  },
-                }}
-                placement='bottomRight'
-              >
-                <Button type='text' className='flex items-center'>
-                  <Avatar
-                    size='small'
-                    icon={<UserOutlined />}
-                    className='mr-2'
-                  />
-                  <Text className='hidden sm:inline'>
-                    <LocalizedText>{user?.name}</LocalizedText>
-                  </Text>
-                </Button>
-              </Dropdown>
-            </Space>
+              <div className='ml-2'>
+                <Dropdown
+                  menu={{
+                    items: userMenuItems,
+                    onClick: ({ key }) => {
+                      if (key === 'logout') {
+                        logout();
+                      } else if (key === 'quickSwitch') {
+                        setShowQuickSwitch(true);
+                      } else {
+                        handleMenuClick(key);
+                      }
+                    },
+                  }}
+                  placement='bottomRight'
+                >
+                  <Button
+                    type='text'
+                    className='flex items-center px-3 py-1 hover:bg-gray-100 rounded-lg border border-gray-200'
+                  >
+                    <Avatar
+                      size={24}
+                      icon={<UserOutlined />}
+                      className='mr-2'
+                      style={{ backgroundColor: '#0066cc' }}
+                    />
+                    <div className='hidden lg:block text-left'>
+                      <div className='text-sm font-medium text-gray-900'>
+                        <LocalizedText>{user?.name}</LocalizedText>
+                      </div>
+                      <div className='text-xs text-gray-500'>
+                        <LocalizedText>{user?.role}</LocalizedText>
+                      </div>
+                    </div>
+                  </Button>
+                </Dropdown>
+              </div>
+            </div>
           </div>
         </Header>
 
         {/* Main Content */}
-        <Content className='p-6 bg-gray-50'>{children}</Content>
+        <Content className='bg-transparent overflow-auto'>
+          <div className='min-h-full'>{children}</div>
+        </Content>
 
         {/* Footer */}
-        <Footer className='bg-white border-t text-center py-4'>
-          <Space split={<Divider type='vertical' />} size='middle'>
+        <Footer
+          className='bg-white border-t text-center py-1 px-2 shadow-sm'
+          style={{
+            background: 'rgba(255, 255, 255, 0.98)',
+            borderTop: '1px solid rgba(0, 102, 204, 0.1)',
+            minHeight: '40px',
+          }}
+        >
+          <div className='flex flex-wrap items-center justify-between gap-2 text-xs'>
             <Text type='secondary' className='text-xs'>
-              Powered by <Text strong>{COMPANY_NAME}</Text>
+              <span className='hidden sm:inline'>Powered by </span>
+              <Text strong>{COMPANY_NAME}</Text>
             </Text>
-            <div className='text-xs'>
-              <Space size='middle' wrap>
-                <ShortcutHint
-                  shortcut={KEYBOARD_SHORTCUTS.quickSale}
-                  description={t('shortcuts.quickSale', 'Quick Sale')}
-                />
-                <ShortcutHint
-                  shortcut={KEYBOARD_SHORTCUTS.customerMode}
-                  description={t('shortcuts.customerMode', 'Customer Mode')}
-                />
-                <ShortcutHint
-                  shortcut={KEYBOARD_SHORTCUTS.settings}
-                  description={t('shortcuts.settings', 'Settings')}
-                />
-                <ShortcutHint
-                  shortcut={KEYBOARD_SHORTCUTS.help}
-                  description={t('shortcuts.help', 'Help')}
-                />
-              </Space>
+            <div className='hidden lg:flex text-xs gap-4'>
+              <ShortcutHint
+                shortcut={KEYBOARD_SHORTCUTS.quickSale}
+                description={t('shortcuts.quickSale', 'Quick Sale')}
+              />
+              <ShortcutHint
+                shortcut={KEYBOARD_SHORTCUTS.customerMode}
+                description={t('shortcuts.customerMode', 'Customer Mode')}
+              />
+              <ShortcutHint
+                shortcut={KEYBOARD_SHORTCUTS.settings}
+                description={t('shortcuts.settings', 'Settings')}
+              />
+              <ShortcutHint
+                shortcut={KEYBOARD_SHORTCUTS.help}
+                description={t('shortcuts.help', 'Help')}
+              />
             </div>
             <Text type='secondary' className='text-xs'>
               <GlobalOutlined className='mr-1' />
-              <LocalizedText>
-                {t('footer.version', 'Version')}
-              </LocalizedText>{' '}
+              <span className='hidden sm:inline'>
+                <LocalizedText>
+                  {t('footer.version', 'Version')}
+                </LocalizedText>{' '}
+              </span>
               1.0.0
             </Text>
-          </Space>
+          </div>
         </Footer>
       </Layout>
 
@@ -448,6 +550,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       <KeyboardShortcutsModal
         visible={showShortcuts}
         onClose={() => setShowShortcuts(false)}
+      />
+      
+      <QuickRoleSwitch
+        visible={showQuickSwitch}
+        onClose={() => setShowQuickSwitch(false)}
       />
     </Layout>
   );

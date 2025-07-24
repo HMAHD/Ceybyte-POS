@@ -44,7 +44,7 @@ const MOCK_USERS: MockUser[] = [
       'admin',
     ],
     preferred_language: 'en',
-    password: 'admin123',
+    password: 'AdminPass2025!',
     pin: '1234',
   },
   {
@@ -54,7 +54,7 @@ const MOCK_USERS: MockUser[] = [
     role: 'cashier',
     permissions: ['sales', 'inventory', 'customers', 'basic_reports'],
     preferred_language: 'en',
-    password: 'cashier123',
+    password: 'CashierPass2025!',
     pin: '2345',
   },
   {
@@ -64,7 +64,7 @@ const MOCK_USERS: MockUser[] = [
     role: 'helper',
     permissions: ['sales'],
     preferred_language: 'en',
-    password: 'helper123',
+    password: 'HelperPass2025!',
     pin: '3456',
   },
 ];

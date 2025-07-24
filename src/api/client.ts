@@ -75,12 +75,175 @@ class ApiClient {
     }
   }
 
+  private async handleUserMockEndpoints<T>(
+    endpoint: string,
+    method: string,
+    body: any
+  ): Promise<ApiResponse<T>> {
+    // Get existing mock users from localStorage
+    const getMockUsers = () => {
+      const stored = localStorage.getItem('ceybyte-mock-users');
+      if (stored) {
+        return JSON.parse(stored);
+      }
+      // Default mock users
+      const defaultUsers = [
+        {
+          id: 1,
+          username: 'admin',
+          name: 'System Administrator',
+          email: 'admin@ceybyte.com',
+          phone: '+94771234567',
+          role: 'owner',
+          is_active: true,
+          has_pin: true,
+          preferred_language: 'en',
+          last_login: new Date().toISOString(),
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          id: 2,
+          username: 'cashier',
+          name: 'Main Cashier',
+          email: 'cashier@ceybyte.com',
+          phone: '+94777654321',
+          role: 'cashier',
+          is_active: true,
+          has_pin: false,
+          preferred_language: 'en',
+          last_login: new Date(Date.now() - 86400000).toISOString(),
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          id: 3,
+          username: 'helper',
+          name: 'Sales Helper',
+          email: null,
+          phone: null,
+          role: 'helper',
+          is_active: true,
+          has_pin: false,
+          preferred_language: 'si',
+          last_login: null,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        },
+      ];
+      localStorage.setItem('ceybyte-mock-users', JSON.stringify(defaultUsers));
+      return defaultUsers;
+    };
+
+    const saveMockUsers = (users: any[]) => {
+      localStorage.setItem('ceybyte-mock-users', JSON.stringify(users));
+    };
+
+    try {
+      console.log('🎯 Mock User API - Endpoint:', endpoint, 'Method:', method);
+      
+      // GET /users - List users with filtering
+      if (endpoint.startsWith('/users') && method === 'GET' && !endpoint.includes('/users/')) {
+        const users = getMockUsers();
+        console.log('📋 Returning users:', users.length, 'users found');
+        return {
+          success: true,
+          data: {
+            users,
+            total: users.length,
+            page: 1,
+            per_page: 20,
+          } as T,
+        };
+      }
+
+      // POST /users - Create new user
+      if (endpoint === '/users' && method === 'POST') {
+        const users = getMockUsers();
+        const newUser = {
+          id: Math.max(...users.map((u: any) => u.id)) + 1,
+          username: body.username,
+          name: body.name,
+          email: body.email || null,
+          phone: body.phone || null,
+          role: body.role,
+          is_active: body.is_active !== false,
+          has_pin: !!body.pin,
+          preferred_language: body.preferred_language || 'en',
+          last_login: null,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        users.push(newUser);
+        saveMockUsers(users);
+        
+        console.log('Mock: Created new user:', newUser);
+        return {
+          success: true,
+          data: newUser as T,
+        };
+      }
+
+      // PUT /users/:id - Update user
+      if (endpoint.match(/^\/users\/\d+$/) && method === 'PUT') {
+        const userId = parseInt(endpoint.split('/')[2]);
+        const users = getMockUsers();
+        const userIndex = users.findIndex((u: any) => u.id === userId);
+        
+        if (userIndex === -1) {
+          return {
+            success: false,
+            error: 'User not found',
+          };
+        }
+
+        users[userIndex] = {
+          ...users[userIndex],
+          ...body,
+          updated_at: new Date().toISOString(),
+        };
+        saveMockUsers(users);
+        
+        return {
+          success: true,
+          data: users[userIndex] as T,
+        };
+      }
+
+      // DELETE /users/:id - Delete user
+      if (endpoint.match(/^\/users\/\d+$/) && method === 'DELETE') {
+        const userId = parseInt(endpoint.split('/')[2]);
+        const users = getMockUsers();
+        const filteredUsers = users.filter((u: any) => u.id !== userId);
+        saveMockUsers(filteredUsers);
+        
+        return {
+          success: true,
+          data: { message: 'User deleted successfully' } as T,
+        };
+      }
+
+      // Default fallback
+      return {
+        success: false,
+        error: 'Mock endpoint not implemented',
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Mock user API error',
+      };
+    }
+  }
+
   private async handleMockRequest<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     const method = options.method || 'GET';
     const body = options.body ? JSON.parse(options.body as string) : null;
+
+    console.log('🔧 Mock API Request:', { endpoint, method, body });
 
     try {
       // Handle authentication endpoints
@@ -112,6 +275,11 @@ class ApiClient {
       if (endpoint === '/health' && method === 'GET') {
         const result = await mockAuthService.healthCheck();
         return result as ApiResponse<T>;
+      }
+
+      // Handle user management endpoints
+      if (endpoint.startsWith('/users')) {
+        return this.handleUserMockEndpoints<T>(endpoint, method, body);
       }
 
       // Default mock response for other endpoints
