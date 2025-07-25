@@ -68,6 +68,38 @@ export const PrinterSettingsPage: React.FC = () => {
     }
   };
 
+  const handleTestBarcode = async () => {
+    try {
+      const response = await fetch('/api/printer/labels', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          products: [
+            {
+              name: 'Test Product',
+              price: 150.00,
+              barcode: '1234567890123',
+              sku: 'TEST-001'
+            }
+          ],
+          label_type: 'barcode',
+          copies: 1
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        alert('Barcode label printed successfully!');
+      } else {
+        alert('Barcode test failed: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Barcode test failed:', error);
+      alert('Error testing barcode printing');
+    }
+  };
+
   const loadPrintQueue = async () => {
     try {
       const response = await fetch('/api/printer/queue');
@@ -146,6 +178,14 @@ export const PrinterSettingsPage: React.FC = () => {
               <TestTube className="w-4 h-4" />
               Test Print Receipt
             </button>
+            
+            <button
+              onClick={handleTestBarcode}
+              className="w-full px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 flex items-center justify-center gap-2"
+            >
+              <TestTube className="w-4 h-4" />
+              Test Print Barcode
+            </button>
           </div>
         </div>
 
@@ -210,7 +250,7 @@ export const PrinterSettingsPage: React.FC = () => {
       <div className="mt-6 bg-white rounded-lg shadow-sm border p-6">
         <h2 className="text-lg font-semibold mb-4">Printer Features</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="p-4 border rounded-lg">
             <h3 className="font-medium mb-2">Multi-Language Support</h3>
             <p className="text-sm text-gray-600">
@@ -229,6 +269,13 @@ export const PrinterSettingsPage: React.FC = () => {
             <h3 className="font-medium mb-2">Direct Printing</h3>
             <p className="text-sm text-gray-600">
               Print directly without Windows print dialogs for faster operation.
+            </p>
+          </div>
+          
+          <div className="p-4 border rounded-lg">
+            <h3 className="font-medium mb-2">Barcode & QR Labels</h3>
+            <p className="text-sm text-gray-600">
+              Print product labels with barcodes, price tags, and QR codes for inventory management.
             </p>
           </div>
         </div>

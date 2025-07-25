@@ -404,3 +404,122 @@ async def print_receipt(request: PrintReceiptRequest, db: Session = Depends(get_
     except Exception as e:
         logger.error(f"Print receipt error: {e}")
         return {"success": False, "message": f"Print error: {str(e)}"}
+
+class PrintLabelsRequest(BaseModel):
+    products: List[Dict[str, Any]]
+    label_type: str = "barcode"  # barcode, price, qr
+    copies: int = 1
+
+@router.post("/labels")
+async def print_labels(request: PrintLabelsRequest, db: Session = Depends(get_db)):
+    """Print product labels (barcode, price, or QR)"""
+    try:
+        from ..utils.barcode_labels import barcode_manager
+        
+        # Get default printer
+        default_printer = db.query(Printer).filter(
+            Printer.is_default == True,
+            Printer.is_active == True
+        ).first()
+        
+        if not default_printer:
+            return {"success": False, "message": "No default printer configured"}
+        
+        # Connect to printer
+        printer_config = {
+            'type': default_printer.printer_type.value,
+            'connection_string': default_printer.connection_string
+        }
+        
+        # Parse connection string based on type
+        if default_printer.printer_type == PrinterType.USB:
+            vendor_id, product_id = default_printer.connection_string.split(':')
+            printer_config['vendor_id'] = int(vendor_id, 16)
+            printer_config['product_id'] = int(product_id, 16)
+        elif default_printer.printer_type == PrinterType.SERIAL:
+            printer_config['port'] = default_printer.connection_string
+        elif default_printer.printer_type == PrinterType.NETWORK:
+            host, port = default_printer.connection_string.split(':')
+            printer_config['host'] = host
+            printer_config['port'] = int(port)
+        
+        if not printer_service.connect_printer(printer_config):
+            return {"success": False, "message": "Failed to connect to printer"}
+        
+        # Print labels based on type
+        if request.label_type == "barcode":
+            results = barcode_manager.print_product_labels(request.products, request.copies)
+        elif request.label_type == "price":
+            results = barcode_manager.print_price_labels(request.products, request.copies)
+        elif request.label_type == "qr":
+            results = barcode_manager.print_qr_labels(request.products, request.copies)
+        else:
+            return {"success": False, "message": "Invalid label type"}
+        
+        printer_service.disconnect_printer()
+        
+        return {
+            "success": results['success'],
+            "message": f"Printed {results['printed']} labels, {results['failed']} failed",
+            "data": results
+        }
+            
+    except Exception as e:
+        logger.error(f"Print labels error: {e}")
+        return {"success": False, "message": f"Label print error: {str(e)}"}
+
+class PrintQRRequest(BaseModel):
+    data: str
+    title: str = ""
+    copies: int = 1
+
+@router.post("/qr")
+async def print_qr_code(request: PrintQRRequest, db: Session = Depends(get_db)):
+    """Print single QR code label"""
+    try:
+        from ..utils.barcode_labels import barcode_manager
+        
+        # Get default printer
+        default_printer = db.query(Printer).filter(
+            Printer.is_default == True,
+            Printer.is_active == True
+        ).first()
+        
+        if not default_printer:
+            return {"success": False, "message": "No default printer configured"}
+        
+        # Connect to printer
+        printer_config = {
+            'type': default_printer.printer_type.value,
+            'connection_string': default_printer.connection_string
+        }
+        
+        # Parse connection string based on type
+        if default_printer.printer_type == PrinterType.USB:
+            vendor_id, product_id = default_printer.connection_string.split(':')
+            printer_config['vendor_id'] = int(vendor_id, 16)
+            printer_config['product_id'] = int(product_id, 16)
+        elif default_printer.printer_type == PrinterType.SERIAL:
+            printer_config['port'] = default_printer.connection_string
+        elif default_printer.printer_type == PrinterType.NETWORK:
+            host, port = default_printer.connection_string.split(':')
+            printer_config['host'] = host
+            printer_config['port'] = int(port)
+        
+        if not printer_service.connect_printer(printer_config):
+            return {"success": False, "message": "Failed to connect to printer"}
+        
+        # Print QR code
+        qr_data = [{"data": request.data, "title": request.title}]
+        results = barcode_manager.print_qr_labels(qr_data, request.copies)
+        
+        printer_service.disconnect_printer()
+        
+        if results['success']:
+            return {"success": True, "message": "QR code printed successfully"}
+        else:
+            return {"success": False, "message": "Failed to print QR code", "errors": results['errors']}
+            
+    except Exception as e:
+        logger.error(f"Print QR code error: {e}")
+        return {"success": False, "message": f"QR print error: {str(e)}"}
