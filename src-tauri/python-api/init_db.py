@@ -48,6 +48,7 @@ def main():
         print(f"\n🎯 Total tables created: {len(tables)}")
         print("\n🔧 Default data inserted:")
         print("   • Admin user (username: admin, password: admin123, PIN: 1234)")
+        print("   • Owner user (username: owner, password: owner123, PIN: 1111)")
         print("   • Cashier user (username: cashier, password: cashier123, PIN: 2345)")
         print("   • Helper user (username: helper, password: helper123, PIN: 3456)")
         print("   • Default units of measure")

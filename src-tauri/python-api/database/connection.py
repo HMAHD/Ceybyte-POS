@@ -107,12 +107,25 @@ def _insert_default_data():
             admin_user = User(
                 username="admin",
                 name="Administrator",
-                role="owner",
+                role="admin",
                 password_hash=hash_password("admin123"),
                 pin="1234",
                 is_active=True
             )
             db.add(admin_user)
+        
+        # Default owner user
+        owner_user = db.query(User).filter(User.username == "owner").first()
+        if not owner_user:
+            owner_user = User(
+                username="owner",
+                name="Business Owner",
+                role="owner",
+                password_hash=hash_password("owner123"),
+                pin="1111",
+                is_active=True
+            )
+            db.add(owner_user)
         
         # Default cashier user
         cashier_user = db.query(User).filter(User.username == "cashier").first()

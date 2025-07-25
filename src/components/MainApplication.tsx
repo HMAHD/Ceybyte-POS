@@ -21,6 +21,7 @@ import HelperModeInterface from '@/components/HelperModeInterface';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { DashboardInterface } from '@/components/DashboardInterface';
 import NetworkSelectionDialog from '@/components/NetworkSelectionDialog';
+import { PageLoading } from '@/components/LoadingStates';
 import type { NetworkConfiguration } from '@/types/network';
 
 export const MainApplication: React.FC = () => {
@@ -45,14 +46,7 @@ export const MainApplication: React.FC = () => {
 
   // Show loading screen while checking authentication
   if (isLoading) {
-    return (
-      <div className='min-h-screen flex items-center justify-center bg-gray-50'>
-        <div className='text-center'>
-          <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-ceybyte-primary mx-auto mb-4'></div>
-          <p className='text-gray-600'>Loading...</p>
-        </div>
-      </div>
-    );
+    return <PageLoading message="Initializing CeybytePOS..." />;
   }
 
   // Show login screen if not authenticated
@@ -66,11 +60,7 @@ export const MainApplication: React.FC = () => {
   }
 
   // Show main dashboard for owner and cashier users
-  return (
-    <ProtectedRoute requiredPermission='sales'>
-      <DashboardInterface />
-    </ProtectedRoute>
-  );
+  return <DashboardInterface />;
 };
 
 export default MainApplication;

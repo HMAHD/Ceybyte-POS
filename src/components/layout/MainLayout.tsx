@@ -14,6 +14,7 @@
  */
 
 import React, { useState, ReactNode } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Layout,
   Menu,
@@ -42,7 +43,7 @@ import {
   ThunderboltOutlined,
   GlobalOutlined,
   BgColorsOutlined,
-  KeyboardOutlined,
+  KeyOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNetwork } from '@/contexts/NetworkContext';
@@ -50,12 +51,20 @@ import { useTranslation } from '@/hooks/useTranslation';
 import LocalizedText from '@/components/LocalizedText';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import UPSStatusIndicator from '@/components/UPSStatusIndicator';
-import KeyboardShortcutsModal, {
-  useKeyboardShortcuts,
-  ShortcutHint,
-} from '@/components/KeyboardShortcuts';
+import ConnectionStatusMonitor from '@/components/ConnectionStatusMonitor';
+import { 
+  useKeyboardShortcuts, 
+  useRegisterShortcuts,
+  KeyboardShortcutHint 
+} from '@/components/KeyboardShortcutSystem';
 import { APP_NAME, COMPANY_NAME } from '@/utils/constants';
-import { KEYBOARD_SHORTCUTS, COMPONENT_SIZES } from '@/theme/designSystem';
+import { 
+  KEYBOARD_SHORTCUTS, 
+  COMPONENT_SIZES, 
+  CONNECTION_STATUS_MAP,
+  CEYBYTE_COLORS,
+  ANIMATION 
+} from '@/theme/designSystem';
 
 const { Header, Sider, Content, Footer } = Layout;
 const { Text, Title } = Typography;
@@ -69,12 +78,14 @@ interface StatusIndicatorProps {
   type: 'network' | 'printer' | 'ups';
   status: 'connected' | 'disconnected' | 'warning';
   label: string;
+  showLabel?: boolean;
 }
 
 const StatusIndicator: React.FC<StatusIndicatorProps> = ({
   type,
   status,
   label,
+  showLabel = false,
 }) => {
   const getIcon = () => {
     switch (type) {
@@ -92,39 +103,68 @@ const StatusIndicator: React.FC<StatusIndicatorProps> = ({
   const getColor = () => {
     switch (status) {
       case 'connected':
-        return '#52c41a';
+        return CEYBYTE_COLORS.success[500];
       case 'warning':
-        return '#fa8c16';
+        return CEYBYTE_COLORS.warning[500];
       case 'disconnected':
-        return '#f5222d';
+        return CEYBYTE_COLORS.error[500];
       default:
-        return '#d9d9d9';
+        return CEYBYTE_COLORS.neutral[400];
     }
   };
 
-  return (
-    <Tooltip title={label}>
+  const content = (
+    <div className="flex items-center space-x-1">
       <Badge dot color={getColor()} offset={[-2, 2]}>
         <span style={{ color: getColor(), fontSize: 16 }}>{getIcon()}</span>
       </Badge>
+      {showLabel && (
+        <Text className="text-xs" style={{ color: getColor() }}>
+          {label}
+        </Text>
+      )}
+    </div>
+  );
+
+  return (
+    <Tooltip title={label}>
+      {content}
     </Tooltip>
   );
 };
 
 export const MainLayout: React.FC<MainLayoutProps> = ({
   children,
-  selectedKey = 'dashboard',
+  selectedKey,
 }) => {
   const { user, logout, hasPermission } = useAuth();
   const { config: networkConfig, connectionStatus } = useNetwork();
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
-  const [showShortcuts, setShowShortcuts] = useState(false);
+  const { showHelp } = useKeyboardShortcuts();
+
+  // Auto-detect selected key from current route if not provided
+  const currentSelectedKey = selectedKey || (() => {
+    const path = location.pathname;
+    if (path === '/') return 'dashboard';
+    if (path.startsWith('/pos')) return 'pos';
+    if (path.startsWith('/products')) return 'products';
+    if (path.startsWith('/customers')) return 'customers';
+    if (path.startsWith('/suppliers')) return 'suppliers';
+    if (path.startsWith('/reports')) return 'reports';
+    if (path.startsWith('/settings')) return 'settings';
+    return 'dashboard';
+  })();
 
   // Mock status - in real app, these would come from system monitoring
   const [printerStatus] = useState<'connected' | 'disconnected' | 'warning'>(
     'connected'
   );
+
+  // Map connection status to indicator status
+  const mappedConnectionStatus = CONNECTION_STATUS_MAP[connectionStatus] || 'disconnected';
 
   const menuItems = [
     {
@@ -208,7 +248,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
     },
     {
       key: 'shortcuts',
-      icon: <KeyboardOutlined />,
+      icon: <KeyOutlined />,
       label: (
         <LocalizedText>
           {t('user.shortcuts', 'Keyboard Shortcuts')}
@@ -228,76 +268,147 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 
   const handleMenuClick = (key: string) => {
     if (key === 'shortcuts') {
-      setShowShortcuts(true);
+      showHelp();
     } else {
-      // Handle other menu navigation
-      console.log('Navigate to:', key);
+      // Navigate to the selected route
+      const routes: Record<string, string> = {
+        dashboard: '/',
+        pos: '/pos',
+        products: '/products',
+        customers: '/customers',
+        suppliers: '/suppliers',
+        reports: '/reports',
+        settings: '/settings',
+      };
+      
+      if (routes[key]) {
+        navigate(routes[key]);
+      }
     }
   };
 
-  // Set up keyboard shortcuts
-  useKeyboardShortcuts([
+  // Register keyboard shortcuts
+  useRegisterShortcuts([
     {
       key: KEYBOARD_SHORTCUTS.help,
-      action: () => setShowShortcuts(true),
-      description: 'Show keyboard shortcuts',
+      action: () => showHelp(),
+      description: t('shortcuts.helpDesc', 'Show keyboard shortcuts'),
       category: 'global',
     },
     {
       key: KEYBOARD_SHORTCUTS.settings,
       action: () => handleMenuClick('settings'),
-      description: 'Open settings',
+      description: t('shortcuts.settingsDesc', 'Open settings'),
       category: 'global',
     },
-    // Add more shortcuts as needed
+    {
+      key: KEYBOARD_SHORTCUTS.dashboard,
+      action: () => handleMenuClick('dashboard'),
+      description: t('shortcuts.dashboardDesc', 'Go to dashboard'),
+      category: 'navigation',
+    },
+    {
+      key: KEYBOARD_SHORTCUTS.quickSale,
+      action: () => handleMenuClick('pos'),
+      description: t('shortcuts.quickSaleDesc', 'Quick sale'),
+      category: 'global',
+    },
+    {
+      key: KEYBOARD_SHORTCUTS.products,
+      action: () => handleMenuClick('products'),
+      description: t('shortcuts.productsDesc', 'Go to products'),
+      category: 'navigation',
+    },
+    {
+      key: KEYBOARD_SHORTCUTS.customers,
+      action: () => handleMenuClick('customers'),
+      description: t('shortcuts.customersDesc', 'Go to customers'),
+      category: 'navigation',
+    },
+    {
+      key: KEYBOARD_SHORTCUTS.reports,
+      action: () => handleMenuClick('reports'),
+      description: t('shortcuts.reportsDesc', 'Go to reports'),
+      category: 'navigation',
+    },
   ]);
 
   return (
     <Layout className='min-h-screen'>
-      {/* Sidebar */}
+      {/* Enhanced Sidebar with better animations */}
       <Sider
         trigger={null}
         collapsible
         collapsed={collapsed}
         width={240}
-        className='shadow-md'
+        className='shadow-lg transition-smooth animate-slide-in'
         style={{
-          background: '#fff',
-          borderRight: '1px solid #f0f0f0',
+          background: 'linear-gradient(180deg, #ffffff 0%, #fafbfc 100%)',
+          borderRight: '1px solid #e5e7eb',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          boxShadow: '2px 0 8px rgba(0, 0, 0, 0.06)',
         }}
       >
-        {/* Logo */}
-        <div className='p-4 text-center border-b border-gray-200'>
+        {/* Enhanced Logo with Ceybyte Branding */}
+        <div className='p-4 text-center border-b border-gray-200 bg-gradient-to-r from-blue-50 to-blue-100'>
           {!collapsed ? (
-            <Title level={4} className='mb-0 text-blue-600'>
-              <LocalizedText>{APP_NAME}</LocalizedText>
-            </Title>
+            <div className='space-y-1'>
+              <Title level={4} className='mb-0 text-blue-600 font-bold'>
+                <LocalizedText>{APP_NAME}</LocalizedText>
+              </Title>
+              <Text className='text-xs text-blue-500 font-medium'>
+                <LocalizedText>Sri Lankan POS System</LocalizedText>
+              </Text>
+            </div>
           ) : (
-            <div className='text-blue-600 text-xl font-bold'>CP</div>
+            <div className='text-blue-600 text-xl font-bold bg-blue-100 w-10 h-10 rounded-lg flex items-center justify-center mx-auto'>
+              CP
+            </div>
           )}
         </div>
 
-        {/* Navigation Menu */}
+        {/* Enhanced Navigation Menu */}
         <Menu
           mode='inline'
-          selectedKeys={[selectedKey]}
+          selectedKeys={[currentSelectedKey]}
           items={filteredMenuItems}
           onClick={({ key }) => handleMenuClick(key)}
-          className='border-none'
+          className='border-none transition-smooth mt-2'
+          style={{
+            background: 'transparent',
+            fontSize: '14px',
+          }}
+          theme='light'
         />
 
-        {/* User Info in Sidebar (when expanded) */}
+        {/* Enhanced User Info in Sidebar (when expanded) */}
         {!collapsed && (
-          <div className='absolute bottom-4 left-4 right-4'>
-            <div className='p-3 bg-gray-50 rounded-lg'>
-              <div className='flex items-center space-x-2'>
-                <Avatar size='small' icon={<UserOutlined />} />
+          <div className='absolute bottom-4 left-4 right-4 animate-fade-in'>
+            <div className='p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100 shadow-sm'>
+              <div className='flex items-center space-x-3'>
+                <Avatar 
+                  size='small' 
+                  icon={<UserOutlined />}
+                  style={{ 
+                    backgroundColor: CEYBYTE_COLORS.primary[500],
+                    border: '2px solid white',
+                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+                  }}
+                />
                 <div className='flex-1 min-w-0'>
-                  <Text className='text-xs font-medium truncate'>
+                  <Text className='text-xs font-semibold truncate text-gray-700'>
                     <LocalizedText>{user?.name}</LocalizedText>
                   </Text>
                   <br />
-                  <Tag color='blue'>
+                  <Tag 
+                    color='blue' 
+                    className='text-xs font-medium'
+                    style={{ 
+                      background: CEYBYTE_COLORS.primary[100],
+                      color: CEYBYTE_COLORS.primary[700],
+                      border: `1px solid ${CEYBYTE_COLORS.primary[200]}`
+                    }}
+                  >
                     <LocalizedText>{user?.role}</LocalizedText>
                   </Tag>
                 </div>
@@ -308,40 +419,65 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       </Sider>
 
       <Layout>
-        {/* Header */}
+        {/* Enhanced Header with better styling */}
         <Header
-          className='bg-white shadow-sm border-b px-4'
-          style={{ height: 64, lineHeight: '64px' }}
+          className='bg-white shadow-md border-b px-6 animate-slide-up'
+          style={{ 
+            height: 64, 
+            lineHeight: '64px',
+            background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+            borderBottom: '1px solid #e2e8f0',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)'
+          }}
         >
           <div className='flex justify-between items-center h-full'>
-            {/* Left side - Collapse button and breadcrumb */}
-            <div className='flex items-center'>
+            {/* Left side - Enhanced collapse button and terminal status */}
+            <div className='flex items-center space-x-4'>
               <Button
                 type='text'
                 icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                 onClick={() => setCollapsed(!collapsed)}
-                className='mr-4'
+                className='hover:bg-blue-50 transition-fast'
+                style={{
+                  color: CEYBYTE_COLORS.primary[600],
+                  fontSize: '16px',
+                  width: '40px',
+                  height: '40px',
+                }}
               />
 
-              {/* Terminal Status */}
-              <Space size='middle'>
-                <Text type='secondary'>
+              {/* Enhanced Terminal Status */}
+              <div className='connection-status-bar'>
+                <Text type='secondary' className='text-sm font-medium'>
                   <LocalizedText>
                     {t('header.terminal', 'Terminal')}
                   </LocalizedText>
                   :
-                  <Text className='ml-1 font-medium'>
-                    {networkConfig.terminalName ||
-                      networkConfig.terminalId ||
-                      'MAIN-001'}
-                  </Text>
+                </Text>
+                <Text className='font-semibold text-gray-700'>
+                  {networkConfig.terminalName ||
+                    networkConfig.terminalId ||
+                    'MAIN-001'}
                 </Text>
                 {networkConfig.terminalType && (
                   <Tag
                     color={
                       networkConfig.terminalType === 'main' ? 'blue' : 'green'
                     }
-                    size='small'
+                    className='font-medium'
+                    style={{
+                      background: networkConfig.terminalType === 'main' 
+                        ? CEYBYTE_COLORS.primary[100]
+                        : CEYBYTE_COLORS.success[100],
+                      color: networkConfig.terminalType === 'main'
+                        ? CEYBYTE_COLORS.primary[700]
+                        : CEYBYTE_COLORS.success[700],
+                      border: `1px solid ${
+                        networkConfig.terminalType === 'main'
+                          ? CEYBYTE_COLORS.primary[200]
+                          : CEYBYTE_COLORS.success[200]
+                      }`
+                    }}
                   >
                     <LocalizedText>
                       {networkConfig.terminalType === 'main'
@@ -350,32 +486,25 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                     </LocalizedText>
                   </Tag>
                 )}
-              </Space>
+              </div>
             </div>
 
-            {/* Right side - Status indicators, language switcher, user menu */}
-            <Space size='middle'>
-              {/* Connection Status Indicators */}
-              <Space size='small'>
-                <StatusIndicator
-                  type='network'
-                  status={connectionStatus}
-                  label={t('status.network', 'Network Connection')}
-                />
-                <StatusIndicator
-                  type='printer'
-                  status={printerStatus}
-                  label={t('status.printer', 'Printer Connection')}
-                />
+            {/* Right side - Enhanced status indicators, language switcher, user menu */}
+            <Space size='large'>
+              {/* Enhanced Connection Status Indicators */}
+              <div className='flex items-center space-x-3'>
+                <ConnectionStatusMonitor compact showAlert={false} />
                 <UPSStatusIndicator size='small' />
-              </Space>
+              </div>
 
-              <Divider type='vertical' />
+              <Divider type='vertical' style={{ height: '24px', borderColor: '#d1d5db' }} />
 
               {/* Language Switcher */}
               <LanguageSwitcher variant='compact' />
 
-              {/* User Menu */}
+              <Divider type='vertical' style={{ height: '24px', borderColor: '#d1d5db' }} />
+
+              {/* Enhanced User Menu */}
               <Dropdown
                 menu={{
                   items: userMenuItems,
@@ -388,67 +517,129 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
                   },
                 }}
                 placement='bottomRight'
+                trigger={['click']}
               >
-                <Button type='text' className='flex items-center'>
+                <Button 
+                  type='text' 
+                  className='flex items-center hover:bg-blue-50 transition-fast px-3 py-2 rounded-lg'
+                  style={{ height: '40px' }}
+                >
                   <Avatar
                     size='small'
                     icon={<UserOutlined />}
                     className='mr-2'
+                    style={{ 
+                      backgroundColor: CEYBYTE_COLORS.primary[500],
+                      border: '2px solid white',
+                      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+                    }}
                   />
-                  <Text className='hidden sm:inline'>
-                    <LocalizedText>{user?.name}</LocalizedText>
-                  </Text>
+                  <div className='hidden sm:flex flex-col items-start'>
+                    <Text className='text-sm font-medium text-gray-700'>
+                      <LocalizedText>{user?.name}</LocalizedText>
+                    </Text>
+                    <Text className='text-xs text-gray-500'>
+                      <LocalizedText>{user?.role}</LocalizedText>
+                    </Text>
+                  </div>
                 </Button>
               </Dropdown>
             </Space>
           </div>
         </Header>
 
-        {/* Main Content */}
-        <Content className='p-6 bg-gray-50'>{children}</Content>
+        {/* Enhanced Main Content Area */}
+        <Content 
+          className='animate-fade-in'
+          style={{
+            minHeight: 'calc(100vh - 120px)', // Account for header and footer
+            overflow: 'auto',
+            background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
+            padding: '24px',
+          }}
+        >
+          <div className="max-w-full mx-auto">
+            <div className="animate-slide-up">
+              {children}
+            </div>
+          </div>
+        </Content>
 
-        {/* Footer */}
-        <Footer className='bg-white border-t text-center py-4'>
-          <Space split={<Divider type='vertical' />} size='middle'>
-            <Text type='secondary' className='text-xs'>
-              Powered by <Text strong>{COMPANY_NAME}</Text>
-            </Text>
-            <div className='text-xs'>
-              <Space size='middle' wrap>
-                <ShortcutHint
+        {/* Enhanced Footer with better Ceybyte branding */}
+        <Footer 
+          className='bg-white border-t text-center animate-slide-up'
+          style={{
+            padding: '16px 24px',
+            background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+            borderTop: '1px solid #e2e8f0',
+            boxShadow: '0 -1px 3px rgba(0, 0, 0, 0.05)',
+            height: '56px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div className='w-full max-w-6xl'>
+            <div className='flex flex-wrap items-center justify-between gap-4'>
+              {/* Left - Ceybyte Branding */}
+              <div className='flex items-center space-x-2'>
+                <Text type='secondary' className='text-xs font-medium'>
+                  Powered by 
+                </Text>
+                <Text 
+                  strong 
+                  className='text-xs'
+                  style={{ color: CEYBYTE_COLORS.primary[600] }}
+                >
+                  {COMPANY_NAME}
+                </Text>
+                <Text type='secondary' className='text-xs'>
+                  - Sri Lankan POS System
+                </Text>
+              </div>
+
+              {/* Center - Keyboard Shortcuts */}
+              <div className='shortcut-hint-group'>
+                <KeyboardShortcutHint
                   shortcut={KEYBOARD_SHORTCUTS.quickSale}
                   description={t('shortcuts.quickSale', 'Quick Sale')}
                 />
-                <ShortcutHint
+                <span className='shortcut-separator'>|</span>
+                <KeyboardShortcutHint
                   shortcut={KEYBOARD_SHORTCUTS.customerMode}
                   description={t('shortcuts.customerMode', 'Customer Mode')}
                 />
-                <ShortcutHint
+                <span className='shortcut-separator'>|</span>
+                <KeyboardShortcutHint
                   shortcut={KEYBOARD_SHORTCUTS.settings}
                   description={t('shortcuts.settings', 'Settings')}
                 />
-                <ShortcutHint
+                <span className='shortcut-separator'>|</span>
+                <KeyboardShortcutHint
                   shortcut={KEYBOARD_SHORTCUTS.help}
                   description={t('shortcuts.help', 'Help')}
                 />
-              </Space>
+              </div>
+
+              {/* Right - Version Info */}
+              <div className='flex items-center space-x-2'>
+                <GlobalOutlined 
+                  className='text-gray-400' 
+                  style={{ fontSize: '12px' }}
+                />
+                <Text type='secondary' className='text-xs font-medium'>
+                  <LocalizedText>
+                    {t('footer.version', 'Version')}
+                  </LocalizedText>{' '}
+                  1.0.0
+                </Text>
+              </div>
             </div>
-            <Text type='secondary' className='text-xs'>
-              <GlobalOutlined className='mr-1' />
-              <LocalizedText>
-                {t('footer.version', 'Version')}
-              </LocalizedText>{' '}
-              1.0.0
-            </Text>
-          </Space>
+          </div>
         </Footer>
       </Layout>
 
-      {/* Keyboard Shortcuts Modal */}
-      <KeyboardShortcutsModal
-        visible={showShortcuts}
-        onClose={() => setShowShortcuts(false)}
-      />
+
     </Layout>
   );
 };

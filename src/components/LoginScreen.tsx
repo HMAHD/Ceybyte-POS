@@ -259,7 +259,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
                 </LocalizedText>
               </Text>
               <Row gutter={8} className='mt-2'>
-                <Col span={8}>
+                <Col span={6}>
                   <Button
                     size='small'
                     onClick={() => handleQuickUserSwitch('admin')}
@@ -269,7 +269,17 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
                     <LocalizedText>Admin</LocalizedText>
                   </Button>
                 </Col>
-                <Col span={8}>
+                <Col span={6}>
+                  <Button
+                    size='small'
+                    onClick={() => handleQuickUserSwitch('owner')}
+                    block
+                    title='PIN: 1111'
+                  >
+                    <LocalizedText>Owner</LocalizedText>
+                  </Button>
+                </Col>
+                <Col span={6}>
                   <Button
                     size='small'
                     onClick={() => handleQuickUserSwitch('cashier')}
@@ -279,7 +289,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
                     <LocalizedText>Cashier</LocalizedText>
                   </Button>
                 </Col>
-                <Col span={8}>
+                <Col span={6}>
                   <Button
                     size='small'
                     onClick={() => handleQuickUserSwitch('helper')}
@@ -299,6 +309,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
                 <div className='text-xs mt-1 space-y-1'>
                   <div>
                     <strong>Admin:</strong> admin/admin123 (PIN: 1234)
+                  </div>
+                  <div>
+                    <strong>Owner:</strong> owner/owner123 (PIN: 1111)
                   </div>
                   <div>
                     <strong>Cashier:</strong> cashier/cashier123 (PIN: 2345)

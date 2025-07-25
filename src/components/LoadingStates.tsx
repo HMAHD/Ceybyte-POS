@@ -4,8 +4,8 @@
  * │                                                                                                  │
  * │                                    Loading States Components                                     │
  * │                                                                                                  │
- * │  Description: Reusable loading states, skeletons, and transition components                     │
- * │               for consistent loading experience across the POS system.                          │
+ * │  Description: Reusable loading state components including skeletons, spinners, and              │
+ * │               loading overlays for consistent loading experience across the application.         │
  * │                                                                                                  │
  * │  Author: Akash Hasendra                                                                          │
  * │  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   │
@@ -14,271 +14,244 @@
  */
 
 import React from 'react';
-import { Skeleton, Card, Row, Col, Space, Spin } from 'antd';
+import { Spin, Skeleton, Card, Space } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import { useTranslation } from '@/hooks/useTranslation';
-import LocalizedText from '@/components/LocalizedText';
+import { CEYBYTE_COLORS } from '@/theme/designSystem';
 
-// Custom loading icon
-const LoadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+interface LoadingSpinnerProps {
+  size?: 'small' | 'default' | 'large';
+  tip?: string;
+  className?: string;
+}
 
-// Full page loading
-export const PageLoading: React.FC<{ message?: string }> = ({ message }) => {
-  const { t } = useTranslation();
+export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
+  size = 'default',
+  tip,
+  className = '',
+}) => {
+  const antIcon = (
+    <LoadingOutlined 
+      style={{ 
+        fontSize: size === 'small' ? 16 : size === 'large' ? 32 : 24,
+        color: CEYBYTE_COLORS.primary[500]
+      }} 
+      spin 
+    />
+  );
 
   return (
-    <div className='min-h-screen flex items-center justify-center bg-gray-50'>
-      <div className='text-center'>
-        <Spin indicator={LoadingIcon} size='large' />
-        <div className='mt-4'>
-          <LocalizedText className='text-gray-600'>
-            {message || t('common.loading', 'Loading...')}
-          </LocalizedText>
+    <div className={`flex items-center justify-center ${className}`}>
+      <Spin indicator={antIcon} tip={tip} size={size} />
+    </div>
+  );
+};
+
+interface PageLoadingProps {
+  message?: string;
+}
+
+export const PageLoading: React.FC<PageLoadingProps> = ({
+  message = 'Loading...'
+}) => {
+  return (
+    <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100'>
+      <div className='text-center space-y-4'>
+        <div className='animate-bounce'>
+          <div 
+            className='w-16 h-16 rounded-full mx-auto flex items-center justify-center'
+            style={{ 
+              background: `linear-gradient(135deg, ${CEYBYTE_COLORS.primary[500]}, ${CEYBYTE_COLORS.primary[600]})`,
+              boxShadow: '0 8px 32px rgba(0, 102, 204, 0.3)'
+            }}
+          >
+            <LoadingOutlined 
+              style={{ 
+                fontSize: 24, 
+                color: 'white' 
+              }} 
+              spin 
+            />
+          </div>
+        </div>
+        <div>
+          <h3 className='text-lg font-semibold text-gray-700 mb-2'>
+            CeybytePOS
+          </h3>
+          <p className='text-sm text-gray-500'>{message}</p>
         </div>
       </div>
     </div>
   );
 };
 
-// Dashboard skeleton
-export const DashboardSkeleton: React.FC = () => (
-  <div className='p-6'>
-    {/* Header skeleton */}
-    <div className='mb-8'>
-      <Skeleton.Input style={{ width: 300, height: 32 }} active />
-      <Skeleton.Input style={{ width: 200, height: 20, marginTop: 8 }} active />
-    </div>
+interface SkeletonCardProps {
+  rows?: number;
+  avatar?: boolean;
+  title?: boolean;
+  className?: string;
+}
 
-    {/* Stats cards skeleton */}
-    <Row gutter={[24, 24]} className='mb-8'>
-      {[1, 2, 3, 4].map(i => (
-        <Col xs={24} sm={12} lg={6} key={i}>
-          <Card>
-            <Skeleton active paragraph={{ rows: 1 }} />
-          </Card>
-        </Col>
-      ))}
-    </Row>
-
-    {/* Action cards skeleton */}
-    <Row gutter={[24, 24]}>
-      {[1, 2, 3, 4, 5, 6].map(i => (
-        <Col xs={24} md={12} lg={8} key={i}>
-          <Card>
-            <Skeleton active avatar paragraph={{ rows: 2 }} />
-          </Card>
-        </Col>
-      ))}
-    </Row>
-  </div>
-);
-
-// Product list skeleton
-export const ProductListSkeleton: React.FC = () => (
-  <div className='p-6'>
-    <div className='mb-6'>
-      <Skeleton.Input style={{ width: 300, height: 40 }} active />
-    </div>
-
-    <Row gutter={[16, 16]}>
-      {Array.from({ length: 12 }).map((_, i) => (
-        <Col xs={24} sm={12} md={8} lg={6} key={i}>
-          <Card>
-            <Skeleton active avatar paragraph={{ rows: 3 }} />
-          </Card>
-        </Col>
-      ))}
-    </Row>
-  </div>
-);
-
-// Table skeleton
-export const TableSkeleton: React.FC<{ rows?: number }> = ({ rows = 5 }) => (
-  <div>
-    {/* Table header */}
-    <div className='mb-4'>
-      <Row gutter={16}>
-        {[1, 2, 3, 4].map(i => (
-          <Col span={6} key={i}>
-            <Skeleton.Input style={{ width: '100%', height: 32 }} active />
-          </Col>
-        ))}
-      </Row>
-    </div>
-
-    {/* Table rows */}
-    {Array.from({ length: rows }).map((_, i) => (
-      <div key={i} className='mb-3'>
-        <Row gutter={16}>
-          {[1, 2, 3, 4].map(j => (
-            <Col span={6} key={j}>
-              <Skeleton.Input style={{ width: '100%', height: 24 }} active />
-            </Col>
-          ))}
-        </Row>
-      </div>
-    ))}
-  </div>
-);
-
-// Form skeleton
-export const FormSkeleton: React.FC<{ fields?: number }> = ({ fields = 6 }) => (
-  <div className='space-y-6'>
-    {Array.from({ length: fields }).map((_, i) => (
-      <div key={i}>
-        <Skeleton.Input
-          style={{ width: 120, height: 20, marginBottom: 8 }}
-          active
-        />
-        <Skeleton.Input style={{ width: '100%', height: 40 }} active />
-      </div>
-    ))}
-
-    <div className='pt-4'>
-      <Space>
-        <Skeleton.Button style={{ width: 100, height: 40 }} active />
-        <Skeleton.Button style={{ width: 80, height: 40 }} active />
-      </Space>
-    </div>
-  </div>
-);
-
-// Sales interface skeleton
-export const SalesInterfaceSkeleton: React.FC = () => (
-  <Row gutter={24} className='h-full'>
-    {/* Product search column */}
-    <Col span={8}>
-      <Card
-        title={<Skeleton.Input style={{ width: 150 }} active />}
-        className='h-full'
-      >
-        <div className='space-y-4'>
-          <Skeleton.Input style={{ width: '100%', height: 40 }} active />
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className='flex items-center space-x-3'>
-              <Skeleton.Avatar size={40} active />
-              <div className='flex-1'>
-                <Skeleton.Input style={{ width: '100%', height: 20 }} active />
-                <Skeleton.Input
-                  style={{ width: '60%', height: 16, marginTop: 4 }}
-                  active
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </Card>
-    </Col>
-
-    {/* Cart column */}
-    <Col span={8}>
-      <Card
-        title={<Skeleton.Input style={{ width: 100 }} active />}
-        className='h-full'
-      >
-        <div className='space-y-4'>
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className='flex justify-between items-center'>
-              <div className='flex-1'>
-                <Skeleton.Input style={{ width: '80%', height: 20 }} active />
-                <Skeleton.Input
-                  style={{ width: '40%', height: 16, marginTop: 4 }}
-                  active
-                />
-              </div>
-              <Skeleton.Input style={{ width: 60, height: 20 }} active />
-            </div>
-          ))}
-        </div>
-      </Card>
-    </Col>
-
-    {/* Payment column */}
-    <Col span={8}>
-      <Card
-        title={<Skeleton.Input style={{ width: 120 }} active />}
-        className='h-full'
-      >
-        <div className='space-y-4'>
-          <Skeleton.Input style={{ width: '100%', height: 60 }} active />
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton.Button
-              key={i}
-              style={{ width: '100%', height: 48 }}
-              active
-            />
-          ))}
-        </div>
-      </Card>
-    </Col>
-  </Row>
-);
-
-// Content loading wrapper
-export const ContentLoading: React.FC<{
-  loading: boolean;
-  children: React.ReactNode;
-  skeleton?: React.ReactNode;
-}> = ({ loading, children, skeleton }) => {
-  if (loading) {
-    return (
-      <div className='relative'>
-        {skeleton || <Skeleton active paragraph={{ rows: 4 }} />}
-      </div>
-    );
-  }
-
-  return <>{children}</>;
+export const SkeletonCard: React.FC<SkeletonCardProps> = ({
+  rows = 3,
+  avatar = false,
+  title = true,
+  className = '',
+}) => {
+  return (
+    <Card className={`skeleton-card ${className}`}>
+      <Skeleton
+        avatar={avatar}
+        title={title}
+        paragraph={{ rows }}
+        active
+      />
+    </Card>
+  );
 };
 
-// Inline loading
-export const InlineLoading: React.FC<{ message?: string }> = ({ message }) => {
-  const { t } = useTranslation();
+interface SkeletonListProps {
+  count?: number;
+  className?: string;
+}
 
+export const SkeletonList: React.FC<SkeletonListProps> = ({
+  count = 5,
+  className = '',
+}) => {
   return (
-    <div className='flex items-center justify-center py-8'>
-      <Space>
-        <Spin size='small' />
-        <span className='text-gray-600'>
-          <LocalizedText>
-            {message || t('common.loading', 'Loading...')}
-          </LocalizedText>
-        </span>
-      </Space>
+    <div className={`space-y-4 ${className}`}>
+      {Array.from({ length: count }).map((_, index) => (
+        <SkeletonCard key={index} avatar rows={2} />
+      ))}
+    </div>
+  );
+};
+
+interface SkeletonTableProps {
+  columns?: number;
+  rows?: number;
+  className?: string;
+}
+
+export const SkeletonTable: React.FC<SkeletonTableProps> = ({
+  columns = 4,
+  rows = 5,
+  className = '',
+}) => {
+  return (
+    <div className={`space-y-3 ${className}`}>
+      {/* Table Header */}
+      <div className='grid gap-4' style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
+        {Array.from({ length: columns }).map((_, index) => (
+          <div key={`header-${index}`} className='skeleton skeleton-title h-4'></div>
+        ))}
+      </div>
+      
+      {/* Table Rows */}
+      {Array.from({ length: rows }).map((_, rowIndex) => (
+        <div 
+          key={`row-${rowIndex}`} 
+          className='grid gap-4' 
+          style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}
+        >
+          {Array.from({ length: columns }).map((_, colIndex) => (
+            <div key={`cell-${rowIndex}-${colIndex}`} className='skeleton skeleton-text'></div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+interface LoadingOverlayProps {
+  visible: boolean;
+  message?: string;
+  children: React.ReactNode;
+}
+
+export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
+  visible,
+  message = 'Loading...',
+  children,
+}) => {
+  return (
+    <div className='relative'>
+      {children}
+      {visible && (
+        <div className='absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50 animate-fade-in'>
+          <div className='text-center space-y-3'>
+            <LoadingSpinner size='large' />
+            <p className='text-sm text-gray-600 font-medium'>{message}</p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+interface InlineLoadingProps {
+  size?: 'small' | 'default';
+  text?: string;
+  className?: string;
+}
+
+export const InlineLoading: React.FC<InlineLoadingProps> = ({
+  size = 'small',
+  text = 'Loading...',
+  className = '',
+}) => {
+  return (
+    <div className={`flex items-center space-x-2 ${className}`}>
+      <LoadingSpinner size={size} />
+      <span className='text-sm text-gray-600'>{text}</span>
     </div>
   );
 };
 
 // Button loading state
-export const ButtonLoading: React.FC<{
+interface LoadingButtonProps {
   loading: boolean;
   children: React.ReactNode;
-  loadingText?: string;
-}> = ({ loading, children, loadingText }) => {
-  const { t } = useTranslation();
+  className?: string;
+  onClick?: () => void;
+  disabled?: boolean;
+}
 
-  if (loading) {
-    return (
-      <Space>
-        <Spin size='small' />
-        <LocalizedText>
-          {loadingText || t('common.loading', 'Loading...')}
-        </LocalizedText>
-      </Space>
-    );
-  }
-
-  return <>{children}</>;
+export const LoadingButton: React.FC<LoadingButtonProps> = ({
+  loading,
+  children,
+  className = '',
+  onClick,
+  disabled = false,
+}) => {
+  return (
+    <button
+      className={`ceybyte-btn ceybyte-btn-primary ${className} ${loading || disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      onClick={onClick}
+      disabled={loading || disabled}
+    >
+      {loading && (
+        <LoadingOutlined 
+          style={{ 
+            fontSize: 14, 
+            marginRight: 8,
+            color: 'currentColor'
+          }} 
+          spin 
+        />
+      )}
+      {children}
+    </button>
+  );
 };
 
 export default {
+  LoadingSpinner,
   PageLoading,
-  DashboardSkeleton,
-  ProductListSkeleton,
-  TableSkeleton,
-  FormSkeleton,
-  SalesInterfaceSkeleton,
-  ContentLoading,
+  SkeletonCard,
+  SkeletonList,
+  SkeletonTable,
+  LoadingOverlay,
   InlineLoading,
-  ButtonLoading,
+  LoadingButton,
 };

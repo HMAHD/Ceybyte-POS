@@ -2,10 +2,9 @@
  * ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
  * │                                        CEYBYTE POS                                               │
  * │                                                                                                  │
- * │                                   Dashboard Interface                                            │
+ * │                                     Settings Page                                               │
  * │                                                                                                  │
- * │  Description: Main dashboard interface for owner and cashier users.                              │
- * │               Provides access to all POS features based on user permissions.                     │
+ * │  Description: System settings and configuration page (placeholder for future implementation).    │
  * │                                                                                                  │
  * │  Author: Akash Hasendra                                                                          │
  * │  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   │
@@ -14,10 +13,29 @@
  */
 
 import React from 'react';
-import AppRouter from '@/router/AppRouter';
+import { Card, Typography } from 'antd';
+import { SettingOutlined } from '@ant-design/icons';
+import LocalizedText from '@/components/LocalizedText';
+import { useTranslation } from '@/hooks/useTranslation';
 
-export const DashboardInterface: React.FC = () => {
-  return <AppRouter />;
+const { Title, Text } = Typography;
+
+const SettingsPage: React.FC = () => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="flex items-center justify-center min-h-96">
+      <Card className="text-center max-w-md">
+        <SettingOutlined style={{ fontSize: 48, color: '#f5222d', marginBottom: 16 }} />
+        <Title level={3}>
+          <LocalizedText>{t('settings.title', 'System Settings')}</LocalizedText>
+        </Title>
+        <Text type="secondary">
+          <LocalizedText>{t('settings.comingSoon', 'System settings interface will be implemented in upcoming tasks.')}</LocalizedText>
+        </Text>
+      </Card>
+    </div>
+  );
 };
 
-export default DashboardInterface;
+export default SettingsPage;

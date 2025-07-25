@@ -29,23 +29,30 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 480  # 8 hours for POS system
 
 # User roles and permissions
 USER_ROLES = {
+    "admin": {
+        "name": "Administrator",
+        "permissions": [
+            "dashboard", "sales", "inventory", "customers", "suppliers", "reports", 
+            "settings", "users", "backup", "system", "admin"
+        ]
+    },
     "owner": {
         "name": "Owner",
         "permissions": [
-            "sales", "inventory", "customers", "suppliers", "reports", 
+            "dashboard", "sales", "inventory", "customers", "suppliers", "reports", 
             "settings", "users", "backup", "system", "admin"
         ]
     },
     "cashier": {
         "name": "Cashier", 
         "permissions": [
-            "sales", "inventory", "customers", "basic_reports"
+            "dashboard", "sales", "inventory", "customers", "reports"
         ]
     },
     "helper": {
         "name": "Helper",
         "permissions": [
-            "sales"
+            "dashboard", "sales"
         ]
     }
 }
@@ -87,7 +94,7 @@ def verify_token(token: str) -> Dict[str, Any]:
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token has expired"
         )
-    except jwt.JWTError:
+    except jwt.InvalidTokenError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token"
@@ -113,6 +120,12 @@ def authenticate_user(username: str, password: str) -> Optional[User]:
         user.last_login = datetime.utcnow()
         db.commit()
         
+        # Refresh the user object to ensure all attributes are loaded
+        db.refresh(user)
+        
+        # Detach the user from the session so it can be used outside
+        db.expunge(user)
+        
         return user
         
     finally:
@@ -135,6 +148,12 @@ def authenticate_user_pin(username: str, pin: str) -> Optional[User]:
         # Update last activity
         user.last_activity = datetime.utcnow()
         db.commit()
+        
+        # Refresh the user object to ensure all attributes are loaded
+        db.refresh(user)
+        
+        # Detach the user from the session so it can be used outside
+        db.expunge(user)
         
         return user
         

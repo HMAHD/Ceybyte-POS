@@ -67,10 +67,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
-  const verifyAndLoadUser = async (authToken: string) => {
+  const verifyAndLoadUser = async (savedToken: string) => {
     try {
       // The API client already handles the Authorization header from localStorage
-      const response = await apiClient.get('/auth/me');
+      const response = await apiClient.get<User>('/auth/me');
 
       if (response.success && response.data) {
         setUser(response.data);
@@ -93,7 +93,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     password: string
   ): Promise<boolean> => {
     try {
-      const response = await apiClient.post('/auth/login', {
+      const response = await apiClient.post<{
+        access_token: string;
+        token_type: string;
+        expires_in: number;
+        user: User;
+      }>('/auth/login', {
         username,
         password,
       });
@@ -118,7 +123,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const pinLogin = async (username: string, pin: string): Promise<boolean> => {
     try {
-      const response = await apiClient.post('/auth/pin-login', {
+      const response = await apiClient.post<{
+        access_token: string;
+        token_type: string;
+        expires_in: number;
+        user: User;
+      }>('/auth/pin-login', {
         username,
         pin,
       });

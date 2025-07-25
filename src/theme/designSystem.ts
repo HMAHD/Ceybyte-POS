@@ -13,9 +13,9 @@
  * └──────────────────────────────────────────────────────────────────────────────────────────────────┘
  */
 
-// Ceybyte Brand Colors
+// Ceybyte Brand Colors - Enhanced with Sri Lankan inspired palette
 export const CEYBYTE_COLORS = {
-  // Primary Brand Colors
+  // Primary Brand Colors - Ceybyte Blue (Ocean Blue inspired by Sri Lankan coastline)
   primary: {
     50: '#e6f3ff',
     100: '#b3d9ff',
@@ -27,6 +27,15 @@ export const CEYBYTE_COLORS = {
     700: '#003d7a',
     800: '#002952',
     900: '#001429',
+  },
+
+  // Accent Colors - Inspired by Sri Lankan gems and spices
+  accent: {
+    sapphire: '#1e40af', // Blue sapphire
+    ruby: '#dc2626',     // Ruby red
+    emerald: '#059669',  // Emerald green
+    topaz: '#d97706',    // Golden topaz
+    amethyst: '#7c3aed', // Purple amethyst
   },
 
   // Secondary Colors
@@ -259,13 +268,14 @@ export const ANIMATION = {
   },
 };
 
-// POS-Specific Design Tokens
+// POS-Specific Design Tokens - Enhanced for Sri Lankan retail environment
 export const POS_TOKENS = {
   // Touch-friendly sizes for POS terminals
   touchTarget: {
     minimum: '44px',
     comfortable: '48px',
     large: '56px',
+    extraLarge: '64px', // For primary actions
   },
 
   // Status colors for POS operations
@@ -275,13 +285,16 @@ export const POS_TOKENS = {
     error: CEYBYTE_COLORS.error[500],
     warning: CEYBYTE_COLORS.warning[500],
     processing: CEYBYTE_COLORS.primary[500],
+    connecting: CEYBYTE_COLORS.warning[400],
+    critical: CEYBYTE_COLORS.error[600],
   },
 
-  // Currency display
+  // Currency display (Sri Lankan Rupee)
   currency: {
     positive: CEYBYTE_COLORS.success[600],
     negative: CEYBYTE_COLORS.error[600],
     neutral: CEYBYTE_COLORS.neutral[700],
+    highlight: CEYBYTE_COLORS.primary[600],
   },
 
   // Priority levels
@@ -289,6 +302,34 @@ export const POS_TOKENS = {
     high: CEYBYTE_COLORS.error[500],
     medium: CEYBYTE_COLORS.warning[500],
     low: CEYBYTE_COLORS.success[500],
+    urgent: CEYBYTE_COLORS.accent.ruby,
+  },
+
+  // Layout dimensions - Optimized for 1024x768 minimum
+  layout: {
+    sidebarWidth: '240px',
+    sidebarCollapsed: '64px',
+    headerHeight: '64px',
+    footerHeight: '56px', // Increased for better keyboard shortcut display
+    contentPadding: '24px',
+    cardPadding: '16px',
+  },
+
+  // Animation and transitions
+  transitions: {
+    fast: '150ms ease-out',
+    normal: '300ms ease-in-out',
+    slow: '500ms ease-in-out',
+    bounce: '400ms cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+  },
+
+  // Elevation levels (box shadows)
+  elevation: {
+    none: 'none',
+    low: '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)',
+    medium: '0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)',
+    high: '0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)',
+    floating: '0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22)',
   },
 };
 
@@ -317,6 +358,53 @@ export const KEYBOARD_SHORTCUTS = {
   logout: 'Ctrl+L',
   switchUser: 'Ctrl+U',
   offlineMode: 'Ctrl+O',
+};
+
+// Loading States Configuration
+export const LOADING_STATES = {
+  skeleton: {
+    rows: {
+      small: 3,
+      medium: 5,
+      large: 8,
+    },
+    avatar: {
+      size: 40,
+      shape: 'circle' as const,
+    },
+    paragraph: {
+      rows: 4,
+      width: ['100%', '90%', '80%', '60%'],
+    },
+  },
+  spinner: {
+    size: {
+      small: 16,
+      medium: 24,
+      large: 32,
+    },
+  },
+};
+
+// Connection Status Mapping
+export const CONNECTION_STATUS_MAP = {
+  connected: 'connected' as const,
+  connecting: 'warning' as const,
+  disconnected: 'disconnected' as const,
+  error: 'disconnected' as const,
+  testing: 'warning' as const,
+};
+
+// Responsive Design Breakpoints for POS
+export const POS_BREAKPOINTS = {
+  // Minimum supported resolution
+  minWidth: '1024px',
+  minHeight: '768px',
+  
+  // Optimal resolutions
+  tablet: '1024x768',
+  desktop: '1280x1024',
+  widescreen: '1920x1080',
 };
 
 // Export design system as a complete object

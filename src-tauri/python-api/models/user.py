@@ -57,15 +57,19 @@ class User(BaseModel):
     def has_permission(self, permission: str) -> bool:
         """Check if user has specific permission based on role"""
         permissions = {
+            "admin": [
+                "dashboard", "sales", "inventory", "customers", "suppliers", "reports", 
+                "settings", "users", "backup", "system", "admin"
+            ],
             "owner": [
-                "sales", "inventory", "customers", "suppliers", "reports", 
-                "settings", "users", "backup", "system"
+                "dashboard", "sales", "inventory", "customers", "suppliers", "reports", 
+                "settings", "users", "backup", "system", "admin"
             ],
             "cashier": [
-                "sales", "inventory", "customers", "basic_reports"
+                "dashboard", "sales", "inventory", "customers", "reports"
             ],
             "helper": [
-                "sales"
+                "dashboard", "sales"
             ]
         }
         
@@ -74,15 +78,19 @@ class User(BaseModel):
     def get_permissions(self) -> list:
         """Get all permissions for user role"""
         permissions = {
+            "admin": [
+                "dashboard", "sales", "inventory", "customers", "suppliers", "reports", 
+                "settings", "users", "backup", "system", "admin"
+            ],
             "owner": [
-                "sales", "inventory", "customers", "suppliers", "reports", 
-                "settings", "users", "backup", "system"
+                "dashboard", "sales", "inventory", "customers", "suppliers", "reports", 
+                "settings", "users", "backup", "system", "admin"
             ],
             "cashier": [
-                "sales", "inventory", "customers", "basic_reports"
+                "dashboard", "sales", "inventory", "customers", "reports"
             ],
             "helper": [
-                "sales"
+                "dashboard", "sales"
             ]
         }
         
