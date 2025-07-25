@@ -59,7 +59,10 @@
     "select": "තෝරන්න",
     "optional": "විකල්ප",
     "user": "පරිශීලක",
-    "currency": "රු."
+    "currency": "රු.",
+    "primary": "Primary Button",
+    "default": "Default Button",
+    "dashed": "Dashed Button"
   },
   "sales": {
     "walkIn": "සාමාන්‍ය ගනුදෙනුකරු",
@@ -86,7 +89,35 @@
     "f3": "F3 - ගනුදෙනුකරු ප්‍රකාරය",
     "f2": "F2 - නිෂ්පාදන සෙවීම",
     "ctrlH": "Ctrl+H - විකුණුම රඳවන්න",
-    "ctrlR": "Ctrl+R - විකුණුම ගන්න"
+    "ctrlR": "Ctrl+R - විකුණුම ගන්න",
+    "global": "Global Shortcuts",
+    "quickSaleDesc": "Quick Cash Sale",
+    "customerModeDesc": "Customer Mode",
+    "productSearchDesc": "Product Search",
+    "settingsDesc": "Settings",
+    "helpDesc": "Help",
+    "sale": "Sale Operations",
+    "holdSaleDesc": "Hold Current Sale",
+    "retrieveSaleDesc": "Retrieve Held Sale",
+    "completeSaleDesc": "Complete Sale",
+    "cancelSaleDesc": "Cancel Sale",
+    "navigation": "Navigation",
+    "dashboardDesc": "Dashboard",
+    "productsDesc": "Products",
+    "customersDesc": "Customers",
+    "reportsDesc": "Reports",
+    "system": "System",
+    "logoutDesc": "Logout",
+    "switchUserDesc": "Switch User",
+    "offlineModeDesc": "Toggle Offline Mode",
+    "title": "Keyboard Shortcuts",
+    "tip": "Pro Tip",
+    "tipText": "Use keyboard shortcuts to navigate faster and increase productivity.",
+    "noShortcuts": "No keyboard shortcuts are currently registered.",
+    "quickSale": "Quick Sale",
+    "customerMode": "Customer Mode",
+    "settings": "Settings",
+    "help": "Help"
   },
   "currency": {
     "symbol": "රු.",
@@ -163,6 +194,164 @@
     "printReceipt": "රිසිට්පත මුද්‍රණය",
     "paymentSuccessful": "ගෙවීම සාර්ථකයි",
     "receiptNumber": "රිසිට්පත",
-    "receiptPrintNote": "රිසිට්පත තාප මුද්‍රකයේ මුද්‍රණය කරනු ලැබේ"
-  }
+    "receiptPrintNote": "රිසිට්පත තාප මුද්‍රකයේ මුද්‍රණය කරනු ලැබේ",
+    "cart": "Shopping Cart",
+    "addItemsFirst": "Add items to cart first",
+    "scanBarcodeHint": "Scan barcode or search product",
+    "customer": "Customer",
+    "mobileProvider": "Mobile Payment Provider",
+    "proceedToPayment": "Proceed to Payment"
+  },
+  "/": "/",
+  "T": "T",
+  "q": "q",
+  "/health": "/health",
+  "/customers/overdue": "/customers/overdue",
+  "connection": {
+    "network": "Network",
+    "printer": "Printer",
+    "database": "Database",
+    "api": "API",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "warning": "Warning",
+    "testing": "Testing",
+    "latency": "Latency",
+    "lastCheck": "Last Check",
+    "criticalIssues": "Critical connection issues detected",
+    "minorIssues": "Connection warnings detected"
+  },
+  "auth": {
+    "helperMode": "Helper Mode",
+    "logout": "logout",
+    "helperInstructions": "Helper Mode Instructions",
+    "helperInstruction2": "Process cash payments only",
+    "helperInstruction1": "Scan product barcodes to add items",
+    "helperInstruction3": "Call supervisor for discounts or returns",
+    "helperInstruction4": "Use F12 for quick cash sale",
+    "loginError": "loginError",
+    "login": "login",
+    "password": "password",
+    "pin": "pin",
+    "username": "username",
+    "loginButton": "loginButton",
+    "quickSwitch": "Quick Switch:",
+    "accessDenied": "accessDenied",
+    "currentRole": "Your current role: ${user?.role}",
+    "roleRequired": "This feature requires ${requiredRole} role."
+  },
+  "+": "+",
+  "user": {
+    "profile": "Profile",
+    "theme": "Theme Settings",
+    "shortcuts": "Keyboard Shortcuts"
+  },
+  "header": {
+    "terminal": "Terminal"
+  },
+  "network": {
+    "main": "Main",
+    "client": "Client",
+    "selectTerminalType": "Select Terminal Type",
+    "mainComputer": "Main Computer",
+    "mainFeature1": "Hosts the main database",
+    "mainFeature2": "Manages file sharing",
+    "mainFeature3": "Controls system settings",
+    "mainFeature4": "Generates reports",
+    "clientComputer": "Client Computer",
+    "skipToOffline": "Skip and use offline mode",
+    "configureMainComputer": "Configure Main Computer",
+    "configureClientComputer": "Configure Client Computer",
+    "terminalName": "Terminal Name",
+    "mainComputerPath": "Main Computer Path",
+    "testConnection": "Test Connection",
+    "mainComputerSetup": "Main Computer Setup",
+    "connectingTo": "Connecting to",
+    "retry": "Retry",
+    "setupComplete": "Network Setup Complete!",
+    "terminalType": "Terminal Type",
+    "connectedTo": "Connected To",
+    "startUsingPOS": "Start Using POS System",
+    "selectType": "Select Type",
+    "configure": "Configure",
+    "complete": "Complete",
+    "networkSetup": "Network Setup",
+    "mainComputerDesc": "This computer will host the database and serve other terminals",
+    "clientComputerDesc": "This computer will connect to the main computer for data access",
+    "clientFeature1": "Connects to main database",
+    "clientFeature2": "Syncs data automatically",
+    "clientFeature3": "Works offline when needed",
+    "clientFeature4": "Handles sales transactions",
+    "terminalNamePlaceholder": "Enter a name for this terminal",
+    "pathFormatHelp": "Format: \\\\\\\\COMPUTER-NAME\\\\FOLDER-NAME",
+    "mainSetupSuccess": "Your main computer has been configured successfully. Other terminals can now connect to this computer.",
+    "clientSetupSuccess": "Your client computer has been connected successfully. You can now use the POS system."
+  },
+  "footer": {
+    "version": "Version"
+  },
+  "errors": {
+    "networkError": "networkError"
+  },
+  "main": "main",
+  "client": "client",
+  "settings": {
+    "themeSettings": "Theme Settings",
+    "title": "System Settings",
+    "comingSoon": "System settings interface will be implemented in upcoming tasks."
+  },
+  "theme": {
+    "presets": "Theme Presets",
+    "customization": "Customization",
+    "primaryColor": "Primary Color",
+    "fontSize": "Font Size",
+    "borderRadius": "Border Radius",
+    "compactMode": "Compact Mode",
+    "preview": "Preview",
+    "compactModeDesc": "Smaller components for small screens",
+    "sampleText": "Sample text with current font size"
+  },
+  "ups": {
+    "online": "UPS Online",
+    "onBattery": "On Battery",
+    "lowBattery": "Low Battery",
+    "critical": "Critical Battery",
+    "notDetected": "UPS Not Detected",
+    "unknown": "Unknown Status",
+    "minutesRemaining": "${minutes} min",
+    "hoursMinutesRemaining": "${hours}h ${remainingMinutes}m",
+    "batteryLevel": "Battery Level",
+    "estimatedRuntime": "Runtime",
+    "model": "Model",
+    "voltage": "Voltage",
+    "lastUpdate": "Last Update"
+  },
+  "customers": {
+    "title": "Customer Management",
+    "comingSoon": "Customer management interface will be implemented in upcoming tasks.",
+    "manageCustomers": "Manage customer accounts"
+  },
+  "dashboard": {
+    "lowStock": "Low Stock Items",
+    "pendingPayments": "Pending Payments"
+  },
+  "products": {
+    "manageProducts": "Manage product inventory"
+  },
+  "showHeldSales": "showHeldSales",
+  "reports": {
+    "title": "Reports & Analytics",
+    "comingSoon": "Reports and analytics interface will be implemented in upcoming tasks."
+  },
+  "suppliers": {
+    "title": "Supplier Management",
+    "comingSoon": "Supplier management interface will be implemented in upcoming tasks."
+  },
+  "@/pages/DashboardPage": "@/pages/DashboardPage",
+  "@/pages/POSPage": "@/pages/POSPage",
+  "@/pages/ProductsPage": "@/pages/ProductsPage",
+  "@/pages/CustomersPage": "@/pages/CustomersPage",
+  "@/pages/SuppliersPage": "@/pages/SuppliersPage",
+  "@/pages/ReportsPage": "@/pages/ReportsPage",
+  "@/pages/SettingsPage": "@/pages/SettingsPage"
 }

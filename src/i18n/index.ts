@@ -18,9 +18,9 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 // Import translation files
-import enTranslations from './locales/en.json';
-import siTranslations from './locales/si.json';
-import taTranslations from './locales/ta.json';
+import enTranslations from '../locales/en.json';
+import siTranslations from '../locales/si.json';
+import taTranslations from '../locales/ta.json';
 
 // Language configuration
 export const SUPPORTED_LANGUAGES = {

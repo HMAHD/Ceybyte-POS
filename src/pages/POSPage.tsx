@@ -295,6 +295,10 @@ const POSPage: React.FC = () => {
                 showPayment={showPayment}
                 onPaymentComplete={handlePaymentComplete}
                 onCancel={() => setShowPayment(false)}
+                onCustomerChange={(id, name) => {
+                  setCustomerId(id);
+                  setCustomerName(name || '');
+                }}
               />
             </Card>
           </Col>

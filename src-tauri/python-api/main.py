@@ -53,12 +53,16 @@ from api.auth import router as auth_router
 from api.products import router as products_router
 from api.categories import router as categories_router
 from api.units import router as units_router
+from api.customers import router as customers_router
+from api.sales import router as sales_router
 
 # Include routers
 app.include_router(auth_router)
 app.include_router(products_router)
 app.include_router(categories_router)
 app.include_router(units_router)
+app.include_router(customers_router)
+app.include_router(sales_router)
 
 if __name__ == "__main__":
     # This will be called when running the API standalone for development

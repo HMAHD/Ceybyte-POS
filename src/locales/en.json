@@ -45,7 +45,8 @@
     "systemStatus": "System Status",
     "apiStatus": "API Status",
     "userRole": "User Role",
-    "authenticationActive": "Authentication Active"
+    "authenticationActive": "Authentication Active",
+    "lowStock": "Low Stock Items"
   },
   "pos": {
     "title": "Point of Sale",
@@ -57,7 +58,7 @@
     "productSearch": "Product Search",
     "shoppingCart": "Shopping Cart",
     "payment": "Payment",
-    "items": "items",
+    "items": "Items",
     "searchProducts": "Search products...",
     "scanBarcode": "Scan barcode...",
     "selectCategory": "Category",
@@ -68,6 +69,7 @@
     "noRecentProducts": "No recent products",
     "shortcuts": "F1: Focus Search | F3: Customer Mode",
     "selectCustomer": "Select Customer",
+    "customer": "Customer",
     "customerName": "Customer Name",
     "enterCustomerName": "Enter customer name",
     "customerSearchNote": "In future versions, this will include customer search and selection.",
@@ -95,17 +97,18 @@
     "toggleCustomerMode": "Toggle Customer Mode",
     "paymentMethod": "Payment Method",
     "cash": "Cash",
-    "card": "Card",
+    "card": "Card Payment",
     "mobileMoney": "Mobile Money",
-    "credit": "Credit",
+    "credit": "Customer Credit",
     "amountTendered": "Amount Tendered",
     "quickAmounts": "Quick Amounts",
     "change": "Change",
     "amount": "Amount",
     "cardReference": "Card Reference Number",
-    "enterCardReference": "Enter card reference number",
+    "enterCardReference": "Enter card reference/approval number",
     "mobileReference": "Mobile Payment Reference",
-    "enterMobileReference": "Enter eZ Cash / mCash reference",
+    "mobileProvider": "Mobile Payment Provider",
+    "enterMobileReference": "Enter transaction reference number",
     "supportedMobilePayments": "Supported: eZ Cash, mCash, and other mobile money services",
     "creditAmount": "Credit Amount",
     "creditSaleNote": "This sale will be added to customer credit account",
@@ -113,12 +116,16 @@
     "enterPaymentNotes": "Enter payment notes...",
     "processing": "Processing...",
     "processPayment": "Process Payment",
+    "proceedToPayment": "Proceed to Payment",
     "paymentComplete": "Payment Complete",
     "skipReceipt": "Skip Receipt",
     "printReceipt": "Print Receipt",
-    "paymentSuccessful": "Payment Successful",
+    "paymentSuccessful": "Payment Successful!",
     "receiptNumber": "Receipt",
-    "receiptPrintNote": "Receipt will be printed on thermal printer"
+    "receiptPrintNote": "Receipt will be printed on thermal printer",
+    "cart": "Shopping Cart",
+    "addItemsFirst": "Add items to cart first",
+    "scanBarcodeHint": "Scan barcode or search product"
   },
   "products": {
     "manageProducts": "Manage product inventory",
@@ -148,17 +155,25 @@
     "inactive": "Inactive"
   },
   "customers": {
-    "manageCustomers": "Manage customer accounts"
+    "manageCustomers": "Manage customer accounts",
+    "title": "Customer Management",
+    "comingSoon": "Customer management interface will be implemented in upcoming tasks."
   },
   "suppliers": {
-    "manageSuppliers": "Manage supplier accounts"
+    "manageSuppliers": "Manage supplier accounts",
+    "title": "Supplier Management",
+    "comingSoon": "Supplier management interface will be implemented in upcoming tasks."
   },
   "reports": {
-    "viewReports": "View sales and business reports"
+    "viewReports": "View sales and business reports",
+    "title": "Reports & Analytics",
+    "comingSoon": "Reports and analytics interface will be implemented in upcoming tasks."
   },
   "settings": {
     "systemSettings": "Configure system settings",
-    "themeSettings": "Theme Settings"
+    "themeSettings": "Theme Settings",
+    "title": "System Settings",
+    "comingSoon": "System settings interface will be implemented in upcoming tasks."
   },
   "theme": {
     "presets": "Theme Presets",
@@ -189,31 +204,39 @@
     "shortcuts": "Keyboard Shortcuts"
   },
   "shortcuts": {
-    "title": "Keyboard Shortcuts",
+    "f12": "F12 - Instant Cash Sale",
+    "f3": "F3 - Customer Mode",
+    "f2": "F2 - Product Search",
+    "ctrlH": "Ctrl+H - Hold Sale",
+    "ctrlR": "Ctrl+R - Retrieve Sale",
     "global": "Global Shortcuts",
-    "sale": "Sale Operations",
-    "navigation": "Navigation",
-    "system": "System",
-    "quickSale": "Quick Sale",
-    "customerMode": "Customer Mode",
-    "settings": "Settings",
-    "help": "Help",
     "quickSaleDesc": "Quick Cash Sale",
     "customerModeDesc": "Customer Mode",
     "productSearchDesc": "Product Search",
     "settingsDesc": "Settings",
     "helpDesc": "Help",
+    "sale": "Sale Operations",
     "holdSaleDesc": "Hold Current Sale",
     "retrieveSaleDesc": "Retrieve Held Sale",
     "completeSaleDesc": "Complete Sale",
     "cancelSaleDesc": "Cancel Sale",
+    "navigation": "Navigation",
     "dashboardDesc": "Dashboard",
     "productsDesc": "Products",
     "customersDesc": "Customers",
     "reportsDesc": "Reports",
+    "system": "System",
     "logoutDesc": "Logout",
     "switchUserDesc": "Switch User",
-    "offlineModeDesc": "Toggle Offline Mode"
+    "offlineModeDesc": "Toggle Offline Mode",
+    "title": "Keyboard Shortcuts",
+    "tip": "Pro Tip",
+    "tipText": "Use keyboard shortcuts to navigate faster and increase productivity.",
+    "noShortcuts": "No keyboard shortcuts are currently registered.",
+    "quickSale": "Quick Sale",
+    "customerMode": "Customer Mode",
+    "settings": "Settings",
+    "help": "Help"
   },
   "ups": {
     "online": "UPS Online",
@@ -339,15 +362,38 @@
     "holdSale": "Hold Sale",
     "retrieveSale": "Retrieve Sale"
   },
-  "shortcuts": {
-    "f12": "F12 - Instant Cash Sale",
-    "f3": "F3 - Customer Mode",
-    "f2": "F2 - Product Search",
-    "ctrlH": "Ctrl+H - Hold Sale",
-    "ctrlR": "Ctrl+R - Retrieve Sale"
-  },
   "currency": {
     "symbol": "Rs.",
     "format": "Rs. {amount}"
-  }
+  },
+  "/": "/",
+  "T": "T",
+  "q": "q",
+  "/health": "/health",
+  "/customers/overdue": "/customers/overdue",
+  "connection": {
+    "network": "Network",
+    "printer": "Printer",
+    "database": "Database",
+    "api": "API",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "warning": "Warning",
+    "testing": "Testing",
+    "latency": "Latency",
+    "lastCheck": "Last Check",
+    "criticalIssues": "Critical connection issues detected",
+    "minorIssues": "Connection warnings detected"
+  },
+  "+": "+",
+  "main": "main",
+  "client": "client",
+  "showHeldSales": "showHeldSales",
+  "@/pages/DashboardPage": "@/pages/DashboardPage",
+  "@/pages/POSPage": "@/pages/POSPage",
+  "@/pages/ProductsPage": "@/pages/ProductsPage",
+  "@/pages/CustomersPage": "@/pages/CustomersPage",
+  "@/pages/SuppliersPage": "@/pages/SuppliersPage",
+  "@/pages/ReportsPage": "@/pages/ReportsPage",
+  "@/pages/SettingsPage": "@/pages/SettingsPage"
 }

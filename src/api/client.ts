@@ -153,6 +153,10 @@ class ApiClient {
         return this.handleSalesMockRequest<T>(endpoint, method, body);
       }
 
+      if (endpoint.startsWith('/customers')) {
+        return this.handleCustomerMockRequest<T>(endpoint, method, body);
+      }
+
       // Default mock response for other endpoints
       return {
         success: true,
@@ -464,6 +468,121 @@ class ApiClient {
         ]
       };
       return { success: true, data: summary as T };
+    }
+
+    return { success: true, data: {} as T };
+  }
+
+  private async handleCustomerMockRequest<T>(
+    endpoint: string,
+    method: string,
+    body: any
+  ): Promise<ApiResponse<T>> {
+    // Mock customer data
+    const mockCustomers = [
+      {
+        id: 1,
+        name: "Kamal Perera",
+        phone: "0771234567",
+        email: "kamal@example.com",
+        address: "123 Main Street, Colombo 03",
+        area_village: "Colombo",
+        credit_limit: 50000.00,
+        current_balance: 15000.00,
+        payment_terms_days: 30,
+        whatsapp_opt_in: true,
+        preferred_language: "en" as const,
+        last_payment_date: "2025-01-20",
+        days_overdue: 5,
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 2,
+        name: "Nimal Silva",
+        phone: "0779876543",
+        email: null,
+        address: "456 Temple Road, Kandy",
+        area_village: "Kandy",
+        credit_limit: 25000.00,
+        current_balance: 8500.00,
+        payment_terms_days: 15,
+        whatsapp_opt_in: false,
+        preferred_language: "si" as const,
+        last_payment_date: "2025-01-15",
+        days_overdue: 0,
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }
+    ];
+
+    if (method === 'GET' && endpoint === '/customers') {
+      return { success: true, data: mockCustomers as T };
+    }
+
+    if (method === 'GET' && endpoint.match(/\/customers\/\d+$/)) {
+      const id = parseInt(endpoint.split('/').pop() || '0');
+      const customer = mockCustomers.find(c => c.id === id);
+      return { success: !!customer, data: customer as T };
+    }
+
+    if (method === 'GET' && endpoint.match(/\/customers\/\d+\/credit$/)) {
+      const id = parseInt(endpoint.split('/')[2]);
+      const customer = mockCustomers.find(c => c.id === id);
+      if (customer) {
+        const creditInfo = {
+          customer_id: customer.id,
+          credit_limit: customer.credit_limit,
+          current_balance: customer.current_balance,
+          available_credit: customer.credit_limit - customer.current_balance,
+          days_overdue: customer.days_overdue,
+          last_payment_date: customer.last_payment_date,
+          payment_terms_days: customer.payment_terms_days
+        };
+        return { success: true, data: creditInfo as T };
+      }
+      return { success: false, error: 'Customer not found' };
+    }
+
+    if (method === 'POST' && endpoint.match(/\/customers\/\d+\/credit\/check$/)) {
+      const id = parseInt(endpoint.split('/')[2]);
+      const customer = mockCustomers.find(c => c.id === id);
+      if (customer) {
+        const availableCredit = customer.credit_limit - customer.current_balance;
+        const canPurchase = body.amount <= availableCredit;
+        const result = {
+          can_purchase: canPurchase,
+          available_credit: availableCredit,
+          would_exceed_by: canPurchase ? undefined : body.amount - availableCredit,
+          requires_approval: !canPurchase && (body.amount - availableCredit) < 10000
+        };
+        return { success: true, data: result as T };
+      }
+      return { success: false, error: 'Customer not found' };
+    }
+
+    if (method === 'GET' && endpoint.startsWith('/customers/search')) {
+      const query = new URL(`http://localhost${endpoint}`).searchParams.get('q') || '';
+      const filtered = mockCustomers.filter(c => 
+        c.name.toLowerCase().includes(query.toLowerCase()) ||
+        c.phone.includes(query)
+      );
+      return { success: true, data: filtered as T };
+    }
+
+    if (method === 'POST' && endpoint === '/customers') {
+      const newCustomer = {
+        ...body,
+        id: Date.now(),
+        current_balance: 0,
+        days_overdue: 0,
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+      return { success: true, data: newCustomer as T };
     }
 
     return { success: true, data: {} as T };
