@@ -61,6 +61,7 @@ import {
   validateNetworkPath,
   validateTerminalName,
 } from '@/utils/networkConfig';
+import { initializeTerminal } from '@/api/terminals.api';
 
 const { Title, Text, Paragraph } = Typography;
 const { Step } = Steps;
@@ -171,13 +172,37 @@ export const NetworkSelectionDialog: React.FC<NetworkSelectionDialogProps> = ({
     }
   };
 
-  const handleComplete = () => {
-    const finalConfig = {
-      ...config,
-      isConfigured: true,
-    };
-    saveNetworkConfig(finalConfig);
-    onComplete(finalConfig);
+  const handleComplete = async () => {
+    try {
+      const finalConfig = {
+        ...config,
+        isConfigured: true,
+      };
+      
+      // Initialize terminal in the backend
+      const terminalConfig = {
+        terminal_name: finalConfig.terminalName,
+        terminal_type: finalConfig.terminalType === 'main' ? 'pos' : 'pos',
+        is_main_terminal: finalConfig.terminalType === 'main',
+        app_version: '1.0.0',
+        network_path: finalConfig.mainComputerPath,
+      };
+      
+      // This would call the terminal API to initialize
+      // await initializeTerminal(terminalConfig);
+      
+      saveNetworkConfig(finalConfig);
+      onComplete(finalConfig);
+    } catch (error) {
+      console.error('Error completing network setup:', error);
+      // Still complete the setup even if terminal initialization fails
+      const finalConfig = {
+        ...config,
+        isConfigured: true,
+      };
+      saveNetworkConfig(finalConfig);
+      onComplete(finalConfig);
+    }
   };
 
   const handleSkipToOffline = () => {
