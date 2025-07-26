@@ -67,7 +67,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
-  const verifyAndLoadUser = async (savedToken: string) => {
+  const verifyAndLoadUser = async (_savedToken: string) => {
     try {
       // The API client already handles the Authorization header from localStorage
       const response = await apiClient.get<User>('/auth/me');

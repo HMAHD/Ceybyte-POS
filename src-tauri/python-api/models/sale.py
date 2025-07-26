@@ -82,6 +82,7 @@ class Sale(BaseModel):
     terminal = relationship("Terminal", back_populates="sales")
     sale_items = relationship("SaleItem", back_populates="sale", cascade="all, delete-orphan")
     payments = relationship("Payment", back_populates="sale", cascade="all, delete-orphan")
+    whatsapp_messages = relationship("WhatsAppMessage", back_populates="sale", cascade="all, delete-orphan")
     
     def __repr__(self):
         return f"<Sale(sale_number='{self.sale_number}', total={self.total_amount}, status='{self.status}')>"

@@ -1,0 +1,126 @@
+# ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+# │                                        CEYBYTE POS                                               │
+# │                                                                                                  │
+# │                                   Docker Compose Configuration                                   │
+# │                                                                                                  │
+# │  Description: Complete Docker Compose setup for CeybytePOS development and production.           │
+# │               Includes frontend, backend, database, and development services.                    │
+# │                                                                                                  │
+# │  Author: Akash Hasendra                                                                          │
+# │  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   │
+# │  License: MIT License with Sri Lankan Business Terms                                             │
+# └──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+version: '3.8'
+
+services:
+  # Python FastAPI Backend
+  ceybyte-api:
+    build:
+      context: ./src-tauri/python-api
+      dockerfile: Dockerfile
+    container_name: ceybyte-pos-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./data/ceybyte_pos.db
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-ceybyte-pos-secret-key-change-in-production}
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:80,http://ceybyte-frontend
+    volumes:
+      - api_data:/app/data
+      - ./src-tauri/python-api:/app:ro  # Read-only mount for development
+    networks:
+      - ceybyte-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # React Frontend
+  ceybyte-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ceybyte-pos-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+      - VITE_APP_NAME=CeybytePOS
+      - VITE_COMPANY_NAME=Ceybyte.com
+    depends_on:
+      ceybyte-api:
+        condition: service_healthy
+    networks:
+      - ceybyte-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Development Frontend (Hot Reload)
+  ceybyte-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: ceybyte-pos-dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+      - VITE_APP_NAME=CeybytePOS Dev
+      - VITE_COMPANY_NAME=Ceybyte.com
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - ceybyte-api
+    networks:
+      - ceybyte-network
+    profiles:
+      - dev
+
+  # Database Backup Service
+  ceybyte-backup:
+    image: alpine:latest
+    container_name: ceybyte-pos-backup
+    restart: unless-stopped
+    volumes:
+      - api_data:/data:ro
+      - ./backups:/backups
+    command: >
+      sh -c "
+        while true; do
+          echo 'Creating backup...'
+          cp /data/ceybyte_pos.db /backups/ceybyte_pos_backup_$$(date +%Y%m%d_%H%M%S).db
+          find /backups -name '*.db' -mtime +7 -delete
+          echo 'Backup completed'
+          sleep 86400
+        done
+      "
+    networks:
+      - ceybyte-network
+    profiles:
+      - backup
+
+volumes:
+  api_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data
+
+networks:
+  ceybyte-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

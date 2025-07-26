@@ -54,7 +54,9 @@ from api.products import router as products_router
 from api.categories import router as categories_router
 from api.units import router as units_router
 from api.customers import router as customers_router
+from api.suppliers import router as suppliers_router
 from api.sales import router as sales_router
+from api.whatsapp import router as whatsapp_router
 from routes.printer import router as printer_router
 
 # Include routers
@@ -63,7 +65,9 @@ app.include_router(products_router)
 app.include_router(categories_router)
 app.include_router(units_router)
 app.include_router(customers_router)
+app.include_router(suppliers_router)
 app.include_router(sales_router)
+app.include_router(whatsapp_router)
 app.include_router(printer_router)
 
 if __name__ == "__main__":

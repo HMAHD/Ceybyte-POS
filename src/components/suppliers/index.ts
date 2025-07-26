@@ -2,10 +2,10 @@
  * ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
  * │                                        CEYBYTE POS                                               │
  * │                                                                                                  │
- * │                                    Customers Page                                               │
+ * │                                 Supplier Components Index                                        │
  * │                                                                                                  │
- * │  Description: Main customers page with credit management functionality including customer        │
- * │               registration, credit book, and payment collection.                                 │
+ * │  Description: Central export file for all supplier management components.                        │
+ * │               Provides easy imports for supplier-related functionality.                          │
  * │                                                                                                  │
  * │  Author: Akash Hasendra                                                                          │
  * │  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   │
@@ -13,15 +13,24 @@
  * └──────────────────────────────────────────────────────────────────────────────────────────────────┘
  */
 
-import React from 'react';
-import { CustomerCreditManagement } from '@/components/customers/CustomerCreditManagement';
+export { SupplierForm } from './SupplierForm';
+export { default as SupplierList } from './SupplierList';
+export { SupplierDashboard } from './SupplierDashboard';
+export { SupplierReports } from './SupplierReports';
 
-const CustomersPage: React.FC = () => {
-  return (
-    <div className="p-6">
-      <CustomerCreditManagement />
-    </div>
-  );
-};
-
-export default CustomersPage;
+// Re-export types from API
+export type {
+  Supplier,
+  SupplierCreate,
+  SupplierUpdate,
+  SupplierInvoice,
+  SupplierInvoiceCreate,
+  SupplierPayment,
+  SupplierPaymentCreate,
+  SupplierSummary,
+  SupplierAnalytics,
+  SupplierAgingReport,
+  SupplierPerformanceReport,
+  VisitAlert,
+  PaymentReminder
+} from '@/api/suppliers.api';

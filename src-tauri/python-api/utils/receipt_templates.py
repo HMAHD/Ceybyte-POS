@@ -342,5 +342,74 @@ class ReceiptTemplateManager:
             logger.error(f"Print sales receipt error: {e}")
             return False
 
+def format_receipt_for_whatsapp(sale) -> str:
+    """Format receipt for WhatsApp sharing (text-only)"""
+    try:
+        # Business info (you might want to get this from settings)
+        business_name = "CeybytePOS"
+        business_phone = ""
+        
+        # Format receipt text
+        receipt_text = f"*{business_name}*\n"
+        if business_phone:
+            receipt_text += f"Phone: {business_phone}\n"
+        receipt_text += f"{'='*30}\n"
+        receipt_text += f"Date: {sale.sale_date.strftime('%Y-%m-%d %H:%M')}\n"
+        receipt_text += f"Receipt: #{sale.sale_number}\n"
+        
+        if sale.customer:
+            receipt_text += f"Customer: {sale.customer.name}\n"
+        
+        receipt_text += f"{'='*30}\n"
+        
+        # Items
+        receipt_text += f"*Items:*\n"
+        for item in sale.sale_items:
+            product_name = item.product.name if item.product else f"Product #{item.product_id}"
+            receipt_text += f"• {product_name}\n"
+            receipt_text += f"  {item.quantity} x Rs. {item.unit_price:,.2f} = Rs. {item.line_total:,.2f}\n"
+        
+        receipt_text += f"{'-'*30}\n"
+        
+        # Totals
+        receipt_text += f"Subtotal: Rs. {sale.subtotal:,.2f}\n"
+        
+        if sale.discount_amount > 0:
+            receipt_text += f"Discount: -Rs. {sale.discount_amount:,.2f}\n"
+        
+        if sale.tax_amount > 0:
+            receipt_text += f"Tax: Rs. {sale.tax_amount:,.2f}\n"
+        
+        receipt_text += f"{'='*30}\n"
+        receipt_text += f"*Total: Rs. {sale.total_amount:,.2f}*\n"
+        receipt_text += f"{'='*30}\n"
+        
+        # Payment info
+        payment_method_text = {
+            'cash': 'Cash',
+            'card': 'Card',
+            'mobile': 'Mobile Money',
+            'credit': 'Credit'
+        }.get(sale.payment_method, sale.payment_method.title())
+        
+        receipt_text += f"Payment: {payment_method_text}\n"
+        receipt_text += f"Paid: Rs. {sale.amount_paid:,.2f}\n"
+        
+        if sale.payment_method == 'cash' and sale.change_amount > 0:
+            receipt_text += f"Change: Rs. {sale.change_amount:,.2f}\n"
+        
+        if sale.is_credit_sale and sale.credit_balance > 0:
+            receipt_text += f"Credit Balance: Rs. {sale.credit_balance:,.2f}\n"
+        
+        receipt_text += f"\nThank you for your business!\n"
+        receipt_text += f"Please visit again\n\n"
+        receipt_text += f"Powered by CeybytePOS"
+        
+        return receipt_text
+        
+    except Exception as e:
+        logger.error(f"Error formatting WhatsApp receipt: {e}")
+        return f"Receipt for Sale #{sale.sale_number if sale else 'Unknown'}\nError formatting receipt details."
+
 # Global template manager instance
 receipt_manager = ReceiptTemplateManager()

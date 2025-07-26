@@ -29,6 +29,12 @@ if (!USE_MOCK_API) {
   }
 }
 
+// Clear any existing tokens to force fresh login
+if (!USE_MOCK_API) {
+  console.log('Using real Python API - clearing any existing tokens for fresh start');
+  localStorage.removeItem('ceybyte-pos-token');
+}
+
 class ApiClient {
   private baseURL: string;
 
@@ -91,9 +97,11 @@ class ApiClient {
         };
       }
 
-      // Fallback to mock API if real API fails
-      console.log('Falling back to mock API...');
-      return this.handleMockRequest<T>(endpoint, options);
+      // Don't fallback to mock API for authentication errors
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Network error occurred',
+      };
     }
   }
 
@@ -430,7 +438,7 @@ class ApiClient {
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       };
-      
+
       return { success: true, data: newSale as T };
     }
 
@@ -565,7 +573,7 @@ class ApiClient {
 
     if (method === 'GET' && endpoint.startsWith('/customers/search')) {
       const query = new URL(`http://localhost${endpoint}`).searchParams.get('q') || '';
-      const filtered = mockCustomers.filter(c => 
+      const filtered = mockCustomers.filter(c =>
         c.name.toLowerCase().includes(query.toLowerCase()) ||
         c.phone.includes(query)
       );
@@ -583,6 +591,106 @@ class ApiClient {
         updated_at: new Date().toISOString()
       };
       return { success: true, data: newCustomer as T };
+    }
+
+    if (method === 'POST' && endpoint === '/customers/payments') {
+      const payment = {
+        id: Date.now(),
+        customer_id: body.customer_id,
+        amount: body.amount,
+        payment_method: body.payment_method,
+        reference: body.reference,
+        notes: body.notes,
+        new_balance: Math.max(0, 15000 - body.amount), // Mock calculation
+        created_at: new Date().toISOString()
+      };
+      return { success: true, data: payment as T };
+    }
+
+    if (method === 'GET' && endpoint.match(/\/customers\/\d+\/payments$/)) {
+      const mockPayments = [
+        {
+          id: 1,
+          amount: 5000.00,
+          payment_method: 'cash',
+          reference: null,
+          notes: 'Partial payment',
+          balance_after: 10000.00,
+          created_at: '2025-01-20T10:30:00Z'
+        },
+        {
+          id: 2,
+          amount: 3000.00,
+          payment_method: 'card',
+          reference: 'TXN123456',
+          notes: 'Card payment',
+          balance_after: 13000.00,
+          created_at: '2025-01-15T14:15:00Z'
+        },
+        {
+          id: 3,
+          amount: 2000.00,
+          payment_method: 'bank_transfer',
+          reference: 'BT789012',
+          notes: 'Bank transfer payment',
+          balance_after: 11000.00,
+          created_at: '2025-01-18T11:20:00Z'
+        },
+        {
+          id: 4,
+          amount: 1500.00,
+          payment_method: 'mobile_payment',
+          reference: 'MP345678',
+          notes: 'Mobile payment via eZ Cash',
+          balance_after: 9500.00,
+          created_at: '2025-01-22T16:45:00Z'
+        }
+      ];
+      return { success: true, data: mockPayments as T };
+    }
+
+    if (method === 'GET' && endpoint.match(/\/customers\/\d+\/transactions$/)) {
+      const mockTransactions = [
+        {
+          id: 1,
+          type: 'sale' as const,
+          amount: 2500.00,
+          description: 'Sale - Receipt #RCP-001',
+          balance_after: 15000.00,
+          created_at: '2025-01-25T09:00:00Z',
+          reference: 'RCP-001'
+        },
+        {
+          id: 2,
+          type: 'payment' as const,
+          amount: -5000.00,
+          description: 'Cash payment received',
+          balance_after: 12500.00,
+          created_at: '2025-01-20T10:30:00Z',
+          reference: null
+        },
+        {
+          id: 3,
+          type: 'sale' as const,
+          amount: 1800.00,
+          description: 'Sale - Receipt #RCP-002',
+          balance_after: 14300.00,
+          created_at: '2025-01-18T16:45:00Z',
+          reference: 'RCP-002'
+        }
+      ];
+      return { success: true, data: mockTransactions as T };
+    }
+
+    if (method === 'GET' && endpoint === '/customers/overdue') {
+      const overdueCustomers = mockCustomers
+        .filter(c => c.days_overdue > 0)
+        .map(c => ({
+          ...c,
+          overdue_amount: c.current_balance,
+          days_overdue: c.days_overdue
+        }));
+      return { success: true, data: overdueCustomers as T };
     }
 
     return { success: true, data: {} as T };

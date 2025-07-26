@@ -31,6 +31,7 @@ from .setting import Setting
 from .audit_log import AuditLog
 from .festival_calendar import FestivalCalendar
 from .delivery import Delivery
+from .whatsapp_message import WhatsAppMessage, WhatsAppConfig
 
 __all__ = [
     "User",
@@ -49,5 +50,7 @@ __all__ = [
     "Setting",
     "AuditLog",
     "FestivalCalendar",
-    "Delivery"
+    "Delivery",
+    "WhatsAppMessage",
+    "WhatsAppConfig"
 ]

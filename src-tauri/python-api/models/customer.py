@@ -76,6 +76,7 @@ class Customer(BaseModel):
     sales = relationship("Sale", back_populates="customer")
     payments = relationship("CustomerPayment", back_populates="customer")
     deliveries = relationship("Delivery", back_populates="customer")
+    whatsapp_messages = relationship("WhatsAppMessage", back_populates="customer", cascade="all, delete-orphan")
     
     def __repr__(self):
         return f"<Customer(name='{self.name}', balance={self.current_balance})>"

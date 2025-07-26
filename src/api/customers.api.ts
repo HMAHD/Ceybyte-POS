@@ -75,7 +75,7 @@ export interface CustomerSearchParams {
 export interface CustomerPaymentRequest {
   customer_id: number;
   amount: number;
-  payment_method: 'cash' | 'card' | 'mobile';
+  payment_method: 'cash' | 'card' | 'bank_transfer' | 'mobile_payment';
   reference?: string;
   notes?: string;
 }

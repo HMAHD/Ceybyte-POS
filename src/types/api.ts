@@ -53,7 +53,36 @@ export interface PrinterConfig {
 }
 
 export interface WhatsAppMessage {
-  to: string;
+  id: number;
+  recipient_phone: string;
+  recipient_name?: string;
+  message_type: string;
+  message_content: string;
+  status: string;
+  error_message?: string;
+  sent_at?: Date;
+  created_at: Date;
+}
+
+export interface WhatsAppConfig {
+  id?: number;
+  api_url: string;
+  api_token: string;
+  business_phone: string;
+  business_name: string;
+  auto_send_receipts: boolean;
+  daily_reports_enabled: boolean;
+  customer_reminders_enabled: boolean;
+  backup_sharing_enabled: boolean;
+  daily_report_time: string;
+  owner_phone?: string;
+  receipt_template?: string;
+  reminder_template?: string;
+  greeting_template?: string;
+}
+
+export interface BulkMessageRequest {
   message: string;
-  type: 'receipt' | 'reminder' | 'greeting' | 'report';
+  area_filter?: string;
+  village_filter?: string;
 }
