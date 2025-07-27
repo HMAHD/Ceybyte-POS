@@ -15,7 +15,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search, Plus, Filter, CreditCard, Users, AlertTriangle } from 'lucide-react';
+import { Search, Plus, CreditCard, Users, AlertTriangle } from 'lucide-react';
 import { customersApi, CustomerResponse } from '@/api/customers.api';
 import { CustomerRegistrationForm } from './CustomerRegistrationForm';
 import { CustomerCreditBook } from './CustomerCreditBook';
@@ -56,7 +56,7 @@ export const CustomerCreditManagement: React.FC<CustomerCreditManagementProps> =
       };
 
       const response = await customersApi.getCustomers(params);
-      if (response.success) {
+      if (response.success && response.data) {
         setCustomers(response.data);
         
         // Extract unique areas for filter dropdown

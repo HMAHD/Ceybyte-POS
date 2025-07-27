@@ -28,8 +28,7 @@ import {
   Card,
   Row,
   Col,
-  InputNumber,
-  ColorPicker
+  InputNumber
 } from 'antd';
 import {
   PlusOutlined,
@@ -57,8 +56,8 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
   const [form] = Form.useForm();
   const [categories, setCategories] = useState<CategoryResponse[]>([]);
   const [treeData, setTreeData] = useState<DataNode[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<CategoryResponse | null>(null);
+  const [, setLoading] = useState(false);
+  const [] = useState<CategoryResponse | null>(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [editingCategory, setEditingCategory] = useState<CategoryResponse | null>(null);
   const [formLoading, setFormLoading] = useState(false);
@@ -141,7 +140,7 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
       ),
       key: category.id.toString(),
       icon: category.children.length > 0 ? <FolderOpenOutlined /> : <FolderOutlined />,
-      children: category.children.length > 0 ? buildTreeData(category.children) : undefined,
+      children: category.children.length > 0 ? buildTreeData(category.children as CategoryResponse[]) : undefined,
     }));
   };
 
@@ -240,7 +239,7 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
     categories.forEach(category => {
       result.push(category);
       if (category.children.length > 0) {
-        result = result.concat(getAllCategories(category.children));
+        result = result.concat(getAllCategories(category.children as CategoryResponse[]));
       }
     });
     return result;
@@ -273,7 +272,6 @@ const CategoryManager: React.FC<CategoryManagerProps> = ({
               treeData={treeData}
               defaultExpandAll
               showIcon
-              loading={loading}
             />
           ) : (
             <div className="text-center py-8 text-gray-500">

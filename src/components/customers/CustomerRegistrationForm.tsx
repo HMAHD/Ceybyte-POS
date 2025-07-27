@@ -15,7 +15,7 @@
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Save, X, User, Phone, Mail, MapPin, CreditCard, Globe } from 'lucide-react';
+import { Save, X, User, Phone, CreditCard } from 'lucide-react';
 import { customersApi, CustomerCreateRequest } from '@/api/customers.api';
 
 interface CustomerRegistrationFormProps {
@@ -64,11 +64,11 @@ export const CustomerRegistrationForm: React.FC<CustomerRegistrationFormProps> =
       newErrors.area_village = t('area_village_required');
     }
 
-    if (formData.credit_limit < 0) {
+    if (formData.credit_limit !== undefined && formData.credit_limit < 0) {
       newErrors.credit_limit = t('credit_limit_must_be_positive');
     }
 
-    if (formData.payment_terms_days < 1 || formData.payment_terms_days > 365) {
+    if (formData.payment_terms_days !== undefined && (formData.payment_terms_days < 1 || formData.payment_terms_days > 365)) {
       newErrors.payment_terms_days = t('payment_terms_invalid_range');
     }
 

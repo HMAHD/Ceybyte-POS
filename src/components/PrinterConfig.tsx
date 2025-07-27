@@ -14,12 +14,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  Printer, 
-  Search, 
-  Settings, 
-  TestTube, 
-  Plus, 
+import {
+  Printer,
+  Search,
+  TestTube,
+  Plus,
   Trash2,
   CheckCircle,
   XCircle,
@@ -95,46 +94,48 @@ export const PrinterConfig: React.FC<PrinterConfigProps> = ({ onClose }) => {
   };
 
   const testPrinter = async (printer: DiscoveredPrinter | ConfiguredPrinter) => {
-    const testId = 'type' in printer ? printer.type + printer.port : printer.id.toString();
+    const testId = 'type' in printer ? (printer as any).type + (printer as any).port : (printer as any).id?.toString() || 'unknown';
     setIsTesting(testId);
-    
+
     try {
-      let printerConfig;
-      
+      let printerConfig: any;
+
       if ('type' in printer) {
         // Discovered printer
+        const discoveredPrinter = printer as any;
         printerConfig = {
-          type: printer.type,
-          name: printer.name,
-          port: printer.port,
-          vendor_id: printer.vendor_id,
-          product_id: printer.product_id
+          type: discoveredPrinter.type,
+          name: discoveredPrinter.name,
+          port: discoveredPrinter.port,
+          vendor_id: discoveredPrinter.vendor_id,
+          product_id: discoveredPrinter.product_id
         };
       } else {
         // Configured printer
+        const configuredPrinter = printer as any;
         printerConfig = {
-          type: printer.type,
-          name: printer.name,
-          connection_string: printer.connection_string
+          type: configuredPrinter.type,
+          name: configuredPrinter.name,
+          connection_string: configuredPrinter.connection_string
         };
-        
-        if (printer.type === 'usb') {
-          const [vendor_id, product_id] = printer.connection_string.split(':');
+
+        if (configuredPrinter.type === 'usb') {
+          const [vendor_id, product_id] = configuredPrinter.connection_string.split(':');
           printerConfig.vendor_id = vendor_id;
           printerConfig.product_id = product_id;
-        } else if (printer.type === 'serial') {
-          printerConfig.port = printer.connection_string;
+        } else if (configuredPrinter.type === 'serial') {
+          printerConfig.port = configuredPrinter.connection_string;
         }
       }
-      
+
       const response = await fetch('/api/printer/test', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ printer_config: printerConfig })
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         alert(t('printer.testSuccess'));
         loadConfiguredPrinters(); // Refresh to update test status
@@ -157,7 +158,7 @@ export const PrinterConfig: React.FC<PrinterConfigProps> = ({ onClose }) => {
   const savePrinter = async (formData: any) => {
     try {
       let connectionString = '';
-      
+
       if (formData.type === 'usb') {
         connectionString = `${formData.vendor_id}:${formData.product_id}`;
       } else if (formData.type === 'serial') {
@@ -165,7 +166,7 @@ export const PrinterConfig: React.FC<PrinterConfigProps> = ({ onClose }) => {
       } else if (formData.type === 'network') {
         connectionString = `${formData.host}:${formData.port}`;
       }
-      
+
       const response = await fetch('/api/printer/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -178,9 +179,9 @@ export const PrinterConfig: React.FC<PrinterConfigProps> = ({ onClose }) => {
           is_default: formData.is_default || false
         })
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         setShowAddForm(false);
         setSelectedPrinter(null);
@@ -197,14 +198,14 @@ export const PrinterConfig: React.FC<PrinterConfigProps> = ({ onClose }) => {
 
   const deletePrinter = async (printerId: number) => {
     if (!confirm(t('printer.deleteConfirm'))) return;
-    
+
     try {
       const response = await fetch(`/api/printer/${printerId}`, {
         method: 'DELETE'
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         loadConfiguredPrinters();
         alert(t('printer.deleteSuccess'));
