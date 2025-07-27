@@ -30,7 +30,7 @@ const ReportsPage = React.lazy(() => import('@/pages/ReportsPage'));
 const SettingsPage = React.lazy(() => import('@/pages/SettingsPage'));
 
 const AppRouter: React.FC = () => {
-  const { hasPermission } = useAuth();
+  const { } = useAuth();
 
   return (
     <BrowserRouter>

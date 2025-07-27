@@ -24,6 +24,7 @@ import { NetworkProvider } from '@/contexts/NetworkContext';
 import { KeyboardShortcutProvider } from '@/components/KeyboardShortcutSystem';
 import { MainApplication } from '@/components/MainApplication';
 
+
 const AppContent: React.FC = () => {
   const { currentTheme } = useTheme();
 

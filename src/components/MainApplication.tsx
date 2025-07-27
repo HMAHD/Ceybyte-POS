@@ -18,7 +18,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNetwork } from '@/contexts/NetworkContext';
 import LoginScreen from '@/components/LoginScreen';
 import HelperModeInterface from '@/components/HelperModeInterface';
-import ProtectedRoute from '@/components/ProtectedRoute';
 import { DashboardInterface } from '@/components/DashboardInterface';
 import NetworkSelectionDialog from '@/components/NetworkSelectionDialog';
 import { PageLoading } from '@/components/LoadingStates';
