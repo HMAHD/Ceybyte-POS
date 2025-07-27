@@ -28,7 +28,6 @@ import {
   Col,
   Divider,
   Spin,
-  Progress,
   Tag,
   Tooltip,
 } from 'antd';
@@ -38,7 +37,6 @@ import {
   WifiOutlined,
   DatabaseOutlined,
   CheckCircleOutlined,
-  ExclamationCircleOutlined,
   InfoCircleOutlined,
   ReloadOutlined,
   SettingOutlined,
@@ -61,10 +59,8 @@ import {
   validateNetworkPath,
   validateTerminalName,
 } from '@/utils/networkConfig';
-import { initializeTerminal } from '@/api/terminals.api';
 
 const { Title, Text, Paragraph } = Typography;
-const { Step } = Steps;
 
 interface NetworkSelectionDialogProps {
   visible: boolean;
@@ -86,7 +82,7 @@ export const NetworkSelectionDialog: React.FC<NetworkSelectionDialogProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [connectionResult, setConnectionResult] =
     useState<ConnectionTestResult | null>(null);
-  const [setupSteps, setSetupSteps] = useState<NetworkSetupStep[]>([]);
+  const [, setSetupSteps] = useState<NetworkSetupStep[]>([]);
 
   useEffect(() => {
     if (visible) {
@@ -180,15 +176,14 @@ export const NetworkSelectionDialog: React.FC<NetworkSelectionDialogProps> = ({
       };
       
       // Initialize terminal in the backend
-      const terminalConfig = {
-        terminal_name: finalConfig.terminalName,
-        terminal_type: finalConfig.terminalType === 'main' ? 'pos' : 'pos',
-        is_main_terminal: finalConfig.terminalType === 'main',
-        app_version: '1.0.0',
-        network_path: finalConfig.mainComputerPath,
-      };
-      
       // This would call the terminal API to initialize
+      // const terminalConfig = {
+      //   terminal_name: finalConfig.terminalName,
+      //   terminal_type: finalConfig.terminalType === 'main' ? 'pos' : 'pos',
+      //   is_main_terminal: finalConfig.terminalType === 'main',
+      //   app_version: '1.0.0',
+      //   network_path: finalConfig.mainComputerPath,
+      // };
       // await initializeTerminal(terminalConfig);
       
       saveNetworkConfig(finalConfig);

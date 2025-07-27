@@ -22,8 +22,6 @@ import {
   Space,
   Typography,
   Tag,
-  Badge,
-  Tooltip,
   Dropdown,
   Avatar,
   Divider,
@@ -38,9 +36,6 @@ import {
   FileTextOutlined,
   SettingOutlined,
   LogoutOutlined,
-  WifiOutlined,
-  PrinterOutlined,
-  ThunderboltOutlined,
   GlobalOutlined,
   BgColorsOutlined,
   KeyOutlined,
@@ -60,10 +55,7 @@ import {
 import { APP_NAME, COMPANY_NAME } from '@/utils/constants';
 import { 
   KEYBOARD_SHORTCUTS, 
-  COMPONENT_SIZES, 
-  CONNECTION_STATUS_MAP,
-  CEYBYTE_COLORS,
-  ANIMATION 
+  CEYBYTE_COLORS
 } from '@/theme/designSystem';
 
 const { Header, Sider, Content, Footer } = Layout;
@@ -74,71 +66,12 @@ interface MainLayoutProps {
   selectedKey?: string;
 }
 
-interface StatusIndicatorProps {
-  type: 'network' | 'printer' | 'ups';
-  status: 'connected' | 'disconnected' | 'warning';
-  label: string;
-  showLabel?: boolean;
-}
-
-const StatusIndicator: React.FC<StatusIndicatorProps> = ({
-  type,
-  status,
-  label,
-  showLabel = false,
-}) => {
-  const getIcon = () => {
-    switch (type) {
-      case 'network':
-        return <WifiOutlined />;
-      case 'printer':
-        return <PrinterOutlined />;
-      case 'ups':
-        return <ThunderboltOutlined />;
-      default:
-        return null;
-    }
-  };
-
-  const getColor = () => {
-    switch (status) {
-      case 'connected':
-        return CEYBYTE_COLORS.success[500];
-      case 'warning':
-        return CEYBYTE_COLORS.warning[500];
-      case 'disconnected':
-        return CEYBYTE_COLORS.error[500];
-      default:
-        return CEYBYTE_COLORS.neutral[400];
-    }
-  };
-
-  const content = (
-    <div className="flex items-center space-x-1">
-      <Badge dot color={getColor()} offset={[-2, 2]}>
-        <span style={{ color: getColor(), fontSize: 16 }}>{getIcon()}</span>
-      </Badge>
-      {showLabel && (
-        <Text className="text-xs" style={{ color: getColor() }}>
-          {label}
-        </Text>
-      )}
-    </div>
-  );
-
-  return (
-    <Tooltip title={label}>
-      {content}
-    </Tooltip>
-  );
-};
-
 export const MainLayout: React.FC<MainLayoutProps> = ({
   children,
   selectedKey,
 }) => {
   const { user, logout, hasPermission } = useAuth();
-  const { config: networkConfig, connectionStatus } = useNetwork();
+  const { config: networkConfig } = useNetwork();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -159,12 +92,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   })();
 
   // Mock status - in real app, these would come from system monitoring
-  const [printerStatus] = useState<'connected' | 'disconnected' | 'warning'>(
+  const [] = useState<'connected' | 'disconnected' | 'warning'>(
     'connected'
   );
-
-  // Map connection status to indicator status
-  const mappedConnectionStatus = CONNECTION_STATUS_MAP[connectionStatus] || 'disconnected';
 
   const menuItems = [
     {

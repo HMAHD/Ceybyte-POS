@@ -70,7 +70,7 @@ export const NetworkConfigurationWizard: React.FC<NetworkConfigurationWizardProp
     const [networkConfig, setNetworkConfig] = useState<NetworkConfiguration | null>(null);
     const [terminalId, setTerminalId] = useState<string | null>(currentTerminalId || null);
     const [terminals, setTerminals] = useState<Terminal[]>([]);
-    const [setupComplete, setSetupComplete] = useState(false);
+    const [, setSetupComplete] = useState(false);
 
     useEffect(() => {
         if (visible && currentTerminalId) {
@@ -210,7 +210,6 @@ export const NetworkConfigurationWizard: React.FC<NetworkConfigurationWizardProp
                 <Col span={12}>
                     <Card title={<LocalizedText>{t('wizard.networkStatus', 'Network Status')}</LocalizedText>}>
                         <NetworkStatusMonitor
-                            terminalId={terminalId || undefined}
                             networkPath={networkConfig?.mainComputerPath}
                             terminalType={networkConfig?.terminalType}
                             showDetails={true}

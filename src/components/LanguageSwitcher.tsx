@@ -85,8 +85,8 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
               <span className='mr-1'>{config.flag}</span>
             )}
             {showNativeNames
-              ? config?.nativeName || config?.name || code
-              : config?.name || code}
+              ? config?.nativeName || (config as any)?.name || code
+              : (config as any)?.name || code}
           </button>
         ))}
       </div>

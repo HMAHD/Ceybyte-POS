@@ -54,7 +54,7 @@ const ConnectionStatusMonitor: React.FC<ConnectionStatusMonitorProps> = ({
   className = '',
 }) => {
   const { t } = useTranslation();
-  const { connectionStatus } = useNetwork();
+  const { } = useNetwork();
   const [connections, setConnections] = useState<ConnectionInfo[]>([
     {
       type: 'network',
