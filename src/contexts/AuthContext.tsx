@@ -59,30 +59,36 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Load token from localStorage on mount
   useEffect(() => {
     const savedToken = localStorage.getItem('ceybyte-pos-token');
-    if (savedToken) {
+    if (savedToken && savedToken !== 'null' && savedToken !== 'undefined') {
       setToken(savedToken);
       verifyAndLoadUser(savedToken);
     } else {
+      // Clear any invalid tokens
+      localStorage.removeItem('ceybyte-pos-token');
       setIsLoading(false);
     }
   }, []);
 
-  const verifyAndLoadUser = async (_savedToken: string) => {
+  const verifyAndLoadUser = async (savedToken: string) => {
     try {
       // The API client already handles the Authorization header from localStorage
       const response = await apiClient.get<User>('/auth/me');
 
       if (response.success && response.data) {
         setUser(response.data);
+        setToken(savedToken);
       } else {
         // Token is invalid, clear it
+        console.log('Token verification failed:', response.error);
         localStorage.removeItem('ceybyte-pos-token');
         setToken(null);
+        setUser(null);
       }
     } catch (error) {
       console.error('Token verification failed:', error);
       localStorage.removeItem('ceybyte-pos-token');
       setToken(null);
+      setUser(null);
     } finally {
       setIsLoading(false);
     }

@@ -15,7 +15,8 @@
 import logging
 from typing import Optional, Dict, Any, List
 from escpos.printer import Usb, Serial, Network, File
-from escpos.exceptions import USBNotFoundError, SerialException
+from escpos.exceptions import USBNotFoundError
+from serial import SerialException
 import usb.core
 import serial.tools.list_ports
 from models.printer import Printer
@@ -249,6 +250,4 @@ class PrinterService:
             return False
 
 # Global printer service instance
-printer_service = PrinterService()# Global p
-rinter service instance
 printer_service = PrinterService()

@@ -23,7 +23,7 @@ from database.connection import get_db
 from models.terminal import Terminal
 from utils.network_service import network_service
 from utils.sync_service import sync_service
-from utils.auth import get_current_user
+from utils.auth import get_current_user_from_token
 
 router = APIRouter(prefix="/api/terminals", tags=["terminals"])
 
@@ -59,7 +59,7 @@ class NetworkTestRequest(BaseModel):
 @router.post("/initialize")
 async def initialize_terminal(
     config: TerminalConfig,
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user_from_token)
 ):
     """Initialize and register a terminal"""
     try:
@@ -86,7 +86,7 @@ async def initialize_terminal(
 
 @router.get("/discover")
 async def discover_terminals(
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user_from_token)
 ):
     """Discover all terminals on the network"""
     try:
@@ -106,7 +106,7 @@ async def discover_terminals(
 async def get_terminal(
     terminal_id: str,
     db: Session = Depends(get_db),
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user_from_token)
 ):
     """Get terminal details by ID"""
     try:
@@ -159,7 +159,7 @@ async def update_terminal(
     terminal_id: str,
     update_data: TerminalUpdate,
     db: Session = Depends(get_db),
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user_from_token)
 ):
     """Update terminal information"""
     try:
@@ -194,7 +194,7 @@ async def update_terminal(
 
 @router.post("/heartbeat")
 async def send_heartbeat(
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user_from_token)
 ):
     """Send heartbeat to update terminal status"""
     try:
@@ -217,7 +217,7 @@ async def send_heartbeat(
 @router.post("/test-network")
 async def test_network_connectivity(
     request: NetworkTestRequest,
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user_from_token)
 ):
     """Test network connectivity and main computer accessibility"""
     try:
@@ -241,7 +241,7 @@ async def test_network_connectivity(
 async def sync_terminal_data(
     request: SyncRequest,
     background_tasks: BackgroundTasks,
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user_from_token)
 ):
     """Synchronize terminal data"""
     try:
@@ -265,7 +265,7 @@ async def sync_terminal_data(
 async def get_sync_status(
     terminal_id: str,
     db: Session = Depends(get_db),
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user_from_token)
 ):
     """Get terminal synchronization status"""
     try:
@@ -296,7 +296,7 @@ async def get_sync_status(
 
 @router.post("/offline-cache/initialize")
 async def initialize_offline_cache(
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user_from_token)
 ):
     """Initialize offline cache for terminal"""
     try:
@@ -319,7 +319,7 @@ async def initialize_offline_cache(
 @router.get("/offline-cache/{table_name}")
 async def get_offline_data(
     table_name: str,
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user_from_token)
 ):
     """Get data from offline cache"""
     try:
@@ -339,7 +339,7 @@ async def get_offline_data(
 async def remove_terminal(
     terminal_id: str,
     db: Session = Depends(get_db),
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user_from_token)
 ):
     """Remove terminal from network"""
     try:
@@ -368,7 +368,7 @@ async def remove_terminal(
 
 @router.get("/diagnostics/network")
 async def run_network_diagnostics(
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user_from_token)
 ):
     """Run comprehensive network diagnostics"""
     try:
