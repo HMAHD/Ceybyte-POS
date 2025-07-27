@@ -14,7 +14,7 @@
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Printer, Settings, TestTube, Queue } from 'lucide-react';
+import { Printer, Settings, TestTube } from 'lucide-react';
 import { PrinterConfig } from '@/components/PrinterConfig';
 
 export const PrinterSettingsPage: React.FC = () => {
@@ -193,7 +193,7 @@ export const PrinterSettingsPage: React.FC = () => {
         <div className="bg-white rounded-lg shadow-sm border p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <Queue className="w-5 h-5 text-ceybyte-primary" />
+              <TestTube className="w-5 h-5 text-ceybyte-primary" />
               <h2 className="text-lg font-semibold">{t('printer.printQueue')}</h2>
             </div>
             <button

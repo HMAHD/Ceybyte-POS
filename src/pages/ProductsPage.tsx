@@ -51,7 +51,6 @@ import LocalizedText from '@/components/LocalizedText';
 import BarcodeScanner from '@/components/BarcodeScanner';
 import CategoryManager from '@/components/CategoryManager';
 import UnitManager from '@/components/UnitManager';
-import { useTranslation } from '@/hooks/useTranslation';
 import { productsApi, ProductResponse, ProductCreateRequest, ProductUpdateRequest } from '@/api/products.api';
 import { categoriesApi, CategoryResponse } from '@/api/categories.api';
 import { unitsApi, UnitResponse } from '@/api/units.api';

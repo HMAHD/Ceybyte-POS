@@ -18,12 +18,9 @@ import {
   List,
   Button,
   InputNumber,
-  Space,
   Divider,
   Modal,
   Input,
-  Select,
-  Card,
   Tag,
   Tooltip,
   Popconfirm,
@@ -44,9 +41,6 @@ import {
 import { useTranslation } from '@/hooks/useTranslation';
 import { CartItem, HeldSale } from '@/pages/POSPage';
 
-const { Option } = Select;
-const { TextArea } = Input;
-
 interface ShoppingCartPanelProps {
   items: CartItem[];
   customerId?: number;
@@ -64,7 +58,6 @@ interface ShoppingCartPanelProps {
 
 const ShoppingCartPanel: React.FC<ShoppingCartPanelProps> = ({
   items,
-  customerId,
   customerName,
   isCustomerMode,
   heldSales,
@@ -110,8 +103,6 @@ const ShoppingCartPanel: React.FC<ShoppingCartPanelProps> = ({
   const subtotal = items.reduce((sum, item) => sum + (item.quantity * item.originalPrice), 0);
   const totalDiscount = items.reduce((sum, item) => sum + item.discountAmount, 0);
   const total = items.reduce((sum, item) => sum + item.lineTotal, 0);
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
     if (newQuantity <= 0) {
       onRemoveItem(itemId);
@@ -181,7 +172,7 @@ const ShoppingCartPanel: React.FC<ShoppingCartPanelProps> = ({
               <div className="text-xs text-gray-500">{item.product.name_si}</div>
             )}
             {item.isNegotiated && (
-              <Tag color="orange" size="small">Negotiated</Tag>
+              <Tag color="orange">Negotiated</Tag>
             )}
           </div>
           

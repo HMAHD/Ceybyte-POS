@@ -274,7 +274,7 @@ const POSPage: React.FC = () => {
                 onProceedToPayment={handleProceedToPayment}
                 onCustomerChange={(id, name) => {
                   setCustomerId(id);
-                  setCustomerName(name);
+                  setCustomerName(name || '');
                 }}
               />
             </Card>

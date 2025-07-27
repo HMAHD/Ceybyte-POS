@@ -13,13 +13,12 @@
  * └──────────────────────────────────────────────────────────────────────────────────────────────────┘
  */
 
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { 
   Input, 
   Select, 
   Button, 
   List, 
-  Card, 
   Space, 
   Tag, 
   Tabs, 
@@ -56,7 +55,7 @@ interface RecentProduct {
 }
 
 const ProductSearchPanel = forwardRef<any, ProductSearchPanelProps>(
-  ({ onAddToCart, isCustomerMode }, ref) => {
+  ({ onAddToCart }, ref) => {
     const { t, formatCurrency } = useTranslation();
     
     // State
@@ -187,11 +186,11 @@ const ProductSearchPanel = forwardRef<any, ProductSearchPanelProps>(
       if (!product.track_inventory) return null;
       
       if (product.current_stock <= 0) {
-        return <Tag color="red" size="small">Out of Stock</Tag>;
+        return <Tag color="red">Out of Stock</Tag>;
       } else if (product.current_stock <= product.minimum_stock) {
-        return <Tag color="orange" size="small">Low Stock</Tag>;
+        return <Tag color="orange">Low Stock</Tag>;
       }
-      return <Tag color="green" size="small">In Stock</Tag>;
+      return <Tag color="green">In Stock</Tag>;
     };
 
     const renderProductItem = (product: ProductResponse) => (
@@ -228,7 +227,7 @@ const ProductSearchPanel = forwardRef<any, ProductSearchPanelProps>(
                 {formatCurrency(product.selling_price)}
               </span>
               {product.is_negotiable && (
-                <Tag color="orange" size="small" className="ml-1">Negotiable</Tag>
+                <Tag color="orange" className="ml-1">Negotiable</Tag>
               )}
             </div>
             <div className="flex items-center space-x-1">
