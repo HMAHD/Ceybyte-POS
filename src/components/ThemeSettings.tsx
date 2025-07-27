@@ -22,7 +22,6 @@ import {
   ColorPicker,
   Slider,
   Switch,
-  Select,
   Space,
   Typography,
   Divider,
@@ -40,7 +39,6 @@ import LocalizedText from '@/components/LocalizedText';
 import type { ThemePreset } from '@/theme';
 
 const { Title, Text } = Typography;
-const { Option } = Select;
 
 export const ThemeSettings: React.FC = () => {
   const { currentTheme, setTheme, setCustomTheme, availableThemes } =

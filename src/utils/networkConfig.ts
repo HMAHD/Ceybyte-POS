@@ -17,11 +17,8 @@ import type {
   NetworkConfiguration,
   ConnectionTestResult,
   NetworkSetupStep,
-  MainComputerSetup,
-  ClientComputerSetup,
   NetworkDiagnostics,
   TerminalType,
-  ConnectionStatus,
 } from '@/types/network';
 import { DEFAULT_NETWORK_CONFIG, NETWORK_STORAGE_KEY } from '@/types/network';
 

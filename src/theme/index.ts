@@ -129,12 +129,10 @@ export const themePresets: Record<ThemePreset, CustomThemeConfig> = {
         controlHeight: 52,
         fontSize: 18,
         fontWeight: 600,
-        borderWidth: 2,
       },
       Input: {
         controlHeight: 48,
         fontSize: 18,
-        borderWidth: 2,
       },
       Table: {
         headerBg: '#f0f0f0',

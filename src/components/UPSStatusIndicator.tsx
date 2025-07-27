@@ -19,7 +19,6 @@ import {
   ThunderboltOutlined,
   PoweroffOutlined,
   ExclamationCircleOutlined,
-  CheckCircleOutlined,
 } from '@ant-design/icons';
 import { useTranslation } from '@/hooks/useTranslation';
 import LocalizedText from '@/components/LocalizedText';
@@ -68,15 +67,6 @@ export const UPSStatusIndicator: React.FC<UPSStatusIndicatorProps> = ({
   useEffect(() => {
     const checkUPSStatus = () => {
       // Simulate UPS detection and status
-      const mockStatuses: UPSStatus[] = [
-        'online',
-        'on_battery',
-        'low_battery',
-        'not_detected',
-      ];
-      const randomStatus =
-        mockStatuses[Math.floor(Math.random() * mockStatuses.length)];
-
       setUpsInfo({
         status: 'online', // For demo, always show as online
         batteryLevel: 85,

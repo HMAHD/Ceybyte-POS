@@ -14,7 +14,7 @@
  */
 
 import React from 'react';
-import { Spin, Skeleton, Card, Space } from 'antd';
+import { Spin, Skeleton, Card } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { CEYBYTE_COLORS } from '@/theme/designSystem';
 

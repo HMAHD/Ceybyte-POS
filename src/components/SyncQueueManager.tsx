@@ -25,7 +25,6 @@ import {
   Modal,
   Typography,
   Tooltip,
-  Badge,
   Statistic,
   Row,
   Col,
@@ -60,7 +59,7 @@ export const SyncQueueManager: React.FC<SyncQueueManagerProps> = ({
 
   const [transactions, setTransactions] = useState<OfflineTransaction[]>([]);
   const [conflicts, setConflicts] = useState<ConflictResolution[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [syncProgress, setSyncProgress] = useState(0);
   const [selectedTransaction, setSelectedTransaction] = useState<OfflineTransaction | null>(null);

@@ -13,7 +13,6 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Card, Form, Input, Switch, Button, TimePicker, message, Divider } from 'antd';
 import { MessageCircle, Settings, TestTube, Save } from 'lucide-react';
 import { whatsappApi } from '@/api/whatsapp.api';
@@ -23,7 +22,6 @@ import dayjs from 'dayjs';
 const { TextArea } = Input;
 
 export const WhatsAppConfig: React.FC = () => {
-  const { t } = useTranslation();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [testLoading, setTestLoading] = useState(false);

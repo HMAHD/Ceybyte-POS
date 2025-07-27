@@ -208,7 +208,7 @@ export const ShortcutHint: React.FC<{
   description: string;
 }> = ({ shortcut, description }) => (
   <div className='flex items-center space-x-2 text-xs text-gray-500'>
-    <Tag size='small' className='font-mono'>
+    <Tag className='font-mono text-xs'>
       {shortcut}
     </Tag>
     <span>{description}</span>
