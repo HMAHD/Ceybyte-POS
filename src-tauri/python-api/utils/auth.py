@@ -18,7 +18,7 @@ import jwt
 import bcrypt
 from datetime import datetime, timedelta
 from typing import Optional, Dict, Any
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Depends
 from models.user import User
 from database.connection import SessionLocal
 
@@ -231,3 +231,46 @@ def require_permission(required_permission: str):
             return func(*args, **kwargs)
         return wrapper
     return decorator
+
+
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
+security = HTTPBearer()
+
+def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)) -> User:
+    """FastAPI dependency to get current user from JWT token"""
+    try:
+        token = credentials.credentials
+        payload = verify_token(token)
+        user_id = payload.get("sub")
+        
+        if not user_id:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token payload"
+            )
+            
+        db = SessionLocal()
+        try:
+            user = db.query(User).filter(
+                User.id == int(user_id),
+                User.is_active == True
+            ).first()
+            
+            if not user:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="User not found"
+                )
+                
+            return user
+        finally:
+            db.close()
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials"
+        )
