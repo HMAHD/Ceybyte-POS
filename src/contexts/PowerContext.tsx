@@ -16,6 +16,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { message } from 'antd';
 import { useTranslation } from '@/hooks/useTranslation';
+import { apiClient } from '@/api/client';
 
 export interface UPSInfo {
   status: 'online' | 'on_battery' | 'low_battery' | 'critical' | 'not_detected';
@@ -82,23 +83,29 @@ export const PowerProvider: React.FC<PowerProviderProps> = ({ children }) => {
   const monitoringIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const autoSaveIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // API call helper
-  const apiCall = async (endpoint: string, options: RequestInit = {}) => {
+  // API call helper using the authenticated apiClient
+  const apiCall = async (endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET', data?: any) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000${endpoint}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...options.headers,
-        },
-        ...options,
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      let response;
+      switch (method) {
+        case 'POST':
+          response = await apiClient.post(endpoint, data);
+          break;
+        case 'PUT':
+          response = await apiClient.put(endpoint, data);
+          break;
+        case 'DELETE':
+          response = await apiClient.delete(endpoint);
+          break;
+        default:
+          response = await apiClient.get(endpoint);
       }
 
-      const data = await response.json();
-      return data;
+      if (!response.success) {
+        throw new Error(response.error || 'API call failed');
+      }
+
+      return response.data;
     } catch (error) {
       console.error(`API call failed for ${endpoint}:`, error);
       throw error;
@@ -108,27 +115,27 @@ export const PowerProvider: React.FC<PowerProviderProps> = ({ children }) => {
   // Refresh UPS status from backend
   const refreshUPSStatus = useCallback(async () => {
     try {
-      const response = await apiCall('/api/power/ups/status');
-      if (response.success) {
+      const data = await apiCall('/api/power/ups/status', 'GET');
+      if (data) {
         const newUpsInfo: UPSInfo = {
-          status: response.data.status,
-          batteryLevel: response.data.battery_level,
-          estimatedRuntime: response.data.estimated_runtime,
-          voltage: response.data.voltage,
-          model: response.data.model,
-          isCharging: response.data.is_charging,
-          lastUpdate: response.data.last_update,
-          safeMode: response.data.safe_mode_active,
-          monitoringActive: response.data.monitoring_active,
+          status: data.status,
+          batteryLevel: data.battery_level,
+          estimatedRuntime: data.estimated_runtime,
+          voltage: data.voltage,
+          model: data.model,
+          isCharging: data.is_charging,
+          lastUpdate: data.last_update,
+          safeMode: data.safe_mode_active,
+          monitoringActive: data.monitoring_active,
         };
         
         setUpsInfo(newUpsInfo);
-        setSafeMode(response.data.safe_mode_active);
+        setSafeMode(data.safe_mode_active);
         
         // Show safe mode notifications
-        if (response.data.safe_mode_active && !safeMode) {
+        if (data.safe_mode_active && !safeMode) {
           message.warning(t('power.safeModeActivated', 'Safe mode activated - Low battery detected'));
-        } else if (!response.data.safe_mode_active && safeMode) {
+        } else if (!data.safe_mode_active && safeMode) {
           message.success(t('power.safeModeDeactivated', 'Safe mode deactivated - Power restored'));
         }
       }
@@ -146,11 +153,9 @@ export const PowerProvider: React.FC<PowerProviderProps> = ({ children }) => {
   // Start power monitoring
   const startMonitoring = useCallback(async () => {
     try {
-      const response = await apiCall('/api/power/monitoring/start', {
-        method: 'POST',
-      });
+      const data = await apiCall('/api/power/monitoring/start', 'POST');
       
-      if (response.success) {
+      if (data) {
         setIsMonitoring(true);
         
         // Start periodic status updates
@@ -174,11 +179,9 @@ export const PowerProvider: React.FC<PowerProviderProps> = ({ children }) => {
   // Stop power monitoring
   const stopMonitoring = useCallback(async () => {
     try {
-      const response = await apiCall('/api/power/monitoring/stop', {
-        method: 'POST',
-      });
+      const data = await apiCall('/api/power/monitoring/stop', 'POST');
       
-      if (response.success) {
+      if (data) {
         setIsMonitoring(false);
         
         // Clear intervals
@@ -203,19 +206,16 @@ export const PowerProvider: React.FC<PowerProviderProps> = ({ children }) => {
   // Save transaction state for recovery
   const saveTransactionState = useCallback(async (state: TransactionState) => {
     try {
-      const response = await apiCall('/api/power/transaction/save', {
-        method: 'POST',
-        body: JSON.stringify({
-          session_id: state.sessionId,
-          transaction_data: state.transactionData,
-          transaction_type: state.transactionType,
-          customer_id: state.customerId,
-          last_action: state.lastAction,
-        }),
+      const data = await apiCall('/api/power/transaction/save', 'POST', {
+        session_id: state.sessionId,
+        transaction_data: state.transactionData,
+        transaction_type: state.transactionType,
+        customer_id: state.customerId,
+        last_action: state.lastAction,
       });
       
-      if (!response.success) {
-        console.error('Failed to save transaction state:', response.error);
+      if (!data) {
+        console.error('Failed to save transaction state');
       }
     } catch (error) {
       console.error('Error saving transaction state:', error);
@@ -225,10 +225,10 @@ export const PowerProvider: React.FC<PowerProviderProps> = ({ children }) => {
   // Get pending transactions for recovery
   const getPendingTransactions = useCallback(async (): Promise<TransactionState[]> => {
     try {
-      const response = await apiCall('/api/power/transaction/pending');
+      const data = await apiCall('/api/power/transaction/pending', 'GET');
       
-      if (response.success) {
-        return response.data.map((item: any) => ({
+      if (data) {
+        return data.map((item: any) => ({
           sessionId: item.session_id,
           transactionData: item.transaction_data,
           transactionType: item.transaction_type,
@@ -247,16 +247,13 @@ export const PowerProvider: React.FC<PowerProviderProps> = ({ children }) => {
   // Mark transaction as recovered
   const markTransactionRecovered = useCallback(async (sessionId: string, successful: boolean, notes?: string) => {
     try {
-      const response = await apiCall('/api/power/transaction/recover', {
-        method: 'POST',
-        body: JSON.stringify({
-          session_id: sessionId,
-          successful,
-          notes,
-        }),
+      const data = await apiCall('/api/power/transaction/recover', 'POST', {
+        session_id: sessionId,
+        successful,
+        notes,
       });
       
-      if (response.success) {
+      if (data) {
         message.success(t('power.transactionRecovered', 'Transaction recovery completed'));
       }
     } catch (error) {
