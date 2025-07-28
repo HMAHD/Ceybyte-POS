@@ -14,19 +14,15 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Card, Badge, Select, Tabs, Alert, Typography, Row, Col, Statistic } from 'antd';
 import type { TabsProps } from 'antd';
 import { 
   CalendarOutlined, 
   StarOutlined, 
   BellOutlined, 
-  TrendingUpOutlined, 
+  RiseOutlined, 
   GiftOutlined, 
-  UsersOutlined, 
-  ExclamationCircleOutlined,
-  CheckCircleOutlined,
-  ClockCircleOutlined,
+  TeamOutlined, 
   FireOutlined
 } from '@ant-design/icons';
 import { 
@@ -41,7 +37,6 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 
 export const FestivalCalendar: React.FC = () => {
-  const { t } = useTranslation();
   const [festivals, setFestivals] = useState<Festival[]>([]);
   const [todaysFestivals, setTodaysFestivals] = useState<Festival[]>([]);
   const [poyaDays, setPoyaDays] = useState<Festival[]>([]);
@@ -126,7 +121,7 @@ export const FestivalCalendar: React.FC = () => {
       return <GiftOutlined style={{ color: '#52c41a' }} />;
     }
     if (category === 'cultural') {
-      return <UsersOutlined style={{ color: '#1890ff' }} />;
+      return <TeamOutlined style={{ color: '#1890ff' }} />;
     }
     if (category === 'national') {
       return <FireOutlined style={{ color: '#f5222d' }} />;
@@ -243,7 +238,7 @@ export const FestivalCalendar: React.FC = () => {
               title="High Impact Festivals"
               value={festivals.filter(f => f.expected_sales_impact === 'high').length}
               valueStyle={{ color: '#52c41a' }}
-              prefix={<TrendingUpOutlined />}
+              prefix={<RiseOutlined />}
             />
             <Text type="secondary" style={{ fontSize: '12px' }}>Major shopping opportunities</Text>
           </Card>
@@ -280,7 +275,7 @@ export const FestivalCalendar: React.FC = () => {
             .map((festival) => (
               <div key={festival.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', backgroundColor: '#f6ffed', borderRadius: '8px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <TrendingUpOutlined style={{ color: '#52c41a' }} />
+                  <RiseOutlined style={{ color: '#52c41a' }} />
                   <div>
                     <Title level={5} style={{ margin: 0 }}>{festival.name}</Title>
                     <Text type="secondary">{formatDate(festival.date)}</Text>
@@ -340,7 +335,7 @@ export const FestivalCalendar: React.FC = () => {
       key: 'business',
       label: (
         <span>
-          <TrendingUpOutlined />
+          <RiseOutlined />
           Business Impact
         </span>
       ),

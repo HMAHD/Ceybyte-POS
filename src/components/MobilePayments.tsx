@@ -17,15 +17,13 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, Button, Input, Badge, Alert, Tabs, Typography, Form, message } from 'antd';
 import type { TabsProps } from 'antd';
-import { 
-  MobileOutlined, 
-  CreditCardOutlined, 
-  QrcodeOutlined, 
-  SafetyOutlined, 
-  CheckCircleOutlined, 
-  ExclamationCircleOutlined,
+import {
+  MobileOutlined,
+  CreditCardOutlined,
+  QrcodeOutlined,
+  SafetyOutlined,
   WalletOutlined,
-  TrendingUpOutlined
+  RiseOutlined
 } from '@ant-design/icons';
 import { getMobilePaymentProviders, type MobilePaymentProvider } from '@/api/sri-lankan-features.api';
 import { formatCurrency } from '@/utils/formatting';
@@ -137,7 +135,7 @@ export const MobilePayments: React.FC = () => {
       };
 
       setTransactions(prev => [newTransaction, ...prev]);
-      
+
       if (newTransaction.status === 'completed') {
         message.success('Payment processed successfully!');
         setPaymentAmount('');
@@ -176,7 +174,6 @@ export const MobilePayments: React.FC = () => {
     return phone;
   };
 
-  const totalTransactions = transactions.length;
   const completedTransactions = transactions.filter(t => t.status === 'completed').length;
   const totalAmount = transactions
     .filter(t => t.status === 'completed')
@@ -258,7 +255,7 @@ export const MobilePayments: React.FC = () => {
                 </Card>
               )}
 
-              <Button 
+              <Button
                 type="primary"
                 block
                 loading={processing}
@@ -299,7 +296,7 @@ export const MobilePayments: React.FC = () => {
                       <div style={{ fontSize: '12px', color: '#666' }}>{formatPhoneNumber(transaction.phone)}</div>
                     </div>
                   </div>
-                  <Badge 
+                  <Badge
                     status={transaction.status === 'completed' ? 'success' : transaction.status === 'failed' ? 'error' : 'processing'}
                     text={transaction.status}
                   />
@@ -339,7 +336,7 @@ export const MobilePayments: React.FC = () => {
               <Text strong>{formatCurrency(provider.max_amount)}</Text>
             </div>
           </div>
-          <Badge 
+          <Badge
             status={provider.is_active ? 'success' : 'default'}
             text={provider.is_active ? 'Active' : 'Inactive'}
             style={{ marginTop: '12px' }}
@@ -350,7 +347,7 @@ export const MobilePayments: React.FC = () => {
   );
 
   const renderHistoryTab = () => (
-    <Card title={<><TrendingUpOutlined /> Transaction History</>}>
+    <Card title={<><RiseOutlined /> Transaction History</>}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {transactions.map((transaction) => {
           const provider = providers.find(p => p.id === transaction.provider);
@@ -370,7 +367,7 @@ export const MobilePayments: React.FC = () => {
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div style={{ fontSize: '18px', fontWeight: 600 }}>{formatCurrency(transaction.amount)}</div>
-                <Badge 
+                <Badge
                   status={transaction.status === 'completed' ? 'success' : transaction.status === 'failed' ? 'error' : 'processing'}
                   text={transaction.status}
                 />
@@ -423,7 +420,7 @@ export const MobilePayments: React.FC = () => {
       key: 'history',
       label: (
         <span>
-          <TrendingUpOutlined />
+          <RiseOutlined />
           Transaction History
         </span>
       ),

@@ -14,7 +14,6 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Card,
   Table,
@@ -33,17 +32,17 @@ import {
 import {
   TruckOutlined,
   EnvironmentOutlined,
-  PhoneOutlined,
+
   ClockCircleOutlined,
   UserOutlined,
-  PackageOutlined,
+  InboxOutlined,
   ExclamationCircleOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
   PlusOutlined,
   SearchOutlined,
   CalendarOutlined,
-  NavigationOutlined
+  CompassOutlined
 } from '@ant-design/icons';
 import { formatCurrency } from '@/utils/formatting';
 import {
@@ -75,7 +74,6 @@ interface DeliveryFormData {
 }
 
 const DeliveryManagement: React.FC = () => {
-  const { t } = useTranslation();
   const [deliveries, setDeliveries] = useState<Delivery[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -166,7 +164,7 @@ const DeliveryManagement: React.FC = () => {
       case 'dispatched':
         return <TruckOutlined />;
       case 'in_transit':
-        return <NavigationOutlined />;
+        return <CompassOutlined />;
       case 'delivered':
         return <CheckCircleOutlined />;
       case 'failed':
@@ -174,7 +172,7 @@ const DeliveryManagement: React.FC = () => {
       case 'cancelled':
         return <ExclamationCircleOutlined />;
       default:
-        return <PackageOutlined />;
+        return <InboxOutlined />;
     }
   };
 
@@ -251,12 +249,7 @@ const DeliveryManagement: React.FC = () => {
               <UserOutlined style={{ color: '#666' }} />
               {record.driver_name}
             </div>
-            {record.driver_phone && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#666', marginTop: '4px' }}>
-                <PhoneOutlined />
-                {record.driver_phone}
-              </div>
-            )}
+
           </div>
         ) : (
           <Text type="secondary">No driver assigned</Text>

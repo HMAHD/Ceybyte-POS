@@ -14,7 +14,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Modal, List, Button, Typography, Space, Tag, message, Divider } from 'antd';
+import { Modal, List, Button, Typography, Tag, message, Divider } from 'antd';
 import { 
   CheckCircleOutlined, 
   CloseCircleOutlined, 
