@@ -60,6 +60,7 @@ from api.whatsapp import router as whatsapp_router
 from api.terminals import router as terminals_router
 from api.dashboard import router as dashboard_router
 from api.power import router as power_router
+from api.sri_lankan_features import router as sri_lankan_router
 from routes.printer import router as printer_router
 
 # Include routers
@@ -74,6 +75,7 @@ app.include_router(whatsapp_router)
 app.include_router(terminals_router)
 app.include_router(dashboard_router)
 app.include_router(power_router)
+app.include_router(sri_lankan_router)
 app.include_router(printer_router)
 
 if __name__ == "__main__":

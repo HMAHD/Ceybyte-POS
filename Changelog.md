@@ -825,3 +825,72 @@ The system:
 
 
 
+
+---
+
+# Dynamic Festival Calendar System - Feature Complete (v8.5)
+---
+
+## Major Enhancement: Year-Aware Festival Management
+
+### Dynamic Festival Calendar (Enhancement) - COMPLETED
+- **Year-Aware Festival Generation**: Festival dates now calculate dynamically for any year instead of hardcoded 2025 dates
+- **Automatic Data Initialization**: System automatically creates festival data when requested for new years
+- **Poya Date Calculations**: Improved lunar calendar calculations with year-based accuracy
+- **Future-Proof Design**: System handles year transitions seamlessly without manual updates
+- **Auto-Update Mechanism**: Automatic festival data updates for current and next year
+- **Preloading System**: Frontend utilities to preload festival data for multiple years
+
+### Backend Enhancements
+- **Dynamic Date Generation**: `get_poya_dates_for_year()` and `get_fixed_holidays_for_year()` functions
+- **Year-Based API Endpoints**: All festival endpoints now support dynamic year parameters
+- **Auto-Initialization**: Missing year data automatically created when requested
+- **New API Endpoints**:
+  - `/api/sri-lankan/festivals/initialize-year/{year}` - Initialize specific year data
+  - `/api/sri-lankan/festivals/auto-update` - Auto-update current and next year data
+- **Improved Error Handling**: Better handling of year-based operations and edge cases
+
+### Frontend Utilities
+- **Festival Auto-Update Utility**: `src/utils/festival-auto-update.ts` for frontend festival data management
+- **App Startup Integration**: Automatic festival data initialization when app starts
+- **Year Preloading**: System preloads data for current year + 2 future years
+- **Smart Update Logic**: Only updates when needed (new year or 30+ days since last update)
+- **Local Storage Tracking**: Tracks last update to avoid unnecessary API calls
+
+### Key Improvements
+- **Fixed Hardcoded Dates**: Christmas, New Year, Independence Day, etc. now calculate for any year
+- **Dynamic Poya Calculations**: Lunar calendar dates calculated based on astronomical patterns
+- **Seamless Year Transitions**: No manual intervention needed when year changes
+- **Performance Optimization**: Efficient data loading with automatic caching
+- **Error Recovery**: Graceful handling of missing data with automatic initialization
+
+### Technical Implementation
+- **Backward Compatibility**: Existing `initialize_sri_lankan_festivals_2025()` function maintained
+- **Database Optimization**: Efficient queries with year-based indexing
+- **API Client Updates**: Complete TypeScript API client with new endpoints
+- **State Management**: Proper handling of year-based festival state
+- **Testing Support**: Easy testing with specific year data initialization
+
+### Sri Lankan Business Context
+- **Accurate Poya Days**: Proper lunar calendar calculations for Buddhist holidays
+- **Cultural Festivals**: Sinhala/Tamil New Year dates maintained accurately across years
+- **Business Planning**: Future year festival data available for business planning
+- **Multi-Language Support**: All dynamic festivals maintain English, Sinhala, Tamil names
+- **Holiday Compliance**: Accurate public holiday tracking for payroll and operations
+
+### Bug Fixes
+- **Resolved Year 2026+ Issues**: System now works correctly for all future years
+- **Fixed Poya Date Accuracy**: Improved lunar calendar calculations
+- **Corrected Festival Transitions**: Proper handling when festivals cross year boundaries
+- **Database Consistency**: Ensured data integrity across year transitions
+
+### Developer Benefits
+- **Maintenance-Free**: No annual updates required for festival data
+- **Extensible Design**: Easy to add new festivals or modify calculation logic
+- **Testing Friendly**: Can easily test with any year's data
+- **Performance Optimized**: Minimal overhead with smart caching and preloading
+- **Type Safety**: Full TypeScript support for all year-based operations
+
+---
+
+This enhancement ensures CeybytePOS remains accurate and functional for years to come without requiring manual festival data updates. The system now automatically adapts to new years and maintains accurate Sri Lankan festival and holiday information indefinitely.
