@@ -13,7 +13,7 @@
 ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import uvicorn
@@ -22,6 +22,9 @@ import os
 
 # Add the current directory to Python path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Import auth function for test endpoint
+from utils.auth import get_current_user
 
 app = FastAPI(
     title="CeybytePOS API",
@@ -47,6 +50,16 @@ async def root():
 async def health_check():
     """Health check endpoint"""
     return {"status": "healthy", "service": "CeybytePOS API"}
+
+@app.get("/test-auth")
+async def test_auth():
+    """Test endpoint without authentication"""
+    return {"message": "This endpoint works without authentication", "timestamp": "2025-01-28"}
+
+@app.get("/test-auth-required")
+async def test_auth_required(current_user = Depends(get_current_user)):
+    """Test endpoint with authentication"""
+    return {"message": "Authentication works!", "user": current_user.username, "user_id": current_user.id}
 
 # API Routes
 from api.auth import router as auth_router
