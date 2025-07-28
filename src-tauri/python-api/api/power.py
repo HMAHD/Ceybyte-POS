@@ -61,12 +61,13 @@ async def get_ups_status(current_user: User = Depends(get_current_user)):
 @router.post("/monitoring/start")
 async def start_monitoring(
     background_tasks: BackgroundTasks,
-    terminal_id: Optional[str] = None
+    terminal_id: Optional[str] = None,
+    current_user: User = Depends(get_current_user)
 ):
     """Start UPS monitoring service"""
     try:
         if not terminal_id:
-            terminal_id = f"TERMINAL-DEFAULT"
+            terminal_id = f"TERMINAL-{current_user.id}"
             
         background_tasks.add_task(power_service.start_monitoring, terminal_id)
         
