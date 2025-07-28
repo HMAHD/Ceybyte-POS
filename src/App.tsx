@@ -21,6 +21,7 @@ import './i18n';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ThemeProvider, useTheme } from '@/contexts/ThemeContext';
 import { NetworkProvider } from '@/contexts/NetworkContext';
+import { PowerProvider } from '@/contexts/PowerContext';
 import { KeyboardShortcutProvider } from '@/components/KeyboardShortcutSystem';
 import { MainApplication } from '@/components/MainApplication';
 
@@ -32,9 +33,11 @@ const AppContent: React.FC = () => {
     <ConfigProvider theme={currentTheme} componentSize='middle'>
       <KeyboardShortcutProvider>
         <NetworkProvider>
-          <AuthProvider>
-            <MainApplication />
-          </AuthProvider>
+          <PowerProvider>
+            <AuthProvider>
+              <MainApplication />
+            </AuthProvider>
+          </PowerProvider>
         </NetworkProvider>
       </KeyboardShortcutProvider>
     </ConfigProvider>

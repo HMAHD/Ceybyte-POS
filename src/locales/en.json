@@ -418,7 +418,42 @@
     "voltage": "Voltage",
     "lastUpdate": "Last Update",
     "minutesRemaining": "min",
-    "hoursMinutesRemaining": "h m"
+    "hoursMinutesRemaining": "h m",
+    "status": "UPS Status"
+  },
+  "power": {
+    "safeModeActive": "Safe Mode Active - Low Battery Detected",
+    "safeModeActivated": "Safe mode activated - Low battery detected",
+    "safeModeDeactivated": "Safe mode deactivated - Power restored",
+    "safeModeDescription": "New transactions are temporarily disabled to prevent data loss. Current transactions will be automatically saved. Normal operation will resume when power is restored.",
+    "monitoringStarted": "Power monitoring started",
+    "monitoringStartFailed": "Failed to start power monitoring",
+    "monitoringStopped": "Power monitoring stopped",
+    "monitoringStopFailed": "Failed to stop power monitoring",
+    "transactionRecovered": "Transaction recovery completed",
+    "transactionRecoveryFailed": "Failed to mark transaction as recovered",
+    "transactionRecoveryTitle": "Transaction Recovery",
+    "recoveryDescription": "The following transactions were in progress when power was lost. You can recover them to complete the sales or discard them if they are no longer needed.",
+    "noPendingTransactions": "No pending transactions found",
+    "allTransactionsRecovered": "All transactions have been recovered or completed",
+    "recover": "Recover",
+    "discard": "Discard",
+    "sessionId": "Session",
+    "transactionDetails": "Details",
+    "lastAction": "Last Action",
+    "customerId": "Customer ID",
+    "recoveryNote": "Note: Recovered transactions will be restored to their previous state. Discarded transactions will be permanently removed and cannot be recovered.",
+    "transactionSummary": "{{count}} items - Rs. {{total}}",
+    "transactionDataAvailable": "Transaction data available",
+    "transactionDataCorrupted": "Transaction data may be corrupted",
+    "loadTransactionsFailed": "Failed to load pending transactions",
+    "transactionDiscarded": "Transaction discarded",
+    "transactionDiscardFailed": "Failed to discard transaction"
+  },
+  "transaction": {
+    "sale": "Sale",
+    "return": "Return",
+    "hold": "Hold"
   },
   "network": {
     "networkSetup": "Network Setup",

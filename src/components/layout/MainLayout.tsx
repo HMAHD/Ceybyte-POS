@@ -47,6 +47,7 @@ import LocalizedText from '@/components/LocalizedText';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import UPSStatusIndicator from '@/components/UPSStatusIndicator';
 import ConnectionStatusMonitor from '@/components/ConnectionStatusMonitor';
+import SafeModeAlert from '@/components/SafeModeAlert';
 import { 
   useKeyboardShortcuts, 
   useRegisterShortcuts,
@@ -489,6 +490,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
           }}
         >
           <div className="max-w-full mx-auto">
+            {/* Safe Mode Alert - Shows when battery is low */}
+            <SafeModeAlert className="mb-4" />
+            
             <div className="animate-slide-up">
               {children}
             </div>

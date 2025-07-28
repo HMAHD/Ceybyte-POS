@@ -23,6 +23,7 @@ import {
 import { useTranslation } from '@/hooks/useTranslation';
 import LocalizedText from '@/components/LocalizedText';
 import { POS_TOKENS } from '@/theme/designSystem';
+import { usePower } from '@/contexts/PowerContext';
 
 const { Text } = Typography;
 
@@ -55,36 +56,18 @@ export const UPSStatusIndicator: React.FC<UPSStatusIndicatorProps> = ({
   size = 'medium',
 }) => {
   const { t } = useTranslation();
-  const [upsInfo, setUpsInfo] = useState<UPSInfo>({
-    status: 'not_detected',
-    batteryLevel: 0,
-    estimatedRuntime: 0,
-    isCharging: false,
-    lastUpdate: new Date(),
-  });
+  const { upsInfo } = usePower();
 
-  // Mock UPS monitoring - in real app, this would use Tauri APIs to check UPS status
-  useEffect(() => {
-    const checkUPSStatus = () => {
-      // Simulate UPS detection and status
-      setUpsInfo({
-        status: 'online', // For demo, always show as online
-        batteryLevel: 85,
-        estimatedRuntime: 45,
-        isCharging: true,
-        lastUpdate: new Date(),
-        model: 'Generic UPS 650VA',
-        voltage: 230,
-      });
-    };
-
-    // Initial check
-    checkUPSStatus();
-
-    // Update every 30 seconds
-    const interval = setInterval(checkUPSStatus, 30000);
-    return () => clearInterval(interval);
-  }, []);
+  // Convert power context UPS info to component format
+  const componentUpsInfo: UPSInfo = {
+    status: upsInfo.status,
+    batteryLevel: upsInfo.batteryLevel,
+    estimatedRuntime: upsInfo.estimatedRuntime,
+    isCharging: upsInfo.isCharging,
+    lastUpdate: new Date(upsInfo.lastUpdate),
+    model: upsInfo.model,
+    voltage: upsInfo.voltage,
+  };
 
   const getStatusColor = (status: UPSStatus): string => {
     switch (status) {
@@ -156,7 +139,7 @@ export const UPSStatusIndicator: React.FC<UPSStatusIndicatorProps> = ({
     return t('ups.hoursMinutesRemaining', `${hours}h ${remainingMinutes}m`);
   };
 
-  if (upsInfo.status === 'not_detected') {
+  if (componentUpsInfo.status === 'not_detected') {
     return null; // Don't show indicator if no UPS detected
   }
 
@@ -164,7 +147,7 @@ export const UPSStatusIndicator: React.FC<UPSStatusIndicatorProps> = ({
     <div className='space-y-2'>
       <div>
         <Text strong>
-          <LocalizedText>{getStatusText(upsInfo.status)}</LocalizedText>
+          <LocalizedText>{getStatusText(componentUpsInfo.status)}</LocalizedText>
         </Text>
       </div>
       <div>
@@ -172,35 +155,35 @@ export const UPSStatusIndicator: React.FC<UPSStatusIndicatorProps> = ({
           <LocalizedText>
             {t('ups.batteryLevel', 'Battery Level')}
           </LocalizedText>
-          : {upsInfo.batteryLevel}%
+          : {componentUpsInfo.batteryLevel}%
         </Text>
       </div>
       <div>
         <Text>
           <LocalizedText>{t('ups.estimatedRuntime', 'Runtime')}</LocalizedText>:{' '}
-          {formatRuntime(upsInfo.estimatedRuntime)}
+          {formatRuntime(componentUpsInfo.estimatedRuntime)}
         </Text>
       </div>
-      {upsInfo.model && (
+      {componentUpsInfo.model && (
         <div>
           <Text>
             <LocalizedText>{t('ups.model', 'Model')}</LocalizedText>:{' '}
-            {upsInfo.model}
+            {componentUpsInfo.model}
           </Text>
         </div>
       )}
-      {upsInfo.voltage && (
+      {componentUpsInfo.voltage && (
         <div>
           <Text>
             <LocalizedText>{t('ups.voltage', 'Voltage')}</LocalizedText>:{' '}
-            {upsInfo.voltage}V
+            {componentUpsInfo.voltage}V
           </Text>
         </div>
       )}
       <div>
         <Text type='secondary'>
           <LocalizedText>{t('ups.lastUpdate', 'Last Update')}</LocalizedText>:{' '}
-          {upsInfo.lastUpdate.toLocaleTimeString()}
+          {componentUpsInfo.lastUpdate.toLocaleTimeString()}
         </Text>
       </div>
     </div>
@@ -211,26 +194,26 @@ export const UPSStatusIndicator: React.FC<UPSStatusIndicatorProps> = ({
       <div className={`ups-status-detailed ${className}`}>
         <div className='flex items-center space-x-3 p-3 bg-white rounded-lg shadow-sm border'>
           <div className='flex items-center space-x-2'>
-            {getStatusIcon(upsInfo.status)}
+            {getStatusIcon(componentUpsInfo.status)}
             <Text strong className='text-sm'>
-              <LocalizedText>{getStatusText(upsInfo.status)}</LocalizedText>
+              <LocalizedText>{getStatusText(componentUpsInfo.status)}</LocalizedText>
             </Text>
           </div>
 
           <div className='flex-1'>
             <Progress
-              percent={upsInfo.batteryLevel}
+              percent={componentUpsInfo.batteryLevel}
               size='small'
-              strokeColor={getBatteryColor(upsInfo.batteryLevel)}
+              strokeColor={getBatteryColor(componentUpsInfo.batteryLevel)}
               showInfo={false}
             />
           </div>
 
           <div className='text-right'>
-            <Text className='text-xs font-medium'>{upsInfo.batteryLevel}%</Text>
+            <Text className='text-xs font-medium'>{componentUpsInfo.batteryLevel}%</Text>
             <br />
             <Text className='text-xs text-gray-500'>
-              {formatRuntime(upsInfo.estimatedRuntime)}
+              {formatRuntime(componentUpsInfo.estimatedRuntime)}
             </Text>
           </div>
         </div>
@@ -241,19 +224,19 @@ export const UPSStatusIndicator: React.FC<UPSStatusIndicatorProps> = ({
   return (
     <Tooltip title={tooltipContent} placement='bottomRight'>
       <Badge
-        dot={upsInfo.status === 'low_battery' || upsInfo.status === 'critical'}
+        dot={componentUpsInfo.status === 'low_battery' || componentUpsInfo.status === 'critical'}
         status={
-          upsInfo.status === 'online'
+          componentUpsInfo.status === 'online'
             ? 'success'
-            : upsInfo.status === 'on_battery'
+            : componentUpsInfo.status === 'on_battery'
               ? 'warning'
               : 'error'
         }
       >
         <div className={`ups-status-compact cursor-pointer ${className}`}>
-          {getStatusIcon(upsInfo.status)}
+          {getStatusIcon(componentUpsInfo.status)}
           {size !== 'small' && (
-            <Text className='ml-1 text-xs'>{upsInfo.batteryLevel}%</Text>
+            <Text className='ml-1 text-xs'>{componentUpsInfo.batteryLevel}%</Text>
           )}
         </div>
       </Badge>

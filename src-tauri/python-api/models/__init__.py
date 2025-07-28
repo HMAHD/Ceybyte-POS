@@ -32,6 +32,7 @@ from .audit_log import AuditLog
 from .festival_calendar import FestivalCalendar
 from .delivery import Delivery
 from .whatsapp_message import WhatsAppMessage, WhatsAppConfig
+from .power_event import PowerEvent, TransactionState
 
 __all__ = [
     "User",
@@ -52,5 +53,7 @@ __all__ = [
     "FestivalCalendar",
     "Delivery",
     "WhatsAppMessage",
-    "WhatsAppConfig"
+    "WhatsAppConfig",
+    "PowerEvent",
+    "TransactionState"
 ]

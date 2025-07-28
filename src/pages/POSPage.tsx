@@ -19,7 +19,9 @@ import { useTranslation } from '@/hooks/useTranslation';
 import ProductSearchPanel from '@/components/pos/ProductSearchPanel';
 import ShoppingCartPanel from '@/components/pos/ShoppingCartPanel';
 import PaymentPanel from '@/components/pos/PaymentPanel';
+import TransactionRecovery from '@/components/TransactionRecovery';
 import { ProductResponse } from '@/api/products.api';
+import { usePowerManagement } from '@/hooks/usePowerManagement';
 
 const { Content } = Layout;
 
@@ -57,17 +59,82 @@ const POSPage: React.FC = () => {
   
   // UI state
   const [showPayment, setShowPayment] = useState(false);
+  const [showRecovery, setShowRecovery] = useState(false);
   
   // Refs for keyboard shortcuts
   const productSearchRef = useRef<any>(null);
+  
+  // Power management
+  const { 
+    autoSave, 
+    startAutoSave, 
+    stopAutoSave, 
+    saveNow, 
+    safeMode, 
+    canStartNewTransaction 
+  } = usePowerManagement();
+  
+  // Session ID for transaction recovery
+  const sessionIdRef = useRef(`pos_session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+
+  // Initialize auto-save when component mounts
+  useEffect(() => {
+    startAutoSave({
+      sessionId: sessionIdRef.current,
+      transactionType: 'sale',
+      customerId,
+      interval: 5000, // Auto-save every 5 seconds
+      enabled: true,
+    });
+    
+    // Check for pending transactions on mount
+    const checkPendingTransactions = async () => {
+      // This would be called after a brief delay to allow the power context to initialize
+      setTimeout(() => {
+        setShowRecovery(true);
+      }, 2000);
+    };
+    
+    checkPendingTransactions();
+    
+    return () => {
+      stopAutoSave();
+    };
+  }, []);
+  
+  // Auto-save cart state whenever it changes
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      const transactionData = {
+        items: cartItems,
+        customerId,
+        customerName,
+        isCustomerMode,
+        timestamp: new Date().toISOString(),
+        total: cartTotal,
+        itemCount: cartItemCount,
+      };
+      
+      autoSave(transactionData, 'cart_updated');
+    }
+  }, [cartItems, customerId, customerName, isCustomerMode, autoSave]);
 
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      // Prevent new transactions in safe mode
+      if (safeMode && ['F12', 'F1'].includes(event.key)) {
+        event.preventDefault();
+        message.warning(t('power.safeModeActive', 'Safe mode active - New transactions disabled'));
+        return;
+      }
+      
       // F12 - Instant cash sale
       if (event.key === 'F12') {
         event.preventDefault();
-        handleInstantCashSale();
+        if (canStartNewTransaction) {
+          handleInstantCashSale();
+        }
       }
       
       // F3 - Toggle customer mode
@@ -79,7 +146,7 @@ const POSPage: React.FC = () => {
       // F1 - Focus product search
       if (event.key === 'F1') {
         event.preventDefault();
-        if (productSearchRef.current) {
+        if (productSearchRef.current && canStartNewTransaction) {
           productSearchRef.current.focus();
         }
       }
@@ -105,9 +172,15 @@ const POSPage: React.FC = () => {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [cartItems, isCustomerMode]);
+  }, [cartItems, isCustomerMode, safeMode, canStartNewTransaction, t]);
 
-  const handleAddToCart = (product: ProductResponse, quantity: number = 1) => {
+  const handleAddToCart = async (product: ProductResponse, quantity: number = 1) => {
+    // Prevent adding items in safe mode
+    if (!canStartNewTransaction) {
+      message.warning(t('power.safeModeActive', 'Safe mode active - Cannot add items'));
+      return;
+    }
+    
     const existingItemIndex = cartItems.findIndex(item => item.product.id === product.id);
     
     if (existingItemIndex >= 0) {
@@ -130,6 +203,20 @@ const POSPage: React.FC = () => {
         isNegotiated: false
       };
       setCartItems([...cartItems, newItem]);
+    }
+    
+    // Save immediately after adding item
+    try {
+      const transactionData = {
+        items: cartItems,
+        customerId,
+        customerName,
+        isCustomerMode,
+        timestamp: new Date().toISOString(),
+      };
+      await saveNow(transactionData, 'item_added');
+    } catch (error) {
+      console.error('Failed to save transaction after adding item:', error);
     }
     
     message.success(`${product.name_en} added to cart`);
@@ -219,9 +306,41 @@ const POSPage: React.FC = () => {
     setShowPayment(true);
   };
 
-  const handlePaymentComplete = () => {
-    message.success('Payment completed successfully');
-    handleClearCart();
+  const handlePaymentComplete = async () => {
+    try {
+      // Save final transaction state before clearing
+      const finalTransactionData = {
+        items: cartItems,
+        customerId,
+        customerName,
+        isCustomerMode,
+        timestamp: new Date().toISOString(),
+        status: 'completed',
+        total: cartTotal,
+      };
+      
+      await saveNow(finalTransactionData, 'payment_completed');
+      
+      message.success('Payment completed successfully');
+      handleClearCart();
+      
+      // Generate new session ID for next transaction
+      sessionIdRef.current = `pos_session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      
+      // Restart auto-save with new session
+      startAutoSave({
+        sessionId: sessionIdRef.current,
+        transactionType: 'sale',
+        customerId: undefined,
+        interval: 5000,
+        enabled: true,
+      });
+      
+    } catch (error) {
+      console.error('Failed to save final transaction state:', error);
+      message.success('Payment completed successfully');
+      handleClearCart();
+    }
   };
 
   const cartTotal = cartItems.reduce((sum, item) => sum + item.lineTotal, 0);
@@ -303,6 +422,12 @@ const POSPage: React.FC = () => {
             </Card>
           </Col>
         </Row>
+        
+        {/* Transaction Recovery Modal */}
+        <TransactionRecovery
+          visible={showRecovery}
+          onClose={() => setShowRecovery(false)}
+        />
       </Content>
     </Layout>
   );
