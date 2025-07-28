@@ -17,64 +17,45 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import {
+  Modal,
   Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
+  Button,
+  Input,
+  Form,
+  Badge,
+  Typography,
+  Alert,
+  Row,
+  Col,
+  message
+} from 'antd';
 import {
-  Truck,
-  MapPin,
-  Phone,
-  Clock,
-  User,
-  Package,
-  AlertCircle,
-  CheckCircle,
-  XCircle,
-  Plus,
-  Search,
-  Filter,
-  Calendar,
-  Navigation,
-  Star,
-  Camera,
-  FileText,
-} from 'lucide-react';
+  TruckOutlined,
+  EnvironmentOutlined,
+  PhoneOutlined,
+  ClockCircleOutlined,
+  UserOutlined,
+  PackageOutlined,
+  ExclamationCircleOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  PlusOutlined,
+  SearchOutlined,
+  CalendarOutlined,
+  NavigationOutlined
+} from '@ant-design/icons';
 import { formatCurrency } from '@/utils/formatting';
 import {
   getDeliveries,
   createDelivery,
   updateDeliveryStatus,
-  type Delivery,
-  type ApiResponse,
+  type Delivery
 } from '@/api/sri-lankan-features.api';
+
+const { Title, Text } = Typography;
+const { Option } = Select;
+const { TextArea } = Input;
 
 interface DeliveryFormData {
   sale_id: number;
@@ -101,31 +82,24 @@ const DeliveryManagement: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [selectedArea, setSelectedArea] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [showCreateDialog, setShowCreateDialog] = useState(false);
-  const [formData, setFormData] = useState<DeliveryFormData>({
-    sale_id: 0,
-    customer_id: 0,
-    scheduled_date: new Date().toISOString().split('T')[0],
-    delivery_address: '',
-    vehicle_type: 'three_wheeler',
-    delivery_fee: 0,
-  });
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [form] = Form.useForm();
 
   const statusOptions = [
-    { value: 'all', label: t('common.all') },
-    { value: 'scheduled', label: t('delivery.status.scheduled') },
-    { value: 'dispatched', label: t('delivery.status.dispatched') },
-    { value: 'in_transit', label: t('delivery.status.in_transit') },
-    { value: 'delivered', label: t('delivery.status.delivered') },
-    { value: 'failed', label: t('delivery.status.failed') },
-    { value: 'cancelled', label: t('delivery.status.cancelled') },
+    { value: 'all', label: 'All Status' },
+    { value: 'scheduled', label: 'Scheduled' },
+    { value: 'dispatched', label: 'Dispatched' },
+    { value: 'in_transit', label: 'In Transit' },
+    { value: 'delivered', label: 'Delivered' },
+    { value: 'failed', label: 'Failed' },
+    { value: 'cancelled', label: 'Cancelled' },
   ];
 
   const vehicleTypes = [
-    { value: 'three_wheeler', label: t('delivery.vehicle.three_wheeler') },
-    { value: 'motorcycle', label: t('delivery.vehicle.motorcycle') },
-    { value: 'van', label: t('delivery.vehicle.van') },
-    { value: 'truck', label: t('delivery.vehicle.truck') },
+    { value: 'three_wheeler', label: 'Three Wheeler' },
+    { value: 'motorcycle', label: 'Motorcycle' },
+    { value: 'van', label: 'Van' },
+    { value: 'truck', label: 'Truck' },
   ];
 
   useEffect(() => {
@@ -153,20 +127,14 @@ const DeliveryManagement: React.FC = () => {
     }
   };
 
-  const handleCreateDelivery = async () => {
+  const handleCreateDelivery = async (values: DeliveryFormData) => {
     try {
-      const response = await createDelivery(formData);
+      const response = await createDelivery(values);
       if (response.success) {
-        setShowCreateDialog(false);
-        setFormData({
-          sale_id: 0,
-          customer_id: 0,
-          scheduled_date: new Date().toISOString().split('T')[0],
-          delivery_address: '',
-          vehicle_type: 'three_wheeler',
-          delivery_fee: 0,
-        });
+        setShowCreateModal(false);
+        form.resetFields();
         loadDeliveries();
+        message.success('Delivery created successfully!');
       } else {
         setError(response.error || 'Failed to create delivery');
       }
@@ -181,6 +149,7 @@ const DeliveryManagement: React.FC = () => {
       const response = await updateDeliveryStatus(deliveryId, newStatus);
       if (response.success) {
         loadDeliveries();
+        message.success('Delivery status updated successfully!');
       } else {
         setError(response.error || 'Failed to update delivery status');
       }
@@ -193,38 +162,38 @@ const DeliveryManagement: React.FC = () => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'scheduled':
-        return <Clock className="h-4 w-4" />;
+        return <ClockCircleOutlined />;
       case 'dispatched':
-        return <Truck className="h-4 w-4" />;
+        return <TruckOutlined />;
       case 'in_transit':
-        return <Navigation className="h-4 w-4" />;
+        return <NavigationOutlined />;
       case 'delivered':
-        return <CheckCircle className="h-4 w-4" />;
+        return <CheckCircleOutlined />;
       case 'failed':
-        return <XCircle className="h-4 w-4" />;
+        return <CloseCircleOutlined />;
       case 'cancelled':
-        return <AlertCircle className="h-4 w-4" />;
+        return <ExclamationCircleOutlined />;
       default:
-        return <Package className="h-4 w-4" />;
+        return <PackageOutlined />;
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'scheduled':
-        return 'bg-gray-100 text-gray-800';
+        return 'default';
       case 'dispatched':
-        return 'bg-blue-100 text-blue-800';
+        return 'processing';
       case 'in_transit':
-        return 'bg-orange-100 text-orange-800';
+        return 'warning';
       case 'delivered':
-        return 'bg-green-100 text-green-800';
+        return 'success';
       case 'failed':
-        return 'bg-red-100 text-red-800';
+        return 'error';
       case 'cancelled':
-        return 'bg-red-100 text-red-800';
+        return 'error';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'default';
     }
   };
 
@@ -236,358 +205,343 @@ const DeliveryManagement: React.FC = () => {
 
   const uniqueAreas = Array.from(new Set(deliveries.map(d => d.delivery_area).filter(Boolean)));
 
+  const columns = [
+    {
+      title: 'Delivery Number',
+      dataIndex: 'delivery_number',
+      key: 'delivery_number',
+      render: (text: string) => <Text strong>{text}</Text>
+    },
+    {
+      title: 'Scheduled Date',
+      dataIndex: 'scheduled_date',
+      key: 'scheduled_date',
+      render: (date: string) => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <CalendarOutlined style={{ color: '#666' }} />
+          {date}
+        </div>
+      )
+    },
+    {
+      title: 'Address',
+      dataIndex: 'delivery_address',
+      key: 'delivery_address',
+      render: (address: string, record: Delivery) => (
+        <div style={{ maxWidth: '200px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+            <EnvironmentOutlined style={{ color: '#666', marginTop: '2px' }} />
+            <div>
+              <div style={{ fontSize: '14px' }}>{address}</div>
+              {record.delivery_area && (
+                <div style={{ fontSize: '12px', color: '#666' }}>{record.delivery_area}</div>
+              )}
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Driver',
+      key: 'driver',
+      render: (record: Delivery) => (
+        record.driver_name ? (
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <UserOutlined style={{ color: '#666' }} />
+              {record.driver_name}
+            </div>
+            {record.driver_phone && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                <PhoneOutlined />
+                {record.driver_phone}
+              </div>
+            )}
+          </div>
+        ) : (
+          <Text type="secondary">No driver assigned</Text>
+        )
+      )
+    },
+    {
+      title: 'Vehicle',
+      dataIndex: 'vehicle_number',
+      key: 'vehicle_number',
+      render: (vehicle: string) => (
+        <Text>{vehicle || 'Not specified'}</Text>
+      )
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => (
+        <Badge 
+          status={getStatusColor(status) as any}
+          text={
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              {getStatusIcon(status)}
+              {status.replace('_', ' ').toUpperCase()}
+            </span>
+          }
+        />
+      )
+    },
+    {
+      title: 'Fee',
+      dataIndex: 'delivery_fee',
+      key: 'delivery_fee',
+      render: (fee: number) => formatCurrency(fee)
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (record: Delivery) => (
+        <div style={{ display: 'flex', gap: '8px' }}>
+          {record.status === 'scheduled' && (
+            <Button
+              size="small"
+              type="primary"
+              onClick={() => handleStatusUpdate(record.id, 'dispatched')}
+            >
+              Dispatch
+            </Button>
+          )}
+          {record.status === 'dispatched' && (
+            <Button
+              size="small"
+              type="primary"
+              onClick={() => handleStatusUpdate(record.id, 'delivered')}
+            >
+              Mark Delivered
+            </Button>
+          )}
+          {record.status === 'in_transit' && (
+            <Button
+              size="small"
+              type="primary"
+              onClick={() => handleStatusUpdate(record.id, 'delivered')}
+            >
+              Mark Delivered
+            </Button>
+          )}
+        </div>
+      )
+    }
+  ];
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">{t('common.loading')}</p>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '256px' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ marginBottom: '16px' }}>Loading...</div>
+          <Text type="secondary">Loading deliveries...</Text>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div style={{ padding: '24px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t('delivery.title')}</h1>
-          <p className="text-gray-600">{t('delivery.subtitle')}</p>
+          <Title level={2} style={{ margin: 0 }}>Delivery Management</Title>
+          <Text type="secondary">Track and manage delivery operations</Text>
         </div>
-        <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              {t('delivery.create')}
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>{t('delivery.create')}</DialogTitle>
-            </DialogHeader>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="sale_id">{t('delivery.sale_id')}</Label>
-                <Input
-                  id="sale_id"
-                  type="number"
-                  value={formData.sale_id || ''}
-                  onChange={(e) => setFormData({ ...formData, sale_id: parseInt(e.target.value) || 0 })}
-                />
-              </div>
-              <div>
-                <Label htmlFor="customer_id">{t('delivery.customer_id')}</Label>
-                <Input
-                  id="customer_id"
-                  type="number"
-                  value={formData.customer_id || ''}
-                  onChange={(e) => setFormData({ ...formData, customer_id: parseInt(e.target.value) || 0 })}
-                />
-              </div>
-              <div>
-                <Label htmlFor="scheduled_date">{t('delivery.scheduled_date')}</Label>
-                <Input
-                  id="scheduled_date"
-                  type="date"
-                  value={formData.scheduled_date}
-                  onChange={(e) => setFormData({ ...formData, scheduled_date: e.target.value })}
-                />
-              </div>
-              <div>
-                <Label htmlFor="vehicle_type">{t('delivery.vehicle_type')}</Label>
-                <Select
-                  value={formData.vehicle_type}
-                  onValueChange={(value) => setFormData({ ...formData, vehicle_type: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {vehicleTypes.map((type) => (
-                      <SelectItem key={type.value} value={type.value}>
-                        {type.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="col-span-2">
-                <Label htmlFor="delivery_address">{t('delivery.address')}</Label>
-                <Textarea
-                  id="delivery_address"
-                  value={formData.delivery_address}
-                  onChange={(e) => setFormData({ ...formData, delivery_address: e.target.value })}
-                  rows={2}
-                />
-              </div>
-              <div>
-                <Label htmlFor="delivery_area">{t('delivery.area')}</Label>
-                <Input
-                  id="delivery_area"
-                  value={formData.delivery_area || ''}
-                  onChange={(e) => setFormData({ ...formData, delivery_area: e.target.value })}
-                />
-              </div>
-              <div>
-                <Label htmlFor="delivery_village">{t('delivery.village')}</Label>
-                <Input
-                  id="delivery_village"
-                  value={formData.delivery_village || ''}
-                  onChange={(e) => setFormData({ ...formData, delivery_village: e.target.value })}
-                />
-              </div>
-              <div>
-                <Label htmlFor="contact_person">{t('delivery.contact_person')}</Label>
-                <Input
-                  id="contact_person"
-                  value={formData.contact_person || ''}
-                  onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
-                />
-              </div>
-              <div>
-                <Label htmlFor="contact_phone">{t('delivery.contact_phone')}</Label>
-                <Input
-                  id="contact_phone"
-                  value={formData.contact_phone || ''}
-                  onChange={(e) => setFormData({ ...formData, contact_phone: e.target.value })}
-                />
-              </div>
-              <div>
-                <Label htmlFor="driver_name">{t('delivery.driver_name')}</Label>
-                <Input
-                  id="driver_name"
-                  value={formData.driver_name || ''}
-                  onChange={(e) => setFormData({ ...formData, driver_name: e.target.value })}
-                />
-              </div>
-              <div>
-                <Label htmlFor="driver_phone">{t('delivery.driver_phone')}</Label>
-                <Input
-                  id="driver_phone"
-                  value={formData.driver_phone || ''}
-                  onChange={(e) => setFormData({ ...formData, driver_phone: e.target.value })}
-                />
-              </div>
-              <div>
-                <Label htmlFor="vehicle_number">{t('delivery.vehicle_number')}</Label>
-                <Input
-                  id="vehicle_number"
-                  value={formData.vehicle_number || ''}
-                  onChange={(e) => setFormData({ ...formData, vehicle_number: e.target.value })}
-                />
-              </div>
-              <div>
-                <Label htmlFor="delivery_fee">{t('delivery.fee')}</Label>
-                <Input
-                  id="delivery_fee"
-                  type="number"
-                  step="0.01"
-                  value={formData.delivery_fee || ''}
-                  onChange={(e) => setFormData({ ...formData, delivery_fee: parseFloat(e.target.value) || 0 })}
-                />
-              </div>
-              <div className="col-span-2">
-                <Label htmlFor="special_instructions">{t('delivery.special_instructions')}</Label>
-                <Textarea
-                  id="special_instructions"
-                  value={formData.special_instructions || ''}
-                  onChange={(e) => setFormData({ ...formData, special_instructions: e.target.value })}
-                  rows={2}
-                />
-              </div>
-            </div>
-            <div className="flex justify-end space-x-2 mt-4">
-              <Button variant="outline" onClick={() => setShowCreateDialog(false)}>
-                {t('common.cancel')}
-              </Button>
-              <Button onClick={handleCreateDelivery}>
-                {t('common.create')}
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => setShowCreateModal(true)}>
+          Create Delivery
+        </Button>
       </div>
 
-      {/* Filters */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex flex-wrap gap-4">
-            <div className="flex-1 min-w-64">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder={t('delivery.search_placeholder')}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-            <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-              <SelectTrigger className="w-48">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {statusOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
+      <Card style={{ marginBottom: '24px' }}>
+        <Row gutter={16} align="middle">
+          <Col flex="1">
+            <Input
+              placeholder="Search deliveries..."
+              prefix={<SearchOutlined />}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </Col>
+          <Col>
+            <Select value={selectedStatus} onChange={setSelectedStatus} style={{ width: 150 }}>
+              {statusOptions.map((option) => (
+                <Option key={option.value} value={option.value}>
+                  {option.label}
+                </Option>
+              ))}
             </Select>
-            <Select value={selectedArea} onValueChange={setSelectedArea}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder={t('delivery.filter_by_area')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('common.all_areas')}</SelectItem>
-                {uniqueAreas.map((area) => (
-                  <SelectItem key={area} value={area}>
-                    {area}
-                  </SelectItem>
-                ))}
-              </SelectContent>
+          </Col>
+          <Col>
+            <Select value={selectedArea} onChange={setSelectedArea} style={{ width: 150 }}>
+              <Option value="all">All Areas</Option>
+              {uniqueAreas.map((area) => (
+                <Option key={area} value={area}>
+                  {area}
+                </Option>
+              ))}
             </Select>
-          </div>
-        </CardContent>
+          </Col>
+        </Row>
       </Card>
 
-      {/* Error Display */}
       {error && (
-        <Card className="border-red-200 bg-red-50">
-          <CardContent className="pt-6">
-            <div className="flex items-center text-red-800">
-              <AlertCircle className="h-4 w-4 mr-2" />
-              {error}
-            </div>
-          </CardContent>
-        </Card>
+        <Alert
+          message={error}
+          type="error"
+          showIcon
+          style={{ marginBottom: '24px' }}
+        />
       )}
 
-      {/* Deliveries Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Truck className="h-5 w-5 mr-2" />
-            {t('delivery.list')} ({filteredDeliveries.length})
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>{t('delivery.number')}</TableHead>
-                <TableHead>{t('delivery.scheduled_date')}</TableHead>
-                <TableHead>{t('delivery.address')}</TableHead>
-                <TableHead>{t('delivery.driver')}</TableHead>
-                <TableHead>{t('delivery.vehicle')}</TableHead>
-                <TableHead>{t('delivery.status')}</TableHead>
-                <TableHead>{t('delivery.fee')}</TableHead>
-                <TableHead>{t('common.actions')}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredDeliveries.map((delivery) => (
-                <TableRow key={delivery.id}>
-                  <TableCell className="font-medium">
-                    {delivery.delivery_number}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center">
-                      <Calendar className="h-4 w-4 mr-2 text-gray-400" />
-                      {delivery.scheduled_date}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="max-w-xs">
-                      <div className="flex items-start">
-                        <MapPin className="h-4 w-4 mr-2 text-gray-400 mt-0.5 flex-shrink-0" />
-                        <div>
-                          <div className="text-sm">{delivery.delivery_address}</div>
-                          {delivery.delivery_area && (
-                            <div className="text-xs text-gray-500">{delivery.delivery_area}</div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {delivery.driver_name ? (
-                      <div>
-                        <div className="flex items-center">
-                          <User className="h-4 w-4 mr-2 text-gray-400" />
-                          {delivery.driver_name}
-                        </div>
-                        {delivery.driver_phone && (
-                          <div className="flex items-center text-xs text-gray-500 mt-1">
-                            <Phone className="h-3 w-3 mr-1" />
-                            {delivery.driver_phone}
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <span className="text-gray-400">{t('delivery.no_driver')}</span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <div className="text-sm">
-                      {delivery.vehicle_number || t('delivery.no_vehicle')}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge className={getStatusColor(delivery.status)}>
-                      <div className="flex items-center">
-                        {getStatusIcon(delivery.status)}
-                        <span className="ml-1">{t(`delivery.status.${delivery.status}`)}</span>
-                      </div>
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    {formatCurrency(delivery.delivery_fee)}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex space-x-2">
-                      {delivery.status === 'scheduled' && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleStatusUpdate(delivery.id, 'dispatched')}
-                        >
-                          {t('delivery.dispatch')}
-                        </Button>
-                      )}
-                      {delivery.status === 'dispatched' && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleStatusUpdate(delivery.id, 'delivered')}
-                        >
-                          {t('delivery.mark_delivered')}
-                        </Button>
-                      )}
-                      {delivery.status === 'in_transit' && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleStatusUpdate(delivery.id, 'delivered')}
-                        >
-                          {t('delivery.mark_delivered')}
-                        </Button>
-                      )}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          {filteredDeliveries.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              {t('delivery.no_deliveries')}
-            </div>
-          )}
-        </CardContent>
+      <Card title={<><TruckOutlined /> Deliveries ({filteredDeliveries.length})</>}>
+        <Table
+          columns={columns}
+          dataSource={filteredDeliveries}
+          rowKey="id"
+          pagination={{ pageSize: 10 }}
+          locale={{ emptyText: 'No deliveries found' }}
+        />
       </Card>
+
+      <Modal
+        title="Create New Delivery"
+        open={showCreateModal}
+        onCancel={() => setShowCreateModal(false)}
+        footer={null}
+        width={800}
+      >
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleCreateDelivery}
+          initialValues={{
+            scheduled_date: new Date().toISOString().split('T')[0],
+            vehicle_type: 'three_wheeler',
+            delivery_fee: 0,
+          }}
+        >
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                label="Sale ID"
+                name="sale_id"
+                rules={[{ required: true, message: 'Please enter sale ID' }]}
+              >
+                <Input type="number" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Customer ID"
+                name="customer_id"
+                rules={[{ required: true, message: 'Please enter customer ID' }]}
+              >
+                <Input type="number" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                label="Scheduled Date"
+                name="scheduled_date"
+                rules={[{ required: true, message: 'Please select date' }]}
+              >
+                <Input type="date" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Vehicle Type"
+                name="vehicle_type"
+              >
+                <Select>
+                  {vehicleTypes.map((type) => (
+                    <Option key={type.value} value={type.value}>
+                      {type.label}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Form.Item
+            label="Delivery Address"
+            name="delivery_address"
+            rules={[{ required: true, message: 'Please enter delivery address' }]}
+          >
+            <TextArea rows={2} />
+          </Form.Item>
+
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="Area" name="delivery_area">
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="Village" name="delivery_village">
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="Contact Person" name="contact_person">
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="Contact Phone" name="contact_phone">
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="Driver Name" name="driver_name">
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="Driver Phone" name="driver_phone">
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="Vehicle Number" name="vehicle_number">
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="Delivery Fee" name="delivery_fee">
+                <Input type="number" step="0.01" />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Form.Item label="Special Instructions" name="special_instructions">
+            <TextArea rows={2} />
+          </Form.Item>
+
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+            <Button onClick={() => setShowCreateModal(false)}>
+              Cancel
+            </Button>
+            <Button type="primary" htmlType="submit">
+              Create Delivery
+            </Button>
+          </div>
+        </Form>
+      </Modal>
     </div>
   );
 };

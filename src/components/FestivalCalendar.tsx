@@ -15,32 +15,30 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Card, Badge, Select, Tabs, Alert, Typography, Row, Col, Statistic } from 'antd';
+import type { TabsProps } from 'antd';
 import { 
-  Calendar, 
-  Star, 
-  Bell, 
-  TrendingUp, 
-  Gift, 
-  Users, 
-  AlertCircle,
-  CheckCircle,
-  Clock,
-  Sparkles
-} from 'lucide-react';
+  CalendarOutlined, 
+  StarOutlined, 
+  BellOutlined, 
+  TrendingUpOutlined, 
+  GiftOutlined, 
+  UsersOutlined, 
+  ExclamationCircleOutlined,
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  FireOutlined
+} from '@ant-design/icons';
 import { 
   getFestivals, 
   getTodaysFestivals, 
   getPoyaDays,
-  getFestivalReminders,
   autoUpdateFestivals,
   type Festival 
 } from '@/api/sri-lankan-features.api';
+
+const { Title, Text } = Typography;
+const { Option } = Select;
 
 export const FestivalCalendar: React.FC = () => {
   const { t } = useTranslation();
@@ -56,11 +54,11 @@ export const FestivalCalendar: React.FC = () => {
   const years = Array.from({ length: 5 }, (_, i) => currentYear + i);
 
   const festivalTypes = [
-    { value: 'all', label: t('festival.all_types') },
-    { value: 'public_holiday', label: t('festival.public_holidays') },
-    { value: 'poya_day', label: t('festival.poya_days') },
-    { value: 'cultural', label: t('festival.cultural') },
-    { value: 'religious', label: t('festival.religious') },
+    { value: 'all', label: 'All Types' },
+    { value: 'public_holiday', label: 'Public Holidays' },
+    { value: 'poya_day', label: 'Poya Days' },
+    { value: 'cultural', label: 'Cultural' },
+    { value: 'religious', label: 'Religious' },
   ];
 
   useEffect(() => {
@@ -87,7 +85,6 @@ export const FestivalCalendar: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      // Load festivals for selected year and type
       const params: any = { year: selectedYear };
       if (selectedType !== 'all') {
         params.type = selectedType;
@@ -123,30 +120,30 @@ export const FestivalCalendar: React.FC = () => {
 
   const getFestivalIcon = (type: string, category?: string) => {
     if (category === 'buddhist' || type === 'poya_day') {
-      return <Star className="h-4 w-4" />;
+      return <StarOutlined style={{ color: '#faad14' }} />;
     }
     if (category === 'christian') {
-      return <Gift className="h-4 w-4" />;
+      return <GiftOutlined style={{ color: '#52c41a' }} />;
     }
     if (category === 'cultural') {
-      return <Users className="h-4 w-4" />;
+      return <UsersOutlined style={{ color: '#1890ff' }} />;
     }
     if (category === 'national') {
-      return <Sparkles className="h-4 w-4" />;
+      return <FireOutlined style={{ color: '#f5222d' }} />;
     }
-    return <Calendar className="h-4 w-4" />;
+    return <CalendarOutlined />;
   };
 
   const getSalesImpactColor = (impact?: string) => {
     switch (impact) {
       case 'high':
-        return 'bg-green-100 text-green-800';
+        return 'success';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'warning';
       case 'low':
-        return 'bg-gray-100 text-gray-800';
+        return 'default';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'default';
     }
   };
 
@@ -161,295 +158,257 @@ export const FestivalCalendar: React.FC = () => {
   };
 
   const getDaysUntilText = (daysUntil: number) => {
-    if (daysUntil === 0) return t('festival.today');
-    if (daysUntil === 1) return t('festival.tomorrow');
-    if (daysUntil < 0) return t('festival.passed');
-    return t('festival.days_until', { days: daysUntil });
+    if (daysUntil === 0) return 'Today';
+    if (daysUntil === 1) return 'Tomorrow';
+    if (daysUntil < 0) return 'Passed';
+    return `${daysUntil} days`;
   };
+
+  const renderCalendarTab = () => (
+    <div>
+      {festivals.map((festival) => (
+        <Card key={festival.id} style={{ marginBottom: '16px' }} hoverable>
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', flex: 1 }}>
+              <div style={{ marginTop: '4px' }}>
+                {getFestivalIcon(festival.type, festival.category)}
+              </div>
+              <div style={{ flex: 1 }}>
+                <Title level={4} style={{ margin: 0, marginBottom: '4px' }}>{festival.name}</Title>
+                {festival.name_si && (
+                  <Text type="secondary" style={{ display: 'block', fontSize: '14px' }}>{festival.name_si}</Text>
+                )}
+                {festival.name_ta && (
+                  <Text type="secondary" style={{ display: 'block', fontSize: '14px' }}>{festival.name_ta}</Text>
+                )}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px' }}>
+                  <CalendarOutlined style={{ color: '#666' }} />
+                  <Text type="secondary">{formatDate(festival.date)}</Text>
+                  <Badge count={getDaysUntilText(festival.days_until)} style={{ backgroundColor: '#f0f0f0', color: '#666' }} />
+                </div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'flex-end' }}>
+              {festival.is_public_holiday && (
+                <Badge status="success" text="Public Holiday" />
+              )}
+              {festival.is_poya_day && (
+                <Badge status="warning" text="Poya Day" />
+              )}
+              {festival.expected_sales_impact && (
+                <Badge status={getSalesImpactColor(festival.expected_sales_impact)} text={`${festival.expected_sales_impact} impact`} />
+              )}
+            </div>
+          </div>
+          {festival.greeting_message_en && (
+            <div style={{ marginTop: '12px', padding: '12px', backgroundColor: '#fafafa', borderRadius: '4px' }}>
+              <Text italic>"{festival.greeting_message_en}"</Text>
+            </div>
+          )}
+        </Card>
+      ))}
+      {festivals.length === 0 && (
+        <div style={{ textAlign: 'center', padding: '32px' }}>
+          <Text type="secondary">No festivals found for the selected criteria</Text>
+        </div>
+      )}
+    </div>
+  );
+
+  const renderPoyaTab = () => (
+    <Card title={<><StarOutlined /> Poya Calendar {selectedYear}</>}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        {poyaDays.map((poya) => (
+          <div key={poya.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', backgroundColor: '#fff7e6', borderRadius: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <StarOutlined style={{ color: '#faad14' }} />
+              <div>
+                <Title level={5} style={{ margin: 0 }}>{poya.name}</Title>
+                <Text type="secondary">{formatDate(poya.date)}</Text>
+              </div>
+            </div>
+            <Badge count={getDaysUntilText(poya.days_until)} style={{ backgroundColor: '#f0f0f0', color: '#666' }} />
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+
+  const renderBusinessTab = () => (
+    <div>
+      <Row gutter={16} style={{ marginBottom: '24px' }}>
+        <Col span={8}>
+          <Card>
+            <Statistic
+              title="High Impact Festivals"
+              value={festivals.filter(f => f.expected_sales_impact === 'high').length}
+              valueStyle={{ color: '#52c41a' }}
+              prefix={<TrendingUpOutlined />}
+            />
+            <Text type="secondary" style={{ fontSize: '12px' }}>Major shopping opportunities</Text>
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card>
+            <Statistic
+              title="Public Holidays"
+              value={festivals.filter(f => f.is_public_holiday).length}
+              valueStyle={{ color: '#1890ff' }}
+              prefix={<CalendarOutlined />}
+            />
+            <Text type="secondary" style={{ fontSize: '12px' }}>Business closure days</Text>
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card>
+            <Statistic
+              title="Poya Days"
+              value={festivals.filter(f => f.is_poya_day).length}
+              valueStyle={{ color: '#faad14' }}
+              prefix={<StarOutlined />}
+            />
+            <Text type="secondary" style={{ fontSize: '12px' }}>Buddhist observance days</Text>
+          </Card>
+        </Col>
+      </Row>
+
+      <Card title={<><BellOutlined /> Upcoming High Impact Festivals</>}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {festivals
+            .filter(f => f.expected_sales_impact === 'high' && f.days_until >= 0 && f.days_until <= 30)
+            .slice(0, 5)
+            .map((festival) => (
+              <div key={festival.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', backgroundColor: '#f6ffed', borderRadius: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <TrendingUpOutlined style={{ color: '#52c41a' }} />
+                  <div>
+                    <Title level={5} style={{ margin: 0 }}>{festival.name}</Title>
+                    <Text type="secondary">{formatDate(festival.date)}</Text>
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <Badge status="success" text={getDaysUntilText(festival.days_until)} />
+                  <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                    Stock up recommended
+                  </div>
+                </div>
+              </div>
+            ))}
+          {festivals.filter(f => f.expected_sales_impact === 'high' && f.days_until >= 0 && f.days_until <= 30).length === 0 && (
+            <div style={{ textAlign: 'center', padding: '16px' }}>
+              <Text type="secondary">No upcoming high impact festivals in the next 30 days</Text>
+            </div>
+          )}
+        </div>
+      </Card>
+    </div>
+  );
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">{t('common.loading')}</p>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '256px' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ marginBottom: '16px' }}>Loading...</div>
+          <Text type="secondary">Loading festival calendar...</Text>
         </div>
       </div>
     );
   }
 
+  const tabItems: TabsProps['items'] = [
+    {
+      key: 'calendar',
+      label: (
+        <span>
+          <CalendarOutlined />
+          Calendar
+        </span>
+      ),
+      children: renderCalendarTab(),
+    },
+    {
+      key: 'poya',
+      label: (
+        <span>
+          <StarOutlined />
+          Poya Days
+        </span>
+      ),
+      children: renderPoyaTab(),
+    },
+    {
+      key: 'business',
+      label: (
+        <span>
+          <TrendingUpOutlined />
+          Business Impact
+        </span>
+      ),
+      children: renderBusinessTab(),
+    },
+  ];
+
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div style={{ padding: '24px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
         <div>
-          <h1 className="text-2xl font-bold">{t('festival.title')}</h1>
-          <p className="text-muted-foreground">{t('festival.description')}</p>
+          <Title level={2} style={{ margin: 0 }}>Festival Calendar</Title>
+          <Text type="secondary">Sri Lankan festivals and business planning</Text>
         </div>
-        <Badge variant="outline" className="text-sm">
-          {t('festival.sri_lankan_calendar')}
-        </Badge>
+        <Badge count="Sri Lankan Calendar" style={{ backgroundColor: '#f0f0f0', color: '#666' }} />
       </div>
 
-      {/* Today's Festivals Alert */}
       {todaysFestivals.length > 0 && (
-        <Alert className="border-blue-200 bg-blue-50">
-          <Sparkles className="h-4 w-4" />
-          <AlertDescription>
-            <div className="font-semibold text-blue-900 mb-2">
-              {t('festival.todays_festivals')}
-            </div>
-            <div className="space-y-1">
-              {todaysFestivals.map((festival) => (
-                <div key={festival.id} className="flex items-center gap-2">
-                  {getFestivalIcon(festival.type, festival.category)}
-                  <span className="font-medium">{festival.name}</span>
-                  {festival.is_public_holiday && (
-                    <Badge variant="secondary" className="text-xs">
-                      {t('festival.public_holiday')}
-                    </Badge>
-                  )}
-                </div>
-              ))}
-            </div>
-          </AlertDescription>
-        </Alert>
-      )}
-
-      {/* Error Display */}
-      {error && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-
-      <Tabs defaultValue="calendar" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="calendar" className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" />
-            {t('festival.calendar')}
-          </TabsTrigger>
-          <TabsTrigger value="poya" className="flex items-center gap-2">
-            <Star className="h-4 w-4" />
-            {t('festival.poya_days')}
-          </TabsTrigger>
-          <TabsTrigger value="business" className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4" />
-            {t('festival.business_impact')}
-          </TabsTrigger>
-        </TabsList>
-
-        <div className="flex gap-4 mb-4">
-          <Select value={selectedYear.toString()} onValueChange={(value) => setSelectedYear(parseInt(value))}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {years.map((year) => (
-                <SelectItem key={year} value={year.toString()}>
-                  {year}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select value={selectedType} onValueChange={setSelectedType}>
-            <SelectTrigger className="w-48">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {festivalTypes.map((type) => (
-                <SelectItem key={type.value} value={type.value}>
-                  {type.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <TabsContent value="calendar" className="space-y-4">
-          <div className="grid gap-4">
-            {festivals.map((festival) => (
-              <Card key={festival.id} className="hover:shadow-md transition-shadow">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-3">
-                      <div className="mt-1">
-                        {getFestivalIcon(festival.type, festival.category)}
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-lg">{festival.name}</h3>
-                        {festival.name_si && (
-                          <p className="text-sm text-gray-600 font-sinhala">{festival.name_si}</p>
-                        )}
-                        {festival.name_ta && (
-                          <p className="text-sm text-gray-600 font-tamil">{festival.name_ta}</p>
-                        )}
-                        <div className="flex items-center gap-2 mt-2">
-                          <Calendar className="h-4 w-4 text-gray-400" />
-                          <span className="text-sm text-gray-600">{formatDate(festival.date)}</span>
-                          <Badge variant="outline" className="text-xs">
-                            {getDaysUntilText(festival.days_until)}
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-end gap-2">
-                      {festival.is_public_holiday && (
-                        <Badge variant="default" className="text-xs">
-                          {t('festival.public_holiday')}
-                        </Badge>
-                      )}
-                      {festival.is_poya_day && (
-                        <Badge variant="secondary" className="text-xs">
-                          {t('festival.poya_day')}
-                        </Badge>
-                      )}
-                      {festival.expected_sales_impact && (
-                        <Badge className={`text-xs ${getSalesImpactColor(festival.expected_sales_impact)}`}>
-                          {t(`festival.impact.${festival.expected_sales_impact}`)}
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                  {festival.greeting_message_en && (
-                    <div className="mt-3 p-3 bg-gray-50 rounded-lg">
-                      <p className="text-sm italic">"{festival.greeting_message_en}"</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-            {festivals.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
-                {t('festival.no_festivals')}
-              </div>
-            )}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="poya" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Star className="h-5 w-5" />
-                {t('festival.poya_calendar')} {selectedYear}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-3">
-                {poyaDays.map((poya) => (
-                  <div key={poya.id} className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Star className="h-4 w-4 text-yellow-600" />
-                      <div>
-                        <h4 className="font-medium">{poya.name}</h4>
-                        <p className="text-sm text-gray-600">{formatDate(poya.date)}</p>
-                      </div>
-                    </div>
-                    <Badge variant="outline" className="text-xs">
-                      {getDaysUntilText(poya.days_until)}
-                    </Badge>
+        <Alert
+          message={
+            <div>
+              <Text strong style={{ color: '#1890ff' }}>Today's Festivals</Text>
+              <div style={{ marginTop: '8px' }}>
+                {todaysFestivals.map((festival) => (
+                  <div key={festival.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                    {getFestivalIcon(festival.type, festival.category)}
+                    <Text strong>{festival.name}</Text>
+                    {festival.is_public_holiday && (
+                      <Badge status="success" text="Public Holiday" />
+                    )}
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </div>
+          }
+          type="info"
+          style={{ marginBottom: '24px' }}
+        />
+      )}
 
-        <TabsContent value="business" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-green-700">
-                  {t('festival.high_impact_festivals')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-600">
-                  {festivals.filter(f => f.expected_sales_impact === 'high').length}
-                </div>
-                <p className="text-xs text-gray-600 mt-1">
-                  {t('festival.high_impact_description')}
-                </p>
-              </CardContent>
-            </Card>
+      {error && (
+        <Alert
+          message={error}
+          type="error"
+          showIcon
+          style={{ marginBottom: '24px' }}
+        />
+      )}
 
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-blue-700">
-                  {t('festival.public_holidays')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-blue-600">
-                  {festivals.filter(f => f.is_public_holiday).length}
-                </div>
-                <p className="text-xs text-gray-600 mt-1">
-                  {t('festival.public_holidays_description')}
-                </p>
-              </CardContent>
-            </Card>
+      <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
+        <Select value={selectedYear} onChange={setSelectedYear} style={{ width: 120 }}>
+          {years.map((year) => (
+            <Option key={year} value={year}>
+              {year}
+            </Option>
+          ))}
+        </Select>
 
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-yellow-700">
-                  {t('festival.poya_days')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-yellow-600">
-                  {festivals.filter(f => f.is_poya_day).length}
-                </div>
-                <p className="text-xs text-gray-600 mt-1">
-                  {t('festival.poya_days_description')}
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+        <Select value={selectedType} onChange={setSelectedType} style={{ width: 200 }}>
+          {festivalTypes.map((type) => (
+            <Option key={type.value} value={type.value}>
+              {type.label}
+            </Option>
+          ))}
+        </Select>
+      </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Bell className="h-5 w-5" />
-                {t('festival.upcoming_high_impact')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {festivals
-                  .filter(f => f.expected_sales_impact === 'high' && f.days_until >= 0 && f.days_until <= 30)
-                  .slice(0, 5)
-                  .map((festival) => (
-                    <div key={festival.id} className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <TrendingUp className="h-4 w-4 text-green-600" />
-                        <div>
-                          <h4 className="font-medium">{festival.name}</h4>
-                          <p className="text-sm text-gray-600">{formatDate(festival.date)}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <Badge className="bg-green-100 text-green-800 text-xs">
-                          {getDaysUntilText(festival.days_until)}
-                        </Badge>
-                        <p className="text-xs text-gray-600 mt-1">
-                          {t('festival.stock_up_recommended')}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                {festivals.filter(f => f.expected_sales_impact === 'high' && f.days_until >= 0 && f.days_until <= 30).length === 0 && (
-                  <div className="text-center py-4 text-gray-500">
-                    {t('festival.no_upcoming_high_impact')}
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+      <Tabs items={tabItems} />
     </div>
   );
 };

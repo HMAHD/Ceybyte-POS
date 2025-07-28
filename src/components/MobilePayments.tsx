@@ -15,27 +15,22 @@
 
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, Button, Input, Badge, Alert, Tabs, Typography, Form, message } from 'antd';
+import type { TabsProps } from 'antd';
 import { 
-  Smartphone, 
-  CreditCard, 
-  QrCode, 
-  Shield, 
-  CheckCircle, 
-  AlertCircle,
-  Wallet,
-  TrendingUp,
-  Users,
-  DollarSign
-} from 'lucide-react';
+  MobileOutlined, 
+  CreditCardOutlined, 
+  QrcodeOutlined, 
+  SafetyOutlined, 
+  CheckCircleOutlined, 
+  ExclamationCircleOutlined,
+  WalletOutlined,
+  TrendingUpOutlined
+} from '@ant-design/icons';
 import { getMobilePaymentProviders, type MobilePaymentProvider } from '@/api/sri-lankan-features.api';
 import { formatCurrency } from '@/utils/formatting';
+
+const { Title, Text } = Typography;
 
 interface PaymentTransaction {
   id: string;
@@ -81,7 +76,6 @@ export const MobilePayments: React.FC = () => {
   };
 
   const loadMockTransactions = () => {
-    // Mock transaction data for demonstration
     const mockTransactions: PaymentTransaction[] = [
       {
         id: 'TXN001',
@@ -130,7 +124,6 @@ export const MobilePayments: React.FC = () => {
     setError(null);
 
     try {
-      // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       const newTransaction: PaymentTransaction = {
@@ -139,13 +132,14 @@ export const MobilePayments: React.FC = () => {
         amount,
         phone: customerPhone,
         reference: `${selectedProvider.id.toUpperCase()}${Math.random().toString(36).substr(2, 9)}`,
-        status: Math.random() > 0.1 ? 'completed' : 'failed', // 90% success rate
+        status: Math.random() > 0.1 ? 'completed' : 'failed',
         timestamp: new Date()
       };
 
       setTransactions(prev => [newTransaction, ...prev]);
       
       if (newTransaction.status === 'completed') {
+        message.success('Payment processed successfully!');
         setPaymentAmount('');
         setCustomerPhone('');
         setSelectedProvider(null);
@@ -163,42 +157,19 @@ export const MobilePayments: React.FC = () => {
     switch (providerId) {
       case 'ez_cash':
       case 'mcash':
-        return <Smartphone className="h-6 w-6" />;
+        return <MobileOutlined style={{ fontSize: '24px' }} />;
       case 'payhere':
-        return <CreditCard className="h-6 w-6" />;
+        return <CreditCardOutlined style={{ fontSize: '24px' }} />;
       case 'lankaqr':
-        return <QrCode className="h-6 w-6" />;
+        return <QrcodeOutlined style={{ fontSize: '24px' }} />;
       case 'govpay':
-        return <Shield className="h-6 w-6" />;
+        return <SafetyOutlined style={{ fontSize: '24px' }} />;
       default:
-        return <Wallet className="h-6 w-6" />;
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return <CheckCircle className="h-4 w-4 text-green-600" />;
-      case 'failed':
-        return <AlertCircle className="h-4 w-4 text-red-600" />;
-      default:
-        return <AlertCircle className="h-4 w-4 text-yellow-600" />;
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return 'bg-green-100 text-green-800';
-      case 'failed':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-yellow-100 text-yellow-800';
+        return <WalletOutlined style={{ fontSize: '24px' }} />;
     }
   };
 
   const formatPhoneNumber = (phone: string) => {
-    // Format Sri Lankan phone numbers
     if (phone.startsWith('0')) {
       return `+94 ${phone.substring(1)}`;
     }
@@ -211,288 +182,275 @@ export const MobilePayments: React.FC = () => {
     .filter(t => t.status === 'completed')
     .reduce((sum, t) => sum + t.amount, 0);
 
+  const renderPaymentTab = () => (
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+      <Card title={<><MobileOutlined /> {t('mobile_payments.new_payment') || 'New Payment'}</>}>
+        <div style={{ marginBottom: '16px' }}>
+          <Text strong>{t('mobile_payments.select_provider') || 'Select Provider'}</Text>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', marginTop: '8px' }}>
+            {providers.slice(0, 6).map((provider) => (
+              <Button
+                key={provider.id}
+                type={selectedProvider?.id === provider.id ? "primary" : "default"}
+                style={{ height: '64px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}
+                onClick={() => setSelectedProvider(provider)}
+              >
+                {getProviderIcon(provider.id)}
+                <span style={{ fontSize: '12px' }}>{provider.name}</span>
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        {selectedProvider && (
+          <>
+            <Alert
+              message={
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                    {getProviderIcon(selectedProvider.id)}
+                    <Text strong>{selectedProvider.name}</Text>
+                  </div>
+                  <div style={{ fontSize: '12px' }}>
+                    <div>Fee: {selectedProvider.fee_percentage}%</div>
+                    <div>Limits: {formatCurrency(selectedProvider.min_amount)} - {formatCurrency(selectedProvider.max_amount)}</div>
+                  </div>
+                </div>
+              }
+              type="info"
+              style={{ marginBottom: '16px' }}
+            />
+
+            <Form layout="vertical">
+              <Form.Item label={t('mobile_payments.amount') || 'Amount'}>
+                <Input
+                  type="number"
+                  placeholder="0.00"
+                  value={paymentAmount}
+                  onChange={(e) => setPaymentAmount(e.target.value)}
+                  style={{ textAlign: 'right' }}
+                />
+              </Form.Item>
+
+              <Form.Item label={t('mobile_payments.customer_phone') || 'Customer Phone'}>
+                <Input
+                  type="tel"
+                  placeholder="077 123 4567"
+                  value={customerPhone}
+                  onChange={(e) => setCustomerPhone(e.target.value)}
+                />
+              </Form.Item>
+
+              {paymentAmount && (
+                <Card size="small" style={{ marginBottom: '16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <Text>Amount</Text>
+                    <Text>{formatCurrency(parseFloat(paymentAmount) || 0)}</Text>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <Text>Fee ({selectedProvider.fee_percentage}%)</Text>
+                    <Text>{formatCurrency((parseFloat(paymentAmount) || 0) * selectedProvider.fee_percentage / 100)}</Text>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #f0f0f0', paddingTop: '8px' }}>
+                    <Text strong>Total</Text>
+                    <Text strong>{formatCurrency((parseFloat(paymentAmount) || 0) * (1 + selectedProvider.fee_percentage / 100))}</Text>
+                  </div>
+                </Card>
+              )}
+
+              <Button 
+                type="primary"
+                block
+                loading={processing}
+                disabled={!paymentAmount || !customerPhone}
+                onClick={processPayment}
+              >
+                {processing ? 'Processing...' : 'Process Payment'}
+              </Button>
+            </Form>
+          </>
+        )}
+      </Card>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <Card title="Today's Stats" size="small">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#1890ff' }}>{completedTransactions}</div>
+              <Text type="secondary" style={{ fontSize: '12px' }}>Completed</Text>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#52c41a' }}>{formatCurrency(totalAmount)}</div>
+              <Text type="secondary" style={{ fontSize: '12px' }}>Total Amount</Text>
+            </div>
+          </div>
+        </Card>
+
+        <Card title="Recent Transactions" size="small">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {transactions.slice(0, 3).map((transaction) => {
+              const provider = providers.find(p => p.id === transaction.provider);
+              return (
+                <div key={transaction.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px', backgroundColor: '#fafafa', borderRadius: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {provider && getProviderIcon(provider.id)}
+                    <div>
+                      <div style={{ fontSize: '14px', fontWeight: 500 }}>{formatCurrency(transaction.amount)}</div>
+                      <div style={{ fontSize: '12px', color: '#666' }}>{formatPhoneNumber(transaction.phone)}</div>
+                    </div>
+                  </div>
+                  <Badge 
+                    status={transaction.status === 'completed' ? 'success' : transaction.status === 'failed' ? 'error' : 'processing'}
+                    text={transaction.status}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+
+  const renderProvidersTab = () => (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
+      {providers.map((provider) => (
+        <Card key={provider.id} hoverable>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+            {getProviderIcon(provider.id)}
+            <div>
+              <Title level={5} style={{ margin: 0 }}>{provider.name}</Title>
+              {provider.name_si && (
+                <Text type="secondary" style={{ fontSize: '12px' }}>{provider.name_si}</Text>
+              )}
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '14px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Text type="secondary">Fee</Text>
+              <Text strong>{provider.fee_percentage}%</Text>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Text type="secondary">Min Amount</Text>
+              <Text strong>{formatCurrency(provider.min_amount)}</Text>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Text type="secondary">Max Amount</Text>
+              <Text strong>{formatCurrency(provider.max_amount)}</Text>
+            </div>
+          </div>
+          <Badge 
+            status={provider.is_active ? 'success' : 'default'}
+            text={provider.is_active ? 'Active' : 'Inactive'}
+            style={{ marginTop: '12px' }}
+          />
+        </Card>
+      ))}
+    </div>
+  );
+
+  const renderHistoryTab = () => (
+    <Card title={<><TrendingUpOutlined /> Transaction History</>}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        {transactions.map((transaction) => {
+          const provider = providers.find(p => p.id === transaction.provider);
+          return (
+            <div key={transaction.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px', border: '1px solid #f0f0f0', borderRadius: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                {provider && getProviderIcon(provider.id)}
+                <div>
+                  <div style={{ fontWeight: 500 }}>{transaction.reference}</div>
+                  <div style={{ fontSize: '14px', color: '#666' }}>
+                    {provider?.name} • {formatPhoneNumber(transaction.phone)}
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#999' }}>
+                    {transaction.timestamp.toLocaleString()}
+                  </div>
+                </div>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: '18px', fontWeight: 600 }}>{formatCurrency(transaction.amount)}</div>
+                <Badge 
+                  status={transaction.status === 'completed' ? 'success' : transaction.status === 'failed' ? 'error' : 'processing'}
+                  text={transaction.status}
+                />
+              </div>
+            </div>
+          );
+        })}
+        {transactions.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '32px', color: '#999' }}>
+            No transactions found
+          </div>
+        )}
+      </div>
+    </Card>
+  );
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">{t('common.loading')}</p>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '256px' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ marginBottom: '16px' }}>Loading...</div>
+          <Text type="secondary">Loading payment providers...</Text>
         </div>
       </div>
     );
   }
 
+  const tabItems: TabsProps['items'] = [
+    {
+      key: 'payment',
+      label: (
+        <span>
+          <MobileOutlined />
+          Process Payment
+        </span>
+      ),
+      children: renderPaymentTab(),
+    },
+    {
+      key: 'providers',
+      label: (
+        <span>
+          <WalletOutlined />
+          Providers
+        </span>
+      ),
+      children: renderProvidersTab(),
+    },
+    {
+      key: 'history',
+      label: (
+        <span>
+          <TrendingUpOutlined />
+          Transaction History
+        </span>
+      ),
+      children: renderHistoryTab(),
+    },
+  ];
+
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div style={{ padding: '24px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
         <div>
-          <h1 className="text-2xl font-bold">{t('mobile_payments.title')}</h1>
-          <p className="text-muted-foreground">{t('mobile_payments.description')}</p>
+          <Title level={2} style={{ margin: 0 }}>Mobile Payments</Title>
+          <Text type="secondary">Sri Lankan mobile payment integration</Text>
         </div>
-        <Badge variant="outline" className="text-sm">
-          {t('mobile_payments.sri_lankan_providers')}
-        </Badge>
+        <Badge count="Sri Lankan Providers" style={{ backgroundColor: '#f0f0f0', color: '#666' }} />
       </div>
 
-      {/* Error Display */}
       {error && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
+        <Alert
+          message={error}
+          type="error"
+          showIcon
+          style={{ marginBottom: '24px' }}
+        />
       )}
 
-      <Tabs defaultValue="payment" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="payment" className="flex items-center gap-2">
-            <Smartphone className="h-4 w-4" />
-            {t('mobile_payments.process_payment')}
-          </TabsTrigger>
-          <TabsTrigger value="providers" className="flex items-center gap-2">
-            <Wallet className="h-4 w-4" />
-            {t('mobile_payments.providers')}
-          </TabsTrigger>
-          <TabsTrigger value="history" className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4" />
-            {t('mobile_payments.transaction_history')}
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="payment" className="space-y-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Payment Form */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Smartphone className="h-5 w-5" />
-                  {t('mobile_payments.new_payment')}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>{t('mobile_payments.select_provider')}</Label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {providers.slice(0, 6).map((provider) => (
-                      <Button
-                        key={provider.id}
-                        variant={selectedProvider?.id === provider.id ? "default" : "outline"}
-                        className="h-16 flex flex-col items-center gap-1"
-                        onClick={() => setSelectedProvider(provider)}
-                      >
-                        {getProviderIcon(provider.id)}
-                        <span className="text-xs">{provider.name}</span>
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-
-                {selectedProvider && (
-                  <>
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <div className="flex items-center gap-2 mb-2">
-                        {getProviderIcon(selectedProvider.id)}
-                        <span className="font-medium">{selectedProvider.name}</span>
-                      </div>
-                      <div className="text-sm text-gray-600 space-y-1">
-                        <p>{t('mobile_payments.fee')}: {selectedProvider.fee_percentage}%</p>
-                        <p>{t('mobile_payments.limits')}: {formatCurrency(selectedProvider.min_amount)} - {formatCurrency(selectedProvider.max_amount)}</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="amount">{t('mobile_payments.amount')}</Label>
-                      <Input
-                        id="amount"
-                        type="number"
-                        placeholder="0.00"
-                        value={paymentAmount}
-                        onChange={(e) => setPaymentAmount(e.target.value)}
-                        className="text-right"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">{t('mobile_payments.customer_phone')}</Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        placeholder="077 123 4567"
-                        value={customerPhone}
-                        onChange={(e) => setCustomerPhone(e.target.value)}
-                      />
-                    </div>
-
-                    {paymentAmount && (
-                      <div className="p-3 bg-gray-50 rounded-lg space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span>{t('mobile_payments.amount')}</span>
-                          <span>{formatCurrency(parseFloat(paymentAmount) || 0)}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span>{t('mobile_payments.fee')} ({selectedProvider.fee_percentage}%)</span>
-                          <span>{formatCurrency((parseFloat(paymentAmount) || 0) * selectedProvider.fee_percentage / 100)}</span>
-                        </div>
-                        <div className="flex justify-between font-semibold border-t pt-2">
-                          <span>{t('mobile_payments.total')}</span>
-                          <span>{formatCurrency((parseFloat(paymentAmount) || 0) * (1 + selectedProvider.fee_percentage / 100))}</span>
-                        </div>
-                      </div>
-                    )}
-
-                    <Button 
-                      onClick={processPayment} 
-                      disabled={processing || !paymentAmount || !customerPhone}
-                      className="w-full"
-                    >
-                      {processing ? t('mobile_payments.processing') : t('mobile_payments.process_payment')}
-                    </Button>
-                  </>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Statistics */}
-            <div className="space-y-4">
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-blue-700">
-                    {t('mobile_payments.todays_stats')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-600">{completedTransactions}</div>
-                      <p className="text-xs text-gray-600">{t('mobile_payments.completed')}</p>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-green-600">{formatCurrency(totalAmount)}</div>
-                      <p className="text-xs text-gray-600">{t('mobile_payments.total_amount')}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium">
-                    {t('mobile_payments.recent_transactions')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {transactions.slice(0, 3).map((transaction) => {
-                      const provider = providers.find(p => p.id === transaction.provider);
-                      return (
-                        <div key={transaction.id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                          <div className="flex items-center gap-2">
-                            {provider && getProviderIcon(provider.id)}
-                            <div>
-                              <div className="text-sm font-medium">{formatCurrency(transaction.amount)}</div>
-                              <div className="text-xs text-gray-600">{formatPhoneNumber(transaction.phone)}</div>
-                            </div>
-                          </div>
-                          <Badge className={`text-xs ${getStatusColor(transaction.status)}`}>
-                            {getStatusIcon(transaction.status)}
-                            <span className="ml-1">{t(`mobile_payments.status.${transaction.status}`)}</span>
-                          </Badge>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="providers" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {providers.map((provider) => (
-              <Card key={provider.id} className="hover:shadow-md transition-shadow">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3 mb-3">
-                    {getProviderIcon(provider.id)}
-                    <div>
-                      <h3 className="font-semibold">{provider.name}</h3>
-                      {provider.name_si && (
-                        <p className="text-sm text-gray-600 font-sinhala">{provider.name_si}</p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">{t('mobile_payments.fee')}</span>
-                      <span className="font-medium">{provider.fee_percentage}%</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">{t('mobile_payments.min_amount')}</span>
-                      <span className="font-medium">{formatCurrency(provider.min_amount)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">{t('mobile_payments.max_amount')}</span>
-                      <span className="font-medium">{formatCurrency(provider.max_amount)}</span>
-                    </div>
-                  </div>
-                  <Badge 
-                    variant={provider.is_active ? "default" : "secondary"} 
-                    className="mt-3 w-full justify-center"
-                  >
-                    {provider.is_active ? t('mobile_payments.active') : t('mobile_payments.inactive')}
-                  </Badge>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="history" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5" />
-                {t('mobile_payments.transaction_history')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {transactions.map((transaction) => {
-                  const provider = providers.find(p => p.id === transaction.provider);
-                  return (
-                    <div key={transaction.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex items-center gap-3">
-                        {provider && getProviderIcon(provider.id)}
-                        <div>
-                          <div className="font-medium">{transaction.reference}</div>
-                          <div className="text-sm text-gray-600">
-                            {provider?.name} • {formatPhoneNumber(transaction.phone)}
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            {transaction.timestamp.toLocaleString()}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-semibold text-lg">{formatCurrency(transaction.amount)}</div>
-                        <Badge className={`text-xs ${getStatusColor(transaction.status)}`}>
-                          {getStatusIcon(transaction.status)}
-                          <span className="ml-1">{t(`mobile_payments.status.${transaction.status}`)}</span>
-                        </Badge>
-                      </div>
-                    </div>
-                  );
-                })}
-                {transactions.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
-                    {t('mobile_payments.no_transactions')}
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+      <Tabs items={tabItems} />
     </div>
   );
 };
