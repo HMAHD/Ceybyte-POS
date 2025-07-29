@@ -39,9 +39,18 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     />
   );
 
+  if (tip) {
+    return (
+      <div className={`flex flex-col items-center justify-center ${className}`}>
+        <Spin indicator={antIcon} size={size} />
+        <div className="mt-2 text-sm text-gray-600">{tip}</div>
+      </div>
+    );
+  }
+
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <Spin indicator={antIcon} tip={tip} size={size} />
+      <Spin indicator={antIcon} size={size} />
     </div>
   );
 };

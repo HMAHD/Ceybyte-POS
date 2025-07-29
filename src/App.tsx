@@ -14,7 +14,7 @@
  */
 
 import React from 'react';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, App as AntdApp } from 'antd';
 import './App.css';
 import './assets/fonts/fonts.css';
 import './i18n';
@@ -31,15 +31,17 @@ const AppContent: React.FC = () => {
 
   return (
     <ConfigProvider theme={currentTheme} componentSize='middle'>
-      <KeyboardShortcutProvider>
-        <NetworkProvider>
-          <PowerProvider>
-            <AuthProvider>
-              <MainApplication />
-            </AuthProvider>
-          </PowerProvider>
-        </NetworkProvider>
-      </KeyboardShortcutProvider>
+      <AntdApp>
+        <KeyboardShortcutProvider>
+          <NetworkProvider>
+            <PowerProvider>
+              <AuthProvider>
+                <MainApplication />
+              </AuthProvider>
+            </PowerProvider>
+          </NetworkProvider>
+        </KeyboardShortcutProvider>
+      </AntdApp>
     </ConfigProvider>
   );
 };

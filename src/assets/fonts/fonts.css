@@ -13,7 +13,9 @@
  * └──────────────────────────────────────────────────────────────────────────────────────────────────┘
  */
 
-/* Noto Sans Sinhala - For Sinhala text */
+/* Noto Sans Sinhala - For Sinhala text (using system fonts as fallback) */
+/* Font files not available - using system fonts */
+/*
 @font-face {
   font-family: 'Noto Sans Sinhala';
   src:
@@ -23,38 +25,11 @@
   font-style: normal;
   font-display: swap;
 }
+*/
 
-@font-face {
-  font-family: 'Noto Sans Sinhala';
-  src:
-    url('./NotoSansSinhala-Medium.woff2') format('woff2'),
-    url('./NotoSansSinhala-Medium.woff') format('woff');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Noto Sans Sinhala';
-  src:
-    url('./NotoSansSinhala-SemiBold.woff2') format('woff2'),
-    url('./NotoSansSinhala-SemiBold.woff') format('woff');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Noto Sans Sinhala';
-  src:
-    url('./NotoSansSinhala-Bold.woff2') format('woff2'),
-    url('./NotoSansSinhala-Bold.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Noto Sans Tamil - For Tamil text */
+/* Noto Sans Tamil - For Tamil text (using system fonts as fallback) */
+/* Font files not available - using system fonts */
+/*
 @font-face {
   font-family: 'Noto Sans Tamil';
   src:
@@ -64,43 +39,14 @@
   font-style: normal;
   font-display: swap;
 }
-
-@font-face {
-  font-family: 'Noto Sans Tamil';
-  src:
-    url('./NotoSansTamil-Medium.woff2') format('woff2'),
-    url('./NotoSansTamil-Medium.woff') format('woff');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Noto Sans Tamil';
-  src:
-    url('./NotoSansTamil-SemiBold.woff2') format('woff2'),
-    url('./NotoSansTamil-SemiBold.woff') format('woff');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Noto Sans Tamil';
-  src:
-    url('./NotoSansTamil-Bold.woff2') format('woff2'),
-    url('./NotoSansTamil-Bold.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+*/
 
 /* Font family definitions for different languages */
 :root {
   --font-family-en:
     'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-family-si: 'Noto Sans Sinhala', 'Iskoola Pota', sans-serif;
-  --font-family-ta: 'Noto Sans Tamil', 'Latha', sans-serif;
+  --font-family-si: 'Iskoola Pota', 'Nirmala UI', sans-serif;
+  --font-family-ta: 'Latha', 'Nirmala UI', sans-serif;
   --font-family-fallback:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
