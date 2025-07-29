@@ -40,7 +40,7 @@ import {
   BgColorsOutlined,
   KeyOutlined,
 } from '@ant-design/icons';
-import { useAuth } from '@/contexts/AuthContext';
+import { usePinAuth } from '@/contexts/PinAuthContext';
 import { useNetwork } from '@/contexts/NetworkContext';
 import { useTranslation } from '@/hooks/useTranslation';
 import LocalizedText from '@/components/LocalizedText';
@@ -71,7 +71,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   children,
   selectedKey,
 }) => {
-  const { user, logout, hasPermission } = useAuth();
+  const { user, logout, hasPermission } = usePinAuth();
   const { config: networkConfig } = useNetwork();
   const { t } = useTranslation();
   const navigate = useNavigate();

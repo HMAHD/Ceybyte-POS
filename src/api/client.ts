@@ -34,10 +34,13 @@ class ApiClient {
       'Content-Type': 'application/json',
     };
 
-    // Add authentication header if token exists
-    const token = localStorage.getItem('ceybyte-pos-token');
-    if (token && token !== 'null' && token !== 'undefined' && token.length > 10) {
-      defaultHeaders['Authorization'] = `Bearer ${token}`;
+    // PIN-based authentication doesn't require tokens for most operations
+    // Only add auth headers for endpoints that specifically require them
+    if (endpoint.includes('/auth/') && !endpoint.includes('/pin-auth/')) {
+      const token = localStorage.getItem('ceybyte-pos-token');
+      if (token && token !== 'null' && token !== 'undefined' && token.length > 10) {
+        defaultHeaders['Authorization'] = `Bearer ${token}`;
+      }
     }
 
     try {
@@ -50,9 +53,10 @@ class ApiClient {
       });
 
       if (!response.ok) {
-        // If it's an auth error, clear the token
+        // If it's an auth error, clear any old tokens
         if (response.status === 401) {
           localStorage.removeItem('ceybyte-pos-token');
+          // For PIN auth, we don't need to do anything special
         }
         throw new Error(`HTTP error! status: ${response.status}`);
       }

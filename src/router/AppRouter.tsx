@@ -15,7 +15,7 @@
 
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { usePinAuth } from '@/contexts/PinAuthContext';
 import MainLayout from '@/components/layout/MainLayout';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { LoadingSpinner } from '@/components/LoadingStates';
@@ -30,7 +30,7 @@ const ReportsPage = React.lazy(() => import('@/pages/ReportsPage'));
 const SettingsPage = React.lazy(() => import('@/pages/SettingsPage'));
 
 const AppRouter: React.FC = () => {
-  const { } = useAuth();
+  const { } = usePinAuth();
 
   return (
     <BrowserRouter>

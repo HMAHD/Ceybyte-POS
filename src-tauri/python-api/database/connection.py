@@ -20,7 +20,7 @@ from sqlalchemy.engine import Engine
 import sqlite3
 
 # Database configuration
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./ceybyte_pos.db")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./src-tauri/python-api/ceybyte_pos.db")
 DATABASE_ECHO = os.getenv("DATABASE_ECHO", "false").lower() == "true"
 
 # Create SQLite engine with optimizations for multi-terminal access
@@ -86,6 +86,9 @@ def init_database():
     
     # Insert default data
     _insert_default_data()
+    
+    print("\n⚠️  IMPORTANT: If you were logged in, please refresh your browser and log in again.")
+    print("   Database initialization may have invalidated existing authentication tokens.")
 
 
 def _insert_default_data():
@@ -113,6 +116,11 @@ def _insert_default_data():
                 is_active=True
             )
             db.add(admin_user)
+        else:
+            # Update existing admin user password if needed
+            admin_user.password_hash = hash_password("admin123")
+            admin_user.pin = "1234"
+            admin_user.is_active = True
         
         # Default owner user
         owner_user = db.query(User).filter(User.username == "owner").first()

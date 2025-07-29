@@ -18,7 +18,7 @@ import { ConfigProvider, App as AntdApp } from 'antd';
 import './App.css';
 import './assets/fonts/fonts.css';
 import './i18n';
-import { AuthProvider } from '@/contexts/AuthContext';
+import { PinAuthProvider } from '@/contexts/PinAuthContext';
 import { ThemeProvider, useTheme } from '@/contexts/ThemeContext';
 import { NetworkProvider } from '@/contexts/NetworkContext';
 import { PowerProvider } from '@/contexts/PowerContext';
@@ -35,9 +35,9 @@ const AppContent: React.FC = () => {
         <KeyboardShortcutProvider>
           <NetworkProvider>
             <PowerProvider>
-              <AuthProvider>
+              <PinAuthProvider>
                 <MainApplication />
-              </AuthProvider>
+              </PinAuthProvider>
             </PowerProvider>
           </NetworkProvider>
         </KeyboardShortcutProvider>

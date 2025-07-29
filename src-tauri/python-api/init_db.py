@@ -35,6 +35,10 @@ def main():
         init_database()
         
         print("✅ Database initialized successfully!")
+        
+        # Show authentication notice
+        from utils.auth import clear_invalid_tokens_notice
+        clear_invalid_tokens_notice()
         print("\n📊 Database Tables Created:")
         
         # List all created tables

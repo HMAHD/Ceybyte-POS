@@ -33,7 +33,7 @@ import {
   DollarOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import { useAuth } from '@/contexts/AuthContext';
+import { usePinAuth } from '@/contexts/PinAuthContext';
 import { useTranslation } from '@/hooks/useTranslation';
 import LocalizedText from '@/components/LocalizedText';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -42,7 +42,7 @@ const { Header, Content } = Layout;
 const { Title, Text } = Typography;
 
 export const HelperModeInterface: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user, logout } = usePinAuth();
   const { t, formatCurrency } = useTranslation();
 
   return (

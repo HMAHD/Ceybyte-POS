@@ -14,7 +14,7 @@
  */
 
 import React, { ReactNode } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { usePinAuth } from '@/contexts/PinAuthContext';
 import { useTranslation } from '@/hooks/useTranslation';
 import LocalizedText from '@/components/LocalizedText';
 import LoginScreen from '@/components/LoginScreen';
@@ -32,7 +32,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   requiredRole,
   fallback,
 }) => {
-  const { isAuthenticated, isLoading, user, hasPermission } = useAuth();
+  const { isAuthenticated, isLoading, user, hasPermission } = usePinAuth();
   const { t } = useTranslation();
 
   // Show loading spinner while checking authentication

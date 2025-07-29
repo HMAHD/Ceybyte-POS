@@ -4,8 +4,8 @@
  * │                                                                                                  │
  * │                                      Login Screen Component                                      │
  * │                                                                                                  │
- * │  Description: Login interface with username/password and PIN authentication support.             │
- * │               Includes role-based access and multi-language support.                             │
+ * │  Description: PIN-based login interface for fast POS authentication.                             │
+ * │               Simple username and PIN entry with multi-language support.                        │
  * │                                                                                                  │
  * │  Author: Akash Hasendra                                                                          │
  * │  Copyright: 2025 Ceybyte.com - Sri Lankan Point of Sale System                                   │
@@ -18,46 +18,51 @@ import {
   Card,
   Button,
   Input,
-  Form,
-  Alert,
-  Space,
-  Segmented,
-  Row,
-  Col,
   Typography,
+  Space,
+  Alert,
 } from 'antd';
-import { UserOutlined, LockOutlined, SafetyOutlined } from '@ant-design/icons';
-import { useAuth } from '@/contexts/AuthContext';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { usePinAuth } from '@/contexts/PinAuthContext';
 import { useTranslation } from '@/hooks/useTranslation';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import LocalizedText from '@/components/LocalizedText';
-import { APP_NAME, COMPANY_NAME } from '@/utils/constants';
 
 const { Title, Text } = Typography;
+
+// Constants
+const APP_NAME = 'CeybytePOS';
+const COMPANY_NAME = 'Ceybyte.com';
 
 interface LoginScreenProps {
   onLoginSuccess?: () => void;
 }
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
-  const { login, pinLogin } = useAuth();
+  const { pinLogin } = usePinAuth();
   const { t, common } = useTranslation();
 
-  const [loginMode, setLoginMode] = useState<'password' | 'pin'>('password');
   const [username, setUsername] = useState('');
+  const [pin, setPin] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handlePasswordLogin = async (values: any) => {
+  const handlePinLogin = async () => {
+    if (!username || !pin) {
+      setError(t('Please enter username and PIN'));
+      return;
+    }
+
     setError('');
     setIsLoading(true);
 
     try {
-      const success = await login(values.username || username, values.password);
+      const success = await pinLogin(username, pin);
       if (success) {
         onLoginSuccess?.();
       } else {
-        setError(t('auth.loginError'));
+        setError(t('Invalid username or PIN'));
+        setPin(''); // Clear PIN on failure
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -67,40 +72,22 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
     }
   };
 
-  const handlePinLogin = async (values: any) => {
-    setError('');
-    setIsLoading(true);
-
-    try {
-      const success = await pinLogin(values.username || username, values.pin);
-      if (success) {
-        onLoginSuccess?.();
-      } else {
-        setError(t('auth.loginError'));
-      }
-    } catch (error) {
-      console.error('PIN login error:', error);
-      setError(t('errors.networkError'));
-    } finally {
-      setIsLoading(false);
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handlePinLogin();
     }
-  };
-
-  const handleQuickUserSwitch = (user: string) => {
-    setUsername(user);
-    setLoginMode('pin');
-    setError('');
   };
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4'>
-      <Card className='w-full max-w-md' style={{ maxWidth: 400 }}>
+      <Card className='w-full max-w-md shadow-lg' style={{ maxWidth: 400 }}>
         <div className='p-6'>
-          {/* Header */}
+          {/* Language Switcher */}
           <div className='text-right mb-4'>
             <LanguageSwitcher variant='compact' />
           </div>
 
+          {/* Header */}
           <div className='text-center mb-6'>
             <Title level={2} className='mb-2'>
               <LocalizedText>{APP_NAME}</LocalizedText>
@@ -115,25 +102,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
           </div>
 
           <Space direction='vertical' className='w-full' size='large'>
-            {/* Login Mode Toggle */}
-            <Segmented
-              value={loginMode}
-              onChange={value => setLoginMode(value as 'password' | 'pin')}
-              options={[
-                {
-                  label: <LocalizedText>{t('auth.password')}</LocalizedText>,
-                  value: 'password',
-                  icon: <LockOutlined />,
-                },
-                {
-                  label: <LocalizedText>{t('auth.pin')}</LocalizedText>,
-                  value: 'pin',
-                  icon: <SafetyOutlined />,
-                },
-              ]}
-              block
-            />
-
             {/* Error Message */}
             {error && (
               <Alert
@@ -145,182 +113,58 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
               />
             )}
 
-            {/* Password Login Form */}
-            {loginMode === 'password' && (
-              <Form
-                onFinish={handlePasswordLogin}
-                layout='vertical'
-                size='large'
-                initialValues={{ username }}
-              >
-                <Form.Item
-                  label={<LocalizedText>{t('auth.username')}</LocalizedText>}
-                  name='username'
-                  rules={[
-                    { required: true, message: 'Please input your username!' },
-                  ]}
-                >
-                  <Input
-                    prefix={<UserOutlined />}
-                    disabled={isLoading}
-                    placeholder='Username'
-                  />
-                </Form.Item>
-
-                <Form.Item
-                  label={<LocalizedText>{t('auth.password')}</LocalizedText>}
-                  name='password'
-                  rules={[
-                    { required: true, message: 'Please input your password!' },
-                  ]}
-                >
-                  <Input.Password
-                    prefix={<LockOutlined />}
-                    disabled={isLoading}
-                    placeholder='Password'
-                  />
-                </Form.Item>
-
-                <Form.Item>
-                  <Button
-                    type='primary'
-                    htmlType='submit'
-                    loading={isLoading}
-                    block
-                    size='large'
-                  >
-                    <LocalizedText>
-                      {isLoading ? common.loading : t('auth.loginButton')}
-                    </LocalizedText>
-                  </Button>
-                </Form.Item>
-              </Form>
-            )}
-
             {/* PIN Login Form */}
-            {loginMode === 'pin' && (
-              <Form
-                onFinish={handlePinLogin}
-                layout='vertical'
-                size='large'
-                initialValues={{ username }}
-              >
-                <Form.Item
-                  label={<LocalizedText>{t('auth.username')}</LocalizedText>}
-                  name='username'
-                  rules={[
-                    { required: true, message: 'Please input your username!' },
-                  ]}
-                >
-                  <Input
-                    prefix={<UserOutlined />}
-                    disabled={isLoading}
-                    placeholder='Username'
-                  />
-                </Form.Item>
-
-                <Form.Item
-                  label={<LocalizedText>{t('auth.pin')}</LocalizedText>}
-                  name='pin'
-                  rules={[
-                    { required: true, message: 'Please input your PIN!' },
-                  ]}
-                >
-                  <Input.Password
-                    prefix={<SafetyOutlined />}
-                    maxLength={6}
-                    style={{ textAlign: 'center', letterSpacing: '0.2em' }}
-                    disabled={isLoading}
-                    placeholder='PIN'
-                  />
-                </Form.Item>
-
-                <Form.Item>
-                  <Button
-                    type='primary'
-                    htmlType='submit'
-                    loading={isLoading}
-                    block
-                    size='large'
-                  >
-                    <LocalizedText>
-                      {isLoading ? common.loading : t('auth.loginButton')}
-                    </LocalizedText>
-                  </Button>
-                </Form.Item>
-              </Form>
-            )}
-
-            {/* Quick Switch */}
-            <div>
-              <Text type='secondary' className='text-sm'>
-                <LocalizedText>
-                  {t('auth.quickSwitch', 'Quick Switch:')}
-                </LocalizedText>
-              </Text>
-              <Row gutter={8} className='mt-2'>
-                <Col span={6}>
-                  <Button
-                    size='small'
-                    onClick={() => handleQuickUserSwitch('admin')}
-                    block
-                    title='PIN: 1234'
-                  >
-                    <LocalizedText>Admin</LocalizedText>
-                  </Button>
-                </Col>
-                <Col span={6}>
-                  <Button
-                    size='small'
-                    onClick={() => handleQuickUserSwitch('owner')}
-                    block
-                    title='PIN: 1111'
-                  >
-                    <LocalizedText>Owner</LocalizedText>
-                  </Button>
-                </Col>
-                <Col span={6}>
-                  <Button
-                    size='small'
-                    onClick={() => handleQuickUserSwitch('cashier')}
-                    block
-                    title='PIN: 2345'
-                  >
-                    <LocalizedText>Cashier</LocalizedText>
-                  </Button>
-                </Col>
-                <Col span={6}>
-                  <Button
-                    size='small'
-                    onClick={() => handleQuickUserSwitch('helper')}
-                    block
-                    title='PIN: 3456'
-                  >
-                    <LocalizedText>Helper</LocalizedText>
-                  </Button>
-                </Col>
-              </Row>
-
-              {/* Default Credentials Info */}
-              <div className='mt-4 p-3 bg-blue-50 rounded border border-blue-200'>
-                <Text type='secondary' className='text-xs'>
-                  <LocalizedText>Default Credentials:</LocalizedText>
+            <div className="space-y-4">
+              <div>
+                <Text strong className="block mb-2">
+                  <LocalizedText>{t('auth.username')}</LocalizedText>
                 </Text>
-                <div className='text-xs mt-1 space-y-1'>
-                  <div>
-                    <strong>Admin:</strong> admin/admin123 (PIN: 1234)
-                  </div>
-                  <div>
-                    <strong>Owner:</strong> owner/owner123 (PIN: 1111)
-                  </div>
-                  <div>
-                    <strong>Cashier:</strong> cashier/cashier123 (PIN: 2345)
-                  </div>
-                  <div>
-                    <strong>Helper:</strong> helper/helper123 (PIN: 3456)
-                  </div>
-                </div>
+                <Input
+                  prefix={<UserOutlined />}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  disabled={isLoading}
+                  placeholder="Username"
+                  size="large"
+                  onKeyPress={handleKeyPress}
+                />
               </div>
+
+              <div>
+                <Text strong className="block mb-2">
+                  <LocalizedText>{t('auth.pin')}</LocalizedText>
+                </Text>
+                <Input.Password
+                  prefix={<LockOutlined />}
+                  value={pin}
+                  onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  disabled={isLoading}
+                  placeholder="Enter 4-6 digit PIN"
+                  size="large"
+                  maxLength={6}
+                  onKeyPress={handleKeyPress}
+                />
+              </div>
+
+              <Button
+                type='primary'
+                onClick={handlePinLogin}
+                loading={isLoading}
+                block
+                size='large'
+                disabled={!username || !pin}
+              >
+                <LocalizedText>
+                  {isLoading ? common.loading : t('auth.loginButton')}
+                </LocalizedText>
+              </Button>
+            </div>
+
+            {/* Quick Access Hint */}
+            <div className="text-center">
+              <Text type="secondary" className="text-sm">
+                <LocalizedText>Default: owner (1234), cashier (5678)</LocalizedText>
+              </Text>
             </div>
           </Space>
         </div>

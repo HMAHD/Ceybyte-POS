@@ -14,7 +14,7 @@
  */
 
 import React, { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { usePinAuth } from '@/contexts/PinAuthContext';
 import { useNetwork } from '@/contexts/NetworkContext';
 import LoginScreen from '@/components/LoginScreen';
 import HelperModeInterface from '@/components/HelperModeInterface';
@@ -24,7 +24,7 @@ import { PageLoading } from '@/components/LoadingStates';
 import type { NetworkConfiguration } from '@/types/network';
 
 export const MainApplication: React.FC = () => {
-  const { isAuthenticated, user, isLoading } = useAuth();
+  const { isAuthenticated, user, isLoading } = usePinAuth();
   const { isFirstRun, updateConfig } = useNetwork();
   const [showNetworkDialog, setShowNetworkDialog] = useState(isFirstRun);
 

@@ -24,7 +24,7 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Import auth function for test endpoint
-from utils.auth import get_current_user
+from utils.auth import get_current_user_from_token
 
 app = FastAPI(
     title="CeybytePOS API",
@@ -57,12 +57,13 @@ async def test_auth():
     return {"message": "This endpoint works without authentication", "timestamp": "2025-01-28"}
 
 @app.get("/test-auth-required")
-async def test_auth_required(current_user = Depends(get_current_user)):
+async def test_auth_required(current_user = Depends(get_current_user_from_token)):
     """Test endpoint with authentication"""
     return {"message": "Authentication works!", "user": current_user.username, "user_id": current_user.id}
 
 # API Routes
 from api.auth import router as auth_router
+from api.pin_auth import router as pin_auth_router
 from api.products import router as products_router
 from api.categories import router as categories_router
 from api.units import router as units_router
@@ -78,6 +79,7 @@ from routes.printer import router as printer_router
 
 # Include routers
 app.include_router(auth_router)
+app.include_router(pin_auth_router)
 app.include_router(products_router)
 app.include_router(categories_router)
 app.include_router(units_router)
@@ -90,6 +92,18 @@ app.include_router(dashboard_router)
 app.include_router(power_router)
 app.include_router(sri_lankan_router)
 app.include_router(printer_router)
+
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database tables on startup"""
+    try:
+        # Import and run the PIN sessions migration
+        from migrations.add_pin_sessions import run_migration
+        run_migration()
+        print("✅ PIN authentication system initialized")
+    except Exception as e:
+        print(f"⚠️  Migration warning: {e}")
+        print("   Database tables may need to be created manually")
 
 if __name__ == "__main__":
     # This will be called when running the API standalone for development

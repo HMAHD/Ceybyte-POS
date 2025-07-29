@@ -258,9 +258,11 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
             ).first()
             
             if not user:
+                # Log the issue for debugging
+                print(f"Token validation failed: User ID {user_id} not found or inactive")
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="User not found"
+                    detail="User not found or inactive. Please log in again."
                 )
                 
             return user
@@ -274,3 +276,11 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials"
         )
+
+
+def clear_invalid_tokens_notice():
+    """Print notice about clearing invalid tokens"""
+    print("\n🔑 Authentication Notice:")
+    print("   If you're experiencing authentication issues after database reset,")
+    print("   please clear your browser's localStorage and log in again.")
+    print("   In browser console, run: localStorage.removeItem('ceybyte-pos-token')")
