@@ -115,7 +115,7 @@ export const PowerProvider: React.FC<PowerProviderProps> = ({ children }) => {
   // Refresh UPS status from backend
   const refreshUPSStatus = useCallback(async () => {
     try {
-      const data = await apiCall('/api/power/ups/status', 'GET');
+      const data = await apiCall('/api/power/ups/status', 'GET') as any;
       if (data) {
         const newUpsInfo: UPSInfo = {
           status: data.status,
@@ -225,9 +225,9 @@ export const PowerProvider: React.FC<PowerProviderProps> = ({ children }) => {
   // Get pending transactions for recovery
   const getPendingTransactions = useCallback(async (): Promise<TransactionState[]> => {
     try {
-      const data = await apiCall('/api/power/transaction/pending', 'GET');
+      const data = await apiCall('/api/power/transaction/pending', 'GET') as any;
       
-      if (data) {
+      if (data && Array.isArray(data)) {
         return data.map((item: any) => ({
           sessionId: item.session_id,
           transactionData: item.transaction_data,
