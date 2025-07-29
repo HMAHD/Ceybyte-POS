@@ -15,9 +15,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Statistic, Button, Spin, Alert, Tag } from 'antd';
-import { 
-  ShoppingCartOutlined, 
-  UserOutlined, 
+import {
+  ShoppingCartOutlined,
+  UserOutlined,
   FileTextOutlined,
   ReloadOutlined,
   DollarOutlined,
@@ -42,7 +42,7 @@ import SupplierTrackingCard from '@/components/dashboard/SupplierTrackingCard';
 const DashboardPage: React.FC = () => {
   const { t, formatCurrency } = useTranslation();
   const { startMonitoring, isMonitoring } = usePower();
-  
+
   // Use local data hooks for instant loading
   const { data: todaySales, loading: salesLoading } = useTodaySales();
   const { data: dailySummary, loading: summaryLoading } = useDailySalesSummary();
@@ -53,22 +53,22 @@ const DashboardPage: React.FC = () => {
   // Calculate statistics from local data
   const stats = React.useMemo(() => {
     // Use daily summary if available, otherwise calculate from sales array
-    const todayRevenue = dailySummary?.total_amount || 
+    const todayRevenue = dailySummary?.total_amount ||
       (Array.isArray(todaySales) ? todaySales.reduce((sum, sale) => sum + (sale.totals?.total || 0), 0) : 0);
-    
-    const todayTransactions = dailySummary?.transaction_count || 
+
+    const todayTransactions = dailySummary?.transaction_count ||
       (Array.isArray(todaySales) ? todaySales.length : 0);
 
-    const lowStockItems = Array.isArray(products) 
-      ? products.filter(p => (p.stock_quantity || 0) <= 10).length 
+    const lowStockItems = Array.isArray(products)
+      ? products.filter(p => (p.stock_quantity || 0) <= 10).length
       : 0;
-    
-    const activeCustomers = Array.isArray(customers) 
-      ? customers.filter(c => c.is_active).length 
+
+    const activeCustomers = Array.isArray(customers)
+      ? customers.filter(c => c.is_active).length
       : 0;
-    
-    const totalCredit = Array.isArray(customers) 
-      ? customers.reduce((sum, c) => sum + (c.current_credit || 0), 0) 
+
+    const totalCredit = Array.isArray(customers)
+      ? customers.reduce((sum, c) => sum + (c.current_credit || 0), 0)
       : 0;
 
     return {
@@ -219,10 +219,10 @@ const DashboardPage: React.FC = () => {
               <Statistic
                 title={<LocalizedText>{t('dashboard.lowStockItems', 'Low Stock Items')}</LocalizedText>}
                 value={displayStats.low_stock_items}
-                valueStyle={{ 
-                  color: displayStats.low_stock_items > 5 ? '#f5222d' : '#faad14', 
-                  fontSize: '18px', 
-                  fontWeight: 'bold' 
+                valueStyle={{
+                  color: displayStats.low_stock_items > 5 ? '#f5222d' : '#faad14',
+                  fontSize: '18px',
+                  fontWeight: 'bold'
                 }}
                 prefix={<WarningOutlined />}
               />
@@ -286,7 +286,7 @@ const DashboardPage: React.FC = () => {
 
           {/* Quick Actions */}
           <Col xs={24} lg={12}>
-            <Card 
+            <Card
               className="ceybyte-card h-full"
               title={
                 <span className="text-lg font-semibold">
@@ -296,9 +296,9 @@ const DashboardPage: React.FC = () => {
             >
               <Row gutter={[16, 16]}>
                 <Col span={24}>
-                  <Button 
-                    type="primary" 
-                    icon={<ShoppingCartOutlined />} 
+                  <Button
+                    type="primary"
+                    icon={<ShoppingCartOutlined />}
                     size="large"
                     className="ceybyte-btn ceybyte-btn-primary w-full h-16"
                   >
@@ -313,8 +313,8 @@ const DashboardPage: React.FC = () => {
                   </Button>
                 </Col>
                 <Col span={12}>
-                  <Button 
-                    icon={<FileTextOutlined />} 
+                  <Button
+                    icon={<FileTextOutlined />}
                     size="large"
                     className="ceybyte-btn ceybyte-btn-secondary w-full h-12"
                   >
@@ -322,8 +322,8 @@ const DashboardPage: React.FC = () => {
                   </Button>
                 </Col>
                 <Col span={12}>
-                  <Button 
-                    icon={<UserOutlined />} 
+                  <Button
+                    icon={<UserOutlined />}
                     size="large"
                     className="ceybyte-btn ceybyte-btn-secondary w-full h-12"
                   >
