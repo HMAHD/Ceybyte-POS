@@ -467,6 +467,7 @@ class PowerService:
             
     async def _cleanup_old_states(self):
         """Clean up old transaction states"""
+        db = None
         try:
             db = next(get_db())
             
@@ -484,6 +485,11 @@ class PowerService:
                 
         except Exception as e:
             logger.error(f"Error cleaning up old states: {e}")
+            if db:
+                db.rollback()
+        finally:
+            if db:
+                db.close()
             
     def get_current_ups_info(self) -> Dict:
         """Get current UPS information"""

@@ -45,8 +45,8 @@ class TransactionRecoveryRequest(BaseModel):
 
 
 @router.get("/ups/status")
-async def get_ups_status(current_user: User = Depends(get_current_user)):
-    """Get current UPS status and battery information"""
+async def get_ups_status():
+    """Get current UPS status and battery information (no auth required for monitoring)"""
     try:
         ups_info = power_service.get_current_ups_info()
         return {
@@ -63,7 +63,7 @@ async def start_monitoring(
     background_tasks: BackgroundTasks,
     terminal_id: Optional[str] = None
 ):
-    """Start UPS monitoring service"""
+    """Start UPS monitoring service (no auth required for system initialization)"""
     try:
         if not terminal_id:
             terminal_id = f"TERMINAL-TEST"
