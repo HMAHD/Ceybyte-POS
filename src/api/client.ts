@@ -34,13 +34,11 @@ class ApiClient {
       'Content-Type': 'application/json',
     };
 
-    // PIN-based authentication doesn't require tokens for most operations
-    // Only add auth headers for endpoints that specifically require them
-    if (endpoint.includes('/auth/') && !endpoint.includes('/pin-auth/')) {
-      const token = localStorage.getItem('ceybyte-pos-token');
-      if (token && token !== 'null' && token !== 'undefined' && token.length > 10) {
-        defaultHeaders['Authorization'] = `Bearer ${token}`;
-      }
+    // For PIN-based authentication, we don't need tokens for most operations
+    // But some endpoints might still require authentication
+    const token = localStorage.getItem('ceybyte-pos-token');
+    if (token && token !== 'null' && token !== 'undefined' && token.length > 10) {
+      defaultHeaders['Authorization'] = `Bearer ${token}`;
     }
 
     try {

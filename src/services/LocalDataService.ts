@@ -175,10 +175,39 @@ class LocalDataService {
         
         // Emit event
         this.emit(entity, 'synced', response.data);
+      } else {
+        console.warn(`API returned error for ${entity}:`, response.error);
+        // For failed API calls, emit empty data to prevent infinite loading
+        this.handleAPIError(entity, cacheKey);
       }
     } catch (error) {
       console.error(`Failed to fetch ${entity}:`, error);
+      // For failed API calls, emit empty data to prevent infinite loading
+      this.handleAPIError(entity, cacheKey);
     }
+  }
+
+  private handleAPIError(entity: string, cacheKey?: string) {
+    const key = cacheKey || entity;
+    
+    // Provide fallback empty data based on entity type
+    let fallbackData: any = [];
+    
+    if (entity.includes('summary')) {
+      fallbackData = {
+        date: new Date().toISOString().split('T')[0],
+        total_sales: 0,
+        total_amount: 0,
+        transaction_count: 0,
+        payment_methods: {}
+      };
+    }
+    
+    // Cache the fallback data
+    this.setMemoryCache(key, fallbackData);
+    
+    // Emit event with fallback data
+    this.emit(entity, 'synced', fallbackData);
   }
 
   // Optimistic create
@@ -321,7 +350,7 @@ class LocalDataService {
       'categories', 
       'customers',
       'units',
-      'sales/today'
+      'sales/summary/daily'
     ];
 
     const promises = essentialEntities.map(entity => 

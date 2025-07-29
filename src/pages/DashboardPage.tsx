@@ -27,7 +27,7 @@ import {
 } from '@ant-design/icons';
 import { useTranslation } from '@/hooks/useTranslation';
 import LocalizedText from '@/components/LocalizedText';
-import { useTodaySales, useProducts, useCustomers, useSyncStatus } from '@/hooks/useLocalData';
+import { useTodaySales, useDailySalesSummary, useProducts, useCustomers, useSyncStatus } from '@/hooks/useLocalData';
 import { usePower } from '@/contexts/PowerContext';
 
 // Dashboard component imports
@@ -45,21 +45,31 @@ const DashboardPage: React.FC = () => {
   
   // Use local data hooks for instant loading
   const { data: todaySales, loading: salesLoading } = useTodaySales();
+  const { data: dailySummary, loading: summaryLoading } = useDailySalesSummary();
   const { data: products, loading: productsLoading } = useProducts();
   const { data: customers, loading: customersLoading } = useCustomers();
   const syncStatus = useSyncStatus();
 
   // Calculate statistics from local data
   const stats = React.useMemo(() => {
-    if (!Array.isArray(todaySales) || !Array.isArray(products) || !Array.isArray(customers)) {
-      return null;
-    }
+    // Use daily summary if available, otherwise calculate from sales array
+    const todayRevenue = dailySummary?.total_amount || 
+      (Array.isArray(todaySales) ? todaySales.reduce((sum, sale) => sum + (sale.totals?.total || 0), 0) : 0);
+    
+    const todayTransactions = dailySummary?.transaction_count || 
+      (Array.isArray(todaySales) ? todaySales.length : 0);
 
-    const todayRevenue = todaySales.reduce((sum, sale) => sum + sale.total_amount, 0);
-    const todayTransactions = todaySales.length;
-    const lowStockItems = products.filter(p => (p.stock_quantity || 0) <= 10).length;
-    const activeCustomers = customers.filter(c => c.is_active).length;
-    const totalCredit = customers.reduce((sum, c) => sum + (c.current_credit || 0), 0);
+    const lowStockItems = Array.isArray(products) 
+      ? products.filter(p => (p.stock_quantity || 0) <= 10).length 
+      : 0;
+    
+    const activeCustomers = Array.isArray(customers) 
+      ? customers.filter(c => c.is_active).length 
+      : 0;
+    
+    const totalCredit = Array.isArray(customers) 
+      ? customers.reduce((sum, c) => sum + (c.current_credit || 0), 0) 
+      : 0;
 
     return {
       today_sales: todayRevenue,
@@ -72,9 +82,9 @@ const DashboardPage: React.FC = () => {
       low_stock_items: lowStockItems,
       active_customers: activeCustomers,
     };
-  }, [todaySales, products, customers]);
+  }, [todaySales, dailySummary, products, customers]);
 
-  const loading = salesLoading || productsLoading || customersLoading;
+  const loading = salesLoading || summaryLoading || productsLoading || customersLoading;
 
   useEffect(() => {
     // Start power monitoring after authentication

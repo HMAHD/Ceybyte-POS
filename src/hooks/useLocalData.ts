@@ -189,13 +189,11 @@ export function useCategories() {
 export function useTodaySales() {
   return useLocalData<{
     id: number;
-    sale_number: string;
+    receipt_number: string;
     customer_id?: number;
-    total_amount: number;
-    paid_amount: number;
-    change_amount: number;
-    payment_method: string;
-    created_at: string;
+    customer_name?: string;
+    user_id: number;
+    terminal_id: number;
     items: Array<{
       product_id: number;
       product_name: string;
@@ -203,7 +201,31 @@ export function useTodaySales() {
       unit_price: number;
       total_price: number;
     }>;
-  }>('sales/today');
+    payment: {
+      method: string;
+      amount_tendered?: number;
+      change_amount?: number;
+      reference?: string;
+    };
+    totals: {
+      subtotal: number;
+      tax_amount: number;
+      discount_amount: number;
+      total: number;
+    };
+    created_at: string;
+    updated_at: string;
+  }>('sales');
+}
+
+export function useDailySalesSummary() {
+  return useLocalData<{
+    date: string;
+    total_sales: number;
+    total_amount: number;
+    transaction_count: number;
+    payment_methods: Record<string, number>;
+  }>('sales/summary/daily');
 }
 
 // Hook for sync status
