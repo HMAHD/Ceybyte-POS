@@ -23,7 +23,7 @@ from typing import Dict, List, Optional, Any
 from sqlalchemy.orm import Session
 from sqlalchemy import desc
 
-from database.connection import get_db
+from database.connection import get_db, SessionLocal
 from models.power_event import PowerEvent, TransactionState
 
 logger = logging.getLogger(__name__)
@@ -329,9 +329,8 @@ class PowerService:
         
     async def _log_power_event(self, event_type: str, ups_info: UPSInfo, notes: str = None, event_metadata: Dict = None):
         """Log a power event to the database"""
+        db = SessionLocal()
         try:
-            db = next(get_db())
-            
             power_event = PowerEvent(
                 terminal_id=self.terminal_id,
                 event_type=event_type,
@@ -351,14 +350,16 @@ class PowerService:
             
         except Exception as e:
             logger.error(f"Error logging power event: {e}")
+            db.rollback()
+        finally:
+            db.close()
             
     async def save_transaction_state(self, session_id: str, transaction_data: Dict, 
                                    transaction_type: str, user_id: int, 
                                    customer_id: int = None, last_action: str = None):
         """Save transaction state for recovery"""
+        db = SessionLocal()
         try:
-            db = next(get_db())
-            
             # Check if state already exists
             existing_state = db.query(TransactionState).filter(
                 TransactionState.session_id == session_id,
@@ -391,12 +392,14 @@ class PowerService:
             
         except Exception as e:
             logger.error(f"Error saving transaction state: {e}")
+            db.rollback()
+        finally:
+            db.close()
             
     async def get_pending_transaction_states(self) -> List[Dict]:
         """Get all pending transaction states for recovery"""
+        db = SessionLocal()
         try:
-            db = next(get_db())
-            
             states = db.query(TransactionState).filter(
                 TransactionState.terminal_id == self.terminal_id,
                 TransactionState.state_type == 'active',
@@ -408,12 +411,13 @@ class PowerService:
         except Exception as e:
             logger.error(f"Error getting pending transaction states: {e}")
             return []
+        finally:
+            db.close()
             
     async def mark_transaction_recovered(self, session_id: str, successful: bool, notes: str = None):
         """Mark a transaction as recovered"""
+        db = SessionLocal()
         try:
-            db = next(get_db())
-            
             state = db.query(TransactionState).filter(
                 TransactionState.session_id == session_id,
                 TransactionState.terminal_id == self.terminal_id
@@ -431,12 +435,14 @@ class PowerService:
                 
         except Exception as e:
             logger.error(f"Error marking transaction as recovered: {e}")
+            db.rollback()
+        finally:
+            db.close()
             
     async def _process_pending_receipts(self):
         """Process any pending receipts after power restoration"""
+        db = SessionLocal()
         try:
-            db = next(get_db())
-            
             # Get states with pending receipts
             states = db.query(TransactionState).filter(
                 TransactionState.terminal_id == self.terminal_id,
@@ -464,20 +470,21 @@ class PowerService:
             
         except Exception as e:
             logger.error(f"Error processing pending receipts: {e}")
+            db.rollback()
+        finally:
+            db.close()
             
     async def _cleanup_old_states(self):
         """Clean up old transaction states"""
-        db = None
+        db = SessionLocal()
         try:
-            db = next(get_db())
-            
             # Delete expired states
             cutoff_time = datetime.now() - timedelta(hours=48)  # Keep for 48 hours
             
             deleted_count = db.query(TransactionState).filter(
                 TransactionState.created_at < cutoff_time,
                 TransactionState.state_type.in_(['recovered', 'failed', 'completed'])
-            ).delete()
+            ).delete(synchronize_session=False)
             
             if deleted_count > 0:
                 db.commit()
@@ -485,11 +492,9 @@ class PowerService:
                 
         except Exception as e:
             logger.error(f"Error cleaning up old states: {e}")
-            if db:
-                db.rollback()
+            db.rollback()
         finally:
-            if db:
-                db.close()
+            db.close()
             
     def get_current_ups_info(self) -> Dict:
         """Get current UPS information"""
@@ -507,9 +512,8 @@ class PowerService:
         
     async def get_power_events(self, limit: int = 100, event_type: str = None) -> List[Dict]:
         """Get recent power events"""
+        db = SessionLocal()
         try:
-            db = next(get_db())
-            
             query = db.query(PowerEvent).filter(
                 PowerEvent.terminal_id == self.terminal_id
             )
@@ -524,6 +528,8 @@ class PowerService:
         except Exception as e:
             logger.error(f"Error getting power events: {e}")
             return []
+        finally:
+            db.close()
 
 
 # Global power service instance
