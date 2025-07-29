@@ -478,6 +478,13 @@ class PowerService:
         """Clean up old transaction states"""
         db = SessionLocal()
         try:
+            # Check if the table exists first
+            from sqlalchemy import inspect
+            inspector = inspect(db.bind)
+            if 'transaction_states' not in inspector.get_table_names():
+                logger.debug("transaction_states table does not exist, skipping cleanup")
+                return
+            
             # Delete expired states
             cutoff_time = datetime.now() - timedelta(hours=48)  # Keep for 48 hours
             
@@ -492,9 +499,11 @@ class PowerService:
                 
         except Exception as e:
             logger.error(f"Error cleaning up old states: {e}")
-            db.rollback()
+            if db:
+                db.rollback()
         finally:
-            db.close()
+            if db:
+                db.close()
             
     def get_current_ups_info(self) -> Dict:
         """Get current UPS information"""
