@@ -28,6 +28,7 @@ import {
 import { useTranslation } from '@/hooks/useTranslation';
 import LocalizedText from '@/components/LocalizedText';
 import { dashboardApi, DashboardStats } from '@/api/dashboard.api';
+import { usePower } from '@/contexts/PowerContext';
 
 // Dashboard component imports
 import CashFlowCard from '@/components/dashboard/CashFlowCard';
@@ -40,6 +41,7 @@ import SupplierTrackingCard from '@/components/dashboard/SupplierTrackingCard';
 
 const DashboardPage: React.FC = () => {
   const { t, formatCurrency } = useTranslation();
+  const { startMonitoring, isMonitoring } = usePower();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -65,7 +67,12 @@ const DashboardPage: React.FC = () => {
 
   useEffect(() => {
     loadDashboardStats();
-  }, []);
+    
+    // Start power monitoring after authentication
+    if (!isMonitoring) {
+      startMonitoring();
+    }
+  }, [startMonitoring, isMonitoring]);
 
   if (loading) {
     return (

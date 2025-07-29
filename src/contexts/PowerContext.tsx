@@ -284,10 +284,8 @@ export const PowerProvider: React.FC<PowerProviderProps> = ({ children }) => {
     }
   }, [saveTransactionState]);
 
-  // Initialize power monitoring on mount
+  // Clean up intervals on unmount
   useEffect(() => {
-    startMonitoring();
-    
     return () => {
       if (monitoringIntervalRef.current) {
         clearInterval(monitoringIntervalRef.current);
@@ -296,7 +294,7 @@ export const PowerProvider: React.FC<PowerProviderProps> = ({ children }) => {
         clearInterval(autoSaveIntervalRef.current);
       }
     };
-  }, [startMonitoring]);
+  }, []);
 
   // Set up auto-save when monitoring is active
   useEffect(() => {
